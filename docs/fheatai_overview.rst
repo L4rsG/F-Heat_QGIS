@@ -48,20 +48,68 @@ As an initial state the QGIS plugin serves for merging and utilising the system 
 Development Roadmap
 -------------------
 
-+-----------------+----------------------------------------------------+---------------------------------------------------+------------------------------------------------------------------------+
-| **Component**   | **Release version 0.9**                            | **Version 1.0**                                   | **Future version(s)**                                                  |
-+=================+====================================================+===================================================+========================================================================+
-| F|Heat.map      | Beschaffung, Anreicherung, Aggregation und         | Ausweitung auf Bundesländer: ggf. Niedersachsen,  | Automatisierte Bedarfsmodellierung der Gebäude in der Planungsregion   |
-|                 | Visualisierung von Gebäuden und Straßen etc.       | Schleswig-Holstein...                             |                                                                        |
-+-----------------+----------------------------------------------------+---------------------------------------------------+------------------------------------------------------------------------+
-| F|Heat.net      | Konzeptionierung, Auslegung und Visualisierung     | Verbesserte Netzauslegung (Dimensionierung und    | Vermaschte Netze, multiple Einspeiser, Prosumer, Substationen etc.     |
-|                 | eines Wärmenetzes mit Vorlauf von 80°C (max) und   | Routenfindung)                                    |                                                                        |
-+-----------------+----------------------------------------------------+---------------------------------------------------+------------------------------------------------------------------------+
-| F|Heat.tec      | Aggregation und Visualisierung                     | (automatisierte) Speicherberechnung               | Verschiedene Speicher, Vorschläge zur Speicherstandorte...             |
-+-----------------+----------------------------------------------------+---------------------------------------------------+------------------------------------------------------------------------+
-| F|Heat.ai       | QGIS-Plugin zur Zusammenführung und Nutzung        | Anpassung des Gesamtsystems auf dänisches Modell  | Online Version mit Chatbot zur Entwicklung des Systems                 |
-+-----------------+----------------------------------------------------+---------------------------------------------------+------------------------------------------------------------------------+
+Release version 0.9.0
+^^^^^^^^^^^^^^^^^^^^^
 
++-----------------+--------------------------------------------------------+
+| **Component**   | **Release version 0.9.0**                              |
++=================+========================================================+
+| F|Heat.map      | Procurement, enrichment, aggregation and               |
+|                 | visualisation of building and street data in           |
+|                 | accordance with federal guidelines for heat planning   |
++-----------------+--------------------------------------------------------+
+| F|Heat.net      | Design (radiant) heating network with flow temperatures|
+|                 | of 80°C (max.) and 65°C (min.).                        |
+|                 | Specification of costs for pipe construction           |
+|                 | (without cicil engineering costs)                      |                        
++-----------------+--------------------------------------------------------+
+| F|Heat.tec      | Aggregation and visualisation of the annual heat demand|
+|                 | of the designed grid area (incl. simultaneity) as      |
+|                 | annual values                                          |
++-----------------+--------------------------------------------------------+
+| F|Heat.ai       | QGIS plugin for merging and utilising the system       |
+|                 | components with an explanatory user interface          |
++-----------------+--------------------------------------------------------+
+
+Version 1.0.0
+^^^^^^^^^^^^^
+
++-----------------+----------------------------------------------------------------------------------+
+| **Component**   | **Version 1.0.0**                                                                |
++=================+==================================================================================+
+| F|Heat.map      | 1. Expansion to other federal states, possibly Lower Saxony, Schleswig-Holstein  |
+|                 |                                                                                  |
+|                 | 2. Mapping of potentials: Areas for ground-mounted solar thermal energy,         |
+|                 | geothermal energy, water thermal energy, underground reservoirs                  |
+|                 |                                                                                  |
+|                 | 3. Determination and visualisation of the "socio-economically best solution"     |
+|                 | as supply areas in the municipality under consideration                          |
++-----------------+----------------------------------------------------------------------------------+
+| F|Heat.net      | Improved network design (dimensioning and routing)                               |
++-----------------+----------------------------------------------------------------------------------+
+| F|Heat.tec      | (automated) storage calculation                                                  |
++-----------------+----------------------------------------------------------------------------------+
+| F|Heat.ai       | Anpassung des Gesamtsystems auf dänisches Modell                                 |
++-----------------+----------------------------------------------------------------------------------+
+
+Future version(s)
+^^^^^^^^^^^^^^^^^
+
++-----------------+---------------------------------------------------+
+| **Component**   | **Future version(s)**                             |
++=================+===================================================+
+| F|Heat.map      | Automated demand modelling of buildings in the    |
+|                 | planning region.                                  |
++-----------------+---------------------------------------------------+
+| F|Heat.net      | Intermeshed grids, multiple feeders / prosumers,  |
+|                 | substitutions / different temperature levels,     |
+|                 | anergy grids.                                     |
++-----------------+---------------------------------------------------+
+| F|Heat.tec      | Various heat storage options and suggestions for  |
+|                 | storage locations.                                |
++-----------------+---------------------------------------------------+
+| F|Heat.ai       | Online version with ChatBot to develop the system.|
++-----------------+---------------------------------------------------+
 
 Example
 -------
