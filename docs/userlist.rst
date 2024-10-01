@@ -9,5 +9,5 @@ We are interested in user feedback (whether good or bad) for further improvement
 +--------------------+--------------------------------------------------------+
 | **Municipalities** | **Intended usage**                                     |
 +====================+========================================================+
-| Saerbeck           | Communal heat planning                                |
+| Saerbeck           | Communal heat planning                                 |
 +--------------------+--------------------------------------------------------+
