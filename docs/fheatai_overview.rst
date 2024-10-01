@@ -121,6 +121,7 @@ Example
     :width: 100 %
     :align: center
 
+    ..
 
 
 #. Start F|Heat. The User Interface will open with the `introduction` tab. Simultaneously the layer groups for the individual steps of the planning proces will be created automatically.
