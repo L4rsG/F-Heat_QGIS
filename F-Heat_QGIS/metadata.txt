@@ -6,14 +6,12 @@
 name=F|Heat 
 qgisMinimumVersion=3.0
 description=This plugin provides tools for district heating planning
-version=0.1
+about=This plugin provides tools for district heating planning. Starting with downloading needed information as shape files to designing a heat grid and saving results in a report
+version=0.9
 author=Lars Goray
 email=lars.goray@fh-muenster.de
-
-about=This plugin provides tools for district heating planning. Starting with downloading needed information as shape files to designing a heat grid and saving results in a report
-
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/L4rsG/F-Heat/issues
+repository=https://github.com/L4rsG/F-Heat/tree/main/F-Heat_QGIS
 # End of mandatory metadata
 
 # Recommended items:
@@ -23,9 +21,9 @@ hasProcessingProvider=no
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=python
+tags=python, FHeat, F|Heat, F-Heat, district heating, planning, network, map
 
-homepage=http://homepage
+homepage=https://fheat.readthedocs.io/en/latest/index.html
 category=Plugins
 icon=icon.png
 # experimental flag
