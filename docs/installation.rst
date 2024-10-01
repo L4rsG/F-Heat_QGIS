@@ -92,6 +92,8 @@ After installing Python and QGIS the plugin, as an extension of QGIS, has to be 
     * Install via the option `Install from zip-folder` instead of searching for FHeat in step 3.
     * Do not select the whole repository, only zip the `F-Heat_QGIS` folder and install it
 
+.. _Package-Installation:
+
 Install python packages
 -----------------------
 
