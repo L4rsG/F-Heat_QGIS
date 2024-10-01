@@ -10,6 +10,9 @@ The methodology behind F|Heat involves several key steps:
 
 The result is a shape file and a tabular summary, which can be used for further detailed planning.
 
+.. note::
+    A detailed documentation will be added soon.
+
 Current Database
 ----------------
 The current database is based on open data sources that are freely accessible.
