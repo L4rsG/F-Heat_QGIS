@@ -114,15 +114,13 @@ Future version(s)
 Example
 -------
 
-.. note::
-    A detailed example will be added here.
-    
 #. Create a folder for your project. Save your empty QGIS project in that folder
 
 .. figure:: images//example/1save_project.png
     :alt: 1save_project.png
     :width: 100 %
     :align: center
+
 
 
 #. Start F|Heat. The User Interface will open with the `introduction` tab. Simultaneously the layer groups for the individual steps of the planning proces will be created automatically.
@@ -132,8 +130,8 @@ Example
     :width: 100 %
     :align: center
 
-
 (If you have not installed the required python packages yet, check out the :ref:`Package-Installationn` section.)
+
 
 #. Switch to the `Download Files` Tab. Here you can download the basic shapefiles needed for the planning process. Select a City from the dropdown list.
 
@@ -141,6 +139,7 @@ Example
     :alt: 3download1.png
     :width: 100 %
     :align: center
+
 
 
 #. You can select wether you want to download the shape files of a city or a single district by toggling the buttons on the left. Once a city is selected, you can select a district of that city by clicking the second dropdown list. Here we select the district Burgsteinfurt of the city Steinfurt.
@@ -151,12 +150,14 @@ Example
     :align: center
 
 
+
 #. Next you need to set directories for the shapefiles by clicking the (...) button. This will open the directory of your QGIS project, where you can enter a file name.
 
 .. figure:: images//example/3download3.png
     :alt: 3download3.png
     :width: 100 %
     :align: center
+
 
 
 #. When all directories are set and a city or district is chosen you can start the download by pressing **`Start Download`**. The progress bar below will show the progress of the process.
@@ -167,12 +168,14 @@ Example
     :align: center
 
 
+
 #. All layers are loaded in the `Basic Data` group once the download is completed.
 
 .. figure:: images//example/3download4.png
     :alt: 3download4.png
     :width: 100 %
     :align: center
+
 
 
 #. You can also download optional `Zensus2022` data that provides insight on the heating type and energy source in your city or district. This may by helpful in the planning process but it is not necessary. Scroll down or extend the window to get to the zensus data download.
