@@ -9,7 +9,6 @@ The project is aimed at "democratizing" municipal heat and energy planning by pr
     :width: 30 %
     :align: center
 
-
 Intended Use
 ------------
 The plugin basically provides the basic data for municipal heat planning in accordance with §§ 14-15 of the german `heat planning law <https://www.gesetze-im-internet.de/wpg/BJNR18A0B0023.html>`_. However, it is also suitable for "only" designing a local heating network and the associated technology for the planning area within a municipality.
