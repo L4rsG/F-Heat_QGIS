@@ -31,15 +31,14 @@ Plugin Installation
 
 After installing Python and QGIS the plugin, as an extension of QGIS, has to be installed finally.
 
-Official extension from QGIS:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Official extension from QGIS:**
 
 .. figure:: images//readme/qs0.png
     :alt: qs0.png
     :width: 100 %
     :align: center
 
-#. Once QGIS is installed, open QGIS Desktop.
+1. Once QGIS is installed, open QGIS Desktop.
 
 
 .. figure:: images//readme/qs1.png
@@ -47,7 +46,7 @@ Official extension from QGIS:
     :width: 100 %
     :align: center
 
-#. Click on "Plugins" > "Manage and Install Plugins..."
+2. Click on "Plugins" > "Manage and Install Plugins..."
 
 
 .. figure:: images//readme/qs2.png
@@ -55,40 +54,39 @@ Official extension from QGIS:
     :width: 100 %
     :align: center
 
-#. Select "All", search for "FHeat" and install the Plugin.
+3. Select "All", search for "FHeat" and install the Plugin.
 
 .. figure:: images//readme/qs3.png
     :alt: qs3.png
     :width: 100 %
     :align: center
 
-#. If the plugin toolbar is not visible, right-click on an empty space in the toolbar and check the "Plugin Toolbar" box.
+4. If the plugin toolbar is not visible, right-click on an empty space in the toolbar and check the "Plugin Toolbar" box.
 
 .. figure:: images//readme/qs4.png
     :alt: qs4.png
     :width: 100 %
     :align: center
 
-#. The plugin toolbar with the F|Heat icon will then become visible.
+5. The plugin toolbar with the F|Heat icon will then become visible.
 
 .. figure:: images//readme/qs5.png
     :alt: qs5.png
     :width: 100 %
     :align: center
 
-#. It is advisable to save the project before starting F|Heat, as the plugin utilizes the project directory to save files. The project can be saved by clicking the save icon or by selecting "Project" > "Save As...".
+6. It is advisable to save the project before starting F|Heat, as the plugin utilizes the project directory to save files. The project can be saved by clicking the save icon or by selecting "Project" > "Save As...".
 
 .. figure:: images//readme/qs6.png
     :alt: qs6.png
     :width: 100 %
     :align: center
 
-#. F|Heat starts by clicking the icon in the toolbar.
+7. F|Heat starts by clicking the icon in the toolbar.
 
 
 
-Install via zip-folder (development version):
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Install via zip-folder (development version):**
 
     * Extract the plugin from the current Github repository.
     * Install via the option `Install from zip-folder` instead of searching for FHeat in step 3.
