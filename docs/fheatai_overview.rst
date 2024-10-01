@@ -130,7 +130,7 @@ Example
         :width: 100 %
         :align: center
 
-(If you have not installed the required python packages yet, check out the :ref:`Package-Installationn` section.)
+    (If you have not installed the required python packages yet, check out the :ref:`Package-Installationn` section.)
 
 
 #. Switch to the `Download Files` Tab. Here you can download the basic shapefiles needed for the planning process. Select a City from the dropdown list.
