@@ -12,7 +12,7 @@ Bibtex format for the software:
     doi = {10.5281/zenodo.12806366},
     month = nov,
     year = {2024},
-    title = {{FHEAT - A QGIS Plugin for municipal Heat Planning}},
+    title = {{FHEAT - A QGIS Plugin for Municipal Heat Planning}},
     rights = {{GNU}-3.0},
     version = {0.9.0}
     }
