@@ -15,16 +15,10 @@ sys.path.insert(0, os.path.abspath("../F-Heat_QGIS"))
 project = 'FHEAT'
 copyright = '2024, FH Münster University of Applied Sciences'
 author = 'H. Willenbrink, L. Goray, P. Sommer'
-release = '2024-10-01'
+release = '2024-11-01'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-
-# extensions = [
-#     'sphinx.ext.autodoc',
-#     'sphinx.ext.napoleon',
-#     'sphinx.ext.viewcode',
-# ]
 
 extensions = [
     "sphinx.ext.autodoc",
