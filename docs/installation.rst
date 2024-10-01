@@ -87,7 +87,7 @@ Official extension from QGIS:
 
 
 
-#. Install via zip-folder (development version):
+Install via zip-folder (development version):
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     * Extract the plugin from the current Github repository.
