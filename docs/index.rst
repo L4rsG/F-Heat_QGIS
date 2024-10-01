@@ -15,6 +15,13 @@ What is the Purpose of F|Heat?
 
 F|Heat is a software ecosystem for planning a sector-coupled decarbonized energy system in municipalities and small and medium-sized communities.
 
+.. figure:: images/fheat_logo.png
+    :alt: fheat_logo.png
+    :width: 40 %
+    :align: center
+
+    F|Heat - Urban energy planning
+
 Structure of the Documentation
 ------------------------------
 This documentation consists of the following sections:
@@ -102,11 +109,11 @@ Further Information
    license
    related_projects
    oss_used
-   acknowledgments
+   acknowledgements
    
 .. note::
 
-	- Testnote: You can find the repo `here <https://github.com/L4rsG/F-Heat>`_.
+	- The current repository is located here `here <https://github.com/L4rsG/F-Heat>`_.
 
 Indices and tables
 ==================
