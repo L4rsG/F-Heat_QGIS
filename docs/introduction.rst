@@ -1,7 +1,7 @@
 Introduction
 ============
 
-F|Heat is a software ecosystem designed for the planning of sector-coupled decarbonized energy systems, particularly in small to medium-sized municipalities in rural regions.
+F|Heat is a software ecosystem designed for the planning of sector-coupled decarbonized energy systems, particularly in small to medium-sized towns and cities in rural regions.
 The project is aimed at "democratizing" municipal heat and energy planning by providing an open, transparent, and comprehensible software solution.
 
 .. figure:: images/fheat_logo.png
@@ -15,7 +15,6 @@ The plugin basically provides the basic data for municipal heat planning in acco
 The tool is not designed for detailed planning, but provides results in just a few minutes so that different scenarios and network routes can be quickly analysed.
 The results can then form the basis for further detailed planning. The plugin simplifies heat planning by automating tasks such as downloading data, customizing files, and visualizing grid areas.
 Users can customize network areas and routes to suit their planning needs.
-
 
 Target Groups
 -------------
