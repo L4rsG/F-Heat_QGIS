@@ -48,10 +48,7 @@ F|Heat Application
 
 * :doc:`fheatai_overview`
 * :doc:`methodology`
-* :doc:`fheatai_map`
-* :doc:`fheatai_net`
-* :doc:`fheatai_tec`
-* :doc:`fheatai_ai`
+* :doc:`example`
 
 .. toctree::
    :maxdepth: 3
@@ -60,10 +57,7 @@ F|Heat Application
 
    fheatai_overview
    methodology
-   fheatai_map
-   fheatai_net
-   fheatai_tec
-   fheatai_ai
+   example
 
 Sourcecode Documentation and API Reference
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
