@@ -1431,6 +1431,10 @@ class HeatNetTool:
         self.dlg.net_label_response.setStyleSheet("color: orange")
         self.dlg.net_label_response.repaint()
 
+        # Project path. If the user has only saved the project after FHeat has been executed, the path must be defined here 
+        project_file_path = QgsProject.instance().fileName()
+        self.project_dir = os.path.dirname(project_file_path)
+
         # pipe info
         excel_file_path = Path(self.plugin_dir) / 'data/pipe_data.xlsx'
         pipe_info = pd.read_excel(excel_file_path, sheet_name='pipe_data')
