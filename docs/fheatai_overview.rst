@@ -319,7 +319,7 @@ Example
         :align: center
 
 
-#.  The buildings you want in your planning area must be completely inside the polygon. Right-click to finish your polygon and press `OK` when the `Feature Attributes` window appears.
+#. The buildings you want in your planning area must be completely inside the polygon. Right-click to finish your polygon and press `OK` when the `Feature Attributes` window appears.
 
     .. figure:: images//example/8area4.png
         :alt: 8area4.png
