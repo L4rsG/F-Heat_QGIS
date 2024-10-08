@@ -220,7 +220,7 @@ class HeatNetTool:
         requirements_path =  self.plugin_dir+'/requirements.txt'
         if not os.path.exists(requirements_path):
             self.dlg.intro_label.setText(f"Error: {requirements_path} not found.")
-            self.dlg.intro_label.setStyleSheet("color: red")
+            self.dlg.intro_label.setStyleSheet("color: #ff5555")
             self.dlg.intro_label.repaint()
             
         with open(requirements_path, 'r') as file:
@@ -1225,7 +1225,7 @@ class HeatNetTool:
         if t_supply <= t_return:
             # feedback
             self.dlg.net_label_response.setText('The return temperature has to be smaller than the supply temperature!')
-            self.dlg.net_label_response.setStyleSheet("color: red")
+            self.dlg.net_label_response.setStyleSheet("color: #ff5555")
             self.dlg.net_label_response.repaint()
             return
 
@@ -1308,7 +1308,7 @@ class HeatNetTool:
                 if any(polygon['geometry'][0].contains(Point(point)) for point in disconnected_points):
                     # feedback
                     self.dlg.net_label_response.setText('Some points of the street network in your area are not connected! Please set their "possible_route"-attribute to zero or connect them to the street network by using the snapping tool.')
-                    self.dlg.net_label_response.setStyleSheet("color: red")
+                    self.dlg.net_label_response.setStyleSheet("color: #ff5555")
                     self.dlg.net_label_response.repaint()
                     graph.plot_graph(start_point, connected_points)
                     raise RuntimeError("Some points of the street network in your area are not connected!")
@@ -1318,7 +1318,7 @@ class HeatNetTool:
                 print(disconnected_points)
                 # feedback
                 self.dlg.net_label_response.setText('Some points of the street network are not connected! Please set their "possible_route"-attribute to zero or connect them to the street network by using the snapping tool.')
-                self.dlg.net_label_response.setStyleSheet("color: red")
+                self.dlg.net_label_response.setStyleSheet("color: #ff5555")
                 self.dlg.net_label_response.repaint()
                 graph.plot_graph(start_point, connected_points)
                 raise RuntimeError("Some points of the street network are not connected!")
@@ -1426,14 +1426,21 @@ class HeatNetTool:
         # update progressBar
         self.dlg.net_progressBar.setValue(0)
 
+        # Check for a valid project_path. Give feedback if project is not saved
+        project_file_path = QgsProject.instance().fileName()
+        if project_file_path:
+            self.project_dir = os.path.dirname(project_file_path)
+        else:
+            # feedback
+            self.dlg.net_label_response.setText('This QGIS project has no valid directory!\nPlease save the project.')
+            self.dlg.net_label_response.setStyleSheet("color: #ff5555")
+            self.dlg.net_label_response.repaint()
+            return
+
         # feedback
         self.dlg.net_label_response.setText('Calculating...')
         self.dlg.net_label_response.setStyleSheet("color: orange")
         self.dlg.net_label_response.repaint()
-
-        # Project path. If the user has only saved the project after FHeat has been executed, the path must be defined here 
-        project_file_path = QgsProject.instance().fileName()
-        self.project_dir = os.path.dirname(project_file_path)
 
         # pipe info
         excel_file_path = Path(self.plugin_dir) / 'data/pipe_data.xlsx'
