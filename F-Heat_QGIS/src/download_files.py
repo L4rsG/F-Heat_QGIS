@@ -277,7 +277,7 @@ def add_point(df):
     pd.DataFrame
         The DataFrame with an additional 'point' column containing the Point geometries.
     '''
-    df['point'] = df.apply(lambda row: Point(row['X_MP_100m'], row['Y_MP_100m']), axis=1)
+    df['point'] = df.apply(lambda row: Point(row['x_mp_100m'], row['y_mp_100m']), axis=1)
     return df
 
 def create_square(point, size):
