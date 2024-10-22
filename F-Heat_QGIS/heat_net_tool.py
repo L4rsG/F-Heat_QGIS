@@ -1543,12 +1543,6 @@ class HeatNetTool:
         -------
         None
         '''
-        # The create_result_alt method has to much non thread-safe functions to run in the background. But it still needs to be checked
-        # if another process is already running, because the net analysis has to be finished before the result can be created
-        if self.worker_running == True:
-            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
-            return
-        
         # update progressBar
         self.dlg.net_progressBar.setValue(0)
 
@@ -2419,6 +2413,228 @@ class HeatNetTool:
         # set net status as completed
         self.network_analysis_status = 'complete'
 
+    def create_result(self, progress_update, label_update):
+        '''
+        Generate and save the results of the network analysis, including a detailed
+        energy demand profile and associated data for a district heating system.
+
+        This method performs the following steps:
+
+        1. **Progress Bar Initialization**:
+        - Sets the progress bar to 0, indicating the start of the result creation process.
+
+        2. **User Feedback**:
+        - Displays an initial status message indicating that calculations are in progress.
+
+        3. **Load Pipe Data**:
+        - Loads pipe information from an Excel file, including pipe diameters (DN).
+
+        4. **Define Load Profiles**:
+        - Sets the load profiles for different building types (e.g., EFH, MFH).
+
+        5. **Retrieve Temperature Values**:
+        - Retrieves the supply and return temperatures from the user interface.
+
+        6. **Retrieve Layer Paths**:
+        - Gets file paths and objects for source, streets, and buildings layers from combo boxes.
+
+        7. **Select Attributes**:
+        - Retrieves selected heat and power attributes from the user interface.
+
+        8. **Load Network Shapefile**:
+        - Loads the network data from the specified shapefile path.
+
+        9. **Instantiate Classes**:
+        - Creates instances of relevant classes for buildings, source, and streets.
+
+        10. **Polygon Filtering**:
+            - If a polygon is selected, filters buildings to include only those within the polygon boundaries.
+
+        11. **Progress Bar Update**:
+            - Updates the progress bar after loading and preparing data.
+
+        12. **Create Result Data Structure**:
+            - Initializes the `Result` class and prepares a data dictionary from the buildings and network data.
+
+        13. **Generate DataFrame**:
+            - Converts the data dictionary into a DataFrame and saves it as an Excel file.
+
+        14. **Load Curve Generation**:
+            - If a temperature file is provided, loads the temperature data; otherwise, retrieves historical temperature data from an external source.
+
+        15. **Energy Demand Profile Creation**:
+            - Creates a time series DataFrame for energy demand based on load profiles, temperature data, and building heat demand.
+
+        16. **Aggregate Demand and Losses**:
+            - Adds a column for the sum of all buildings' demands and calculates losses. 
+            - Adds a total column that includes both the demand and losses.
+
+        17. **Visualization**:
+            - Plots and saves bar charts for the energy demand profile and sorted demand profile.
+
+        18. **Save and Embed Results**:
+            - Saves the demand profile in an Excel file and embeds the generated plots as images.
+
+        19. **Open Result File**:
+            - Opens the resulting Excel file for user review.
+
+        20. **Completion**:
+            - Updates the progress bar to 100% and displays a completion message to the user.
+
+        Returns
+        -------
+        None
+        '''
+        self.result_status = 0
+        progress_update.emit(0) # update progressBar
+
+        # Check for a valid project_path. Give feedback if project is not saved
+        project_file_path = QgsProject.instance().fileName()
+        if project_file_path:
+            self.project_dir = os.path.dirname(project_file_path)
+        else:
+            # feedback
+            label_update('This QGIS project has no valid directory!\nPlease save the project.', '#ff5555')
+            return
+
+        # feedback
+        label_update.emit('Calculating...', 'orange')
+
+        # Load Profiles
+        load_profiles = ['EFH', 'MFH', 'GHA', 'GMK', 'GKO']
+
+        # Temperatures from SpinBox
+        t_supply = self.dlg.net_doubleSpinBox_supply.value()
+        t_return = self.dlg.net_doubleSpinBox_return.value()
+
+        # Layer paths
+        source_path, source_layer, source_layer_obj = self.get_layer_path_from_combobox(self.dlg.net_comboBox_source)
+        streets_path, streets_layer, streets_layer_obj = self.get_layer_path_from_combobox(self.dlg.net_comboBox_streets)
+        buildings_path, buildings_layer, buildings_layer_obj = self.get_layer_path_from_combobox(self.dlg.net_comboBox_buildings)
+        
+        heat_attribute = self.dlg.net_comboBox_heat.currentText()
+        power_attribute = self.dlg.net_comboBox_power.currentText()
+
+        # net path
+        net_path = self.dlg.net_lineEdit_net.text()
+        net_gdf = gpd.read_file(net_path)
+
+        # Instantiate classes
+        buildings = Buildings(buildings_path, heat_attribute, buildings_layer)
+        source = Source(source_path, source_layer)
+        streets = Streets(streets_path, streets_layer)
+        
+        # check if polygon checkbox is checked
+        if self.dlg.net_checkBox_polygon.isChecked():
+            polygon_path, polygon_layer, polygon_layer_obj  = self.get_layer_path_from_combobox(self.dlg.net_comboBox_polygon)
+            # load polygon as gdf
+            if polygon_layer == None:
+                polygon = gpd.read_file(polygon_path)
+            else:
+                polygon = gpd.read_file(polygon_path, layer=polygon_layer)
+
+            # only buildings within polygon
+            buildings.gdf = gpd.sjoin(buildings.gdf, polygon, how="inner", predicate="within")
+       
+        progress_update.emit(10) # update progressBar
+
+        ### result ###
+        result_path = self.dlg.net_lineEdit_result.text()
+        result = Result(result_path)
+
+        result.create_data_dict(buildings.gdf, net_gdf, load_profiles, self.dn_list, heat_attribute, t_supply, t_return)
+        result.create_df_from_dataDict(net_name = os.path.splitext(os.path.basename(net_path))[0])
+        
+        progress_update.emit(15) # update progressBar
+
+        ### building statistic ###
+        statistic = result.building_statistic(buildings.gdf)
+        # save statistic as result attribute
+        result.statistic = statistic
+        
+        # save result as instance attribute
+        self.result = result
+        
+        progress_update.emit(20) # update progressBar
+
+        ### Load Curve ###
+
+        # set up time data
+        year = 2022
+        resolution = 8760
+        freq = 'H'
+
+        # Holidays
+        cal = Germany()
+        holidays = dict(cal.holidays(year))
+
+        # temperature
+        temperature_data = self.temp_profile['TT_TU']
+
+        # load_profile class
+        load_profile = LoadProfile(result.gdf, result_path, year, temperature_data, holidays)
+        
+        # dataframe for collecting generated profiles
+        demand = load_profile.set_up_df(year, resolution, freq)
+
+        progress_update.emit(30) # update progressBar
+
+        for row in load_profile.net_result.itertuples(index=False):
+            building_type = row.Lastprofil
+            building_class = 3 # Baualtersklasse NRW:3 Quelle:Praxisinformation P 2006 / 8 Gastransport / Betriebswirtschaft, BGW, 2006, Seite 43 Tabelle 2 und 3
+            if pd.isna(building_type):
+                break
+            elif building_type.lower() not in ('efh', 'mfh'):
+                building_class = 0
+            hd = row[2]
+            demand[building_type] = load_profile.create_heat_demand_profile(building_type, building_class, 0, 1, hd)
+
+        progress_update.emit(35) # update progressBar
+
+        # add sum column for all buildings
+        demand_with_sum_buildings = load_profile.add_sum_buildings(demand)
+
+        # add loss
+        demand_with_loss = load_profile.add_loss(demand_with_sum_buildings, load_profile.net_result, resolution)
+        
+        # add sum buildings+loss
+        demand_with_sum = load_profile.add_sum(demand_with_loss)
+
+        progress_update.emit(40) # update progressBar
+
+        # plot and save fig
+        load_profile.plot_bar_chart(demand_with_sum, column_names=['Gesamtsumme', 'Verlust'], filename = self.project_dir+'/Lastprofil.png')
+        progress_update.emit(50) # update progressBar
+        load_profile.plot_bar_chart(demand_with_sum, column_names=['Gesamtsumme (extra Dämmung)', 'Verlust'], colors=['green','orange'], filename = self.project_dir+'/Lastprofil_extra_Daemmung.png', ylabel='Wärmebedarf und Verlust bei extra Dämmung [MW]', title='Wärmebedarf und Verlust bei extra Dämmung pro Stunde im Jahr')
+
+        progress_update.emit(60) # update progressBar
+
+        # order
+        sorted_demand = demand_with_sum.sort_values(by='Gesamtsumme', ascending=False)
+
+        # plot and save fig
+        load_profile.plot_bar_chart(sorted_demand, column_names=['Gesamtsumme', 'Verlust'], filename = self.project_dir+'/Lastprofil_geordnet.png', title='Geordnetes Lastprofil')
+
+        progress_update.emit(70) # update progressBar
+
+        # order extra insulation
+        sorted_demand = demand_with_sum.sort_values(by='Gesamtsumme (extra Dämmung)', ascending=False)
+
+        # plot and save fig extra insulation
+        load_profile.plot_bar_chart(sorted_demand, column_names=['Gesamtsumme (extra Dämmung)', 'Verlust'], colors=['green','orange'], filename = self.project_dir+'/Lastprofil_extra_Daemmung_geordnet.png', ylabel='Wärmebedarf und Verlust bei extra Dämmung [MW]', title='Geordnetes Lastprofil (extra Dämmung)')
+
+        progress_update.emit(80) # update progressBar
+
+        # round columns of demand dataframe
+        demand_with_sum = demand_with_sum.round(decimals=3)
+
+        # Save load_profile as instance attribute
+        load_profile.demand_with_sum = demand_with_sum
+        self.load_profile = load_profile
+
+        self.result_status = 'complete'
+
+
     # Methods to start main methods in background
     def start_download_files(self):
         '''
@@ -2478,11 +2694,9 @@ class HeatNetTool:
                 self.dlg.load_progressBar.setValue(100)
                 self.dlg.load_label_feedback.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.load_label_feedback.setText('Download complete!')
-
-                # Reset worker_running
-                self.worker_running = False
-            else:
-                return
+            # Reset worker_running
+            self.worker_running = False
+            
         # Start the background process
         self.worker_running = True
         self.run_long_task(self.download_files, gui_elements, on_task_finished)
@@ -2513,10 +2727,9 @@ class HeatNetTool:
                 self.dlg.load_progressBar_zensus.setValue(100)
                 self.dlg.load_label_zensus.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.load_label_zensus.setText('Download complete!')
-                # Reset worker_running
-                self.worker_running = False
-            else:
-                return
+            # Reset worker_running
+            self.worker_running = False
+            
         self.worker_running = True
         self.run_long_task(self.download_zensus, gui_elements, on_task_finished)
 
@@ -2567,8 +2780,8 @@ class HeatNetTool:
                 self.dlg.adjust_label_feedback.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.adjust_label_feedback.setText('Completed!')
                 self.dlg.adjust_label_feedback.repaint()
-                # Reset worker_running
-                self.worker_running = False
+            # Reset worker_running
+            self.worker_running = False
         self.worker_running = True
         self.run_long_task(self.adjust_files, gui_elements, on_task_finished)
 
@@ -2604,10 +2817,9 @@ class HeatNetTool:
                 self.dlg.status_label_response.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.status_label_response.setText('Complete!')
 
-                # Reset worker_running
-                self.worker_running = False
-            else:
-                return
+            # Reset worker_running
+            self.worker_running = False
+            
         self.worker_running = True
         self.run_long_task(self.status_analysis, gui_elements, on_task_finished)
     
@@ -2653,6 +2865,77 @@ class HeatNetTool:
         self.worker_running = True
         self.run_long_task(self.network_analysis, gui_elements, on_task_finished)
     
+    def start_create_result(self):
+        # check if another process is already running
+        if self.worker_running == True:
+            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            return
+        
+        # define GUI elements
+        gui_elements = {
+            'progressBar': self.dlg.net_progressBar, # progress bar 
+            'label': self.dlg.net_label_response   # feedback label
+        }
+        # pipe info
+        excel_file_path = Path(self.plugin_dir) / 'data/pipe_data.xlsx'
+        self.pipe_info = pd.read_excel(excel_file_path, sheet_name='pipe_data')
+        self.dn_list = self.pipe_info['DN'].to_list()
+
+        # temperature
+        if self.dlg.net_checkBox_temperature.isChecked():
+            temp_path = self.dlg.net_lineEdit_temperature.text()
+        else:
+            temp_path = Path(self.plugin_dir) / 'data/example_temperature.xlsx'
+        self.temp_profile = pd.read_excel(temp_path)
+
+        def on_task_finished():
+            if self.result_status == 'complete':
+
+                result = self.result
+
+                # Copy result file to user path
+                costs_path = Path(self.plugin_dir) / 'data/costs.xlsx'
+                result.copy_excel_file(costs_path)
+
+                # Save result
+                result.save_in_excel(result_table = result.gdf)
+
+                # Save Statistic
+                result.save_in_excel(result_table = result.statistic, sheet = 'Statistik')
+                
+                # get load_profile from instance attributes
+                load_profile = self.load_profile
+
+                # save demand profile in excel
+                load_profile.save_in_excel(load_profile.demand_with_sum, index_bool=True)
+
+                # save load curve plot in excel
+                load_profile.embed_image_in_excel(0,load_profile.demand_with_sum.shape[1]+1, image_filename = self.project_dir+'/Lastprofil.png')
+
+                # save sorted load curve plot in excel
+                load_profile.embed_image_in_excel(22,load_profile.demand_with_sum.shape[1]+1, image_filename = self.project_dir+'/Lastprofil_geordnet.png')
+
+                # save load curve plot in excel extra insulation
+                load_profile.embed_image_in_excel(44,load_profile.demand_with_sum.shape[1]+1, image_filename = self.project_dir+'/Lastprofil_extra_Daemmung.png')
+
+                # save sorted load curve plot in excel extra insulation
+                load_profile.embed_image_in_excel(66,load_profile.demand_with_sum.shape[1]+1, image_filename = self.project_dir+'/Lastprofil_extra_Daemmung_geordnet.png')
+
+                # open result
+                load_profile.open_excel_file()
+
+                # update progressBar
+                self.dlg.net_progressBar.setValue(100)
+                # feedback
+                self.dlg.net_label_response.setText('Completed')
+                self.dlg.net_label_response.setStyleSheet("color: rgb(0, 255, 0)")
+                self.dlg.net_label_response.repaint()
+            # Reset worker_running
+            self.worker_running = False
+        
+        self.worker_running = True
+        self.run_long_task(self.create_result, gui_elements, on_task_finished)
+
     # run method that starts, when the icon is clicked in QGIS
     def run(self):
         """Run method that performs all the real work"""
@@ -2750,7 +3033,7 @@ class HeatNetTool:
             self.dlg.net_pushButton_start.clicked.connect(self.start_network_analysis)
 
             # create result file
-            self.dlg.net_pushButton_create_result.clicked.connect(self.create_result_alt)
+            self.dlg.net_pushButton_create_result.clicked.connect(self.start_create_result)
         
         # Create F|Heat layer structure
         self.create_layer_tree_structure()
