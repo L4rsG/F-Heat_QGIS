@@ -36,6 +36,7 @@ import subprocess
 import sys
 import re
 from pathlib import Path
+import traceback
 
 try:
     import pandas as pd
@@ -49,6 +50,64 @@ try:
     from workalendar.europe import Germany
 except:
     pass
+
+class Worker(QThread):
+    '''
+    Worker class that runs long-running tasks in a separate thread and emits signals for GUI updates.
+
+    This class inherits from QThread and is designed to handle the execution of background tasks. It provides signals to update the GUI (progress bar, label, etc.) and notify when the task is completed. The task is passed as a callable and is executed in the `run()` method.
+
+    Attributes
+    ----------
+    progress_update : pyqtSignal(int)
+        Signal to update the progress bar with an integer value (0-100).
+    label_update : pyqtSignal(str)
+        Signal to update the text of a QLabel or similar widget.
+    color_update : pyqtSignal(str)
+        Signal to update the stylesheet (e.g., color) of a widget.
+    add_layer_signal : pyqtSignal(str, str, str)
+        Signal to trigger the addition of a layer to the QGIS project, passing necessary parameters like file path, style, and group name.
+    finished : pyqtSignal()
+        Signal emitted when the task is finished.
+
+    Parameters
+    ----------
+    task_function : callable
+        The function that will be executed in the background thread. It should accept `progress_update`, `label_update`, and `color_update` as the first arguments.
+    gui_elements : dict
+        Dictionary of GUI elements (like progress bars and labels) that will be updated by the task.
+    *args, **kwargs :
+        Additional arguments and keyword arguments to be passed to the task function.
+
+    Methods
+    -------
+    run()
+        Executes the `task_function` with the provided arguments and emits the `finished` signal when done.
+    '''
+    progress_update = pyqtSignal(int) 
+    label_update = pyqtSignal(str, str)
+    error_occurred = pyqtSignal(str)
+    finished = pyqtSignal()
+
+    def __init__(self, task_function, gui_elements, *args, **kwargs):
+        super().__init__()
+        self.task_function = task_function
+        self.args = args
+        self.kwargs = kwargs
+        self.gui_elements = gui_elements  # GUI elements to update
+
+    def run(self):
+        try:
+            # Run the task function with the provided arguments
+            self.task_function(self.progress_update, self.label_update, *self.args, **self.kwargs)
+        except Exception as e:
+            print(e)
+            # stacktrace error
+            stacktrace = traceback.format_exc()
+            self.error_occurred.emit(f'Error: {e}\n{stacktrace}')
+        finally:
+            # always send finished signal
+            self.finished.emit()
 
 class HeatNetTool:
     """QGIS Plugin Implementation."""
@@ -87,6 +146,9 @@ class HeatNetTool:
 
         # Gemarkung (Name and info of municipalities and cities in NRW)
         self.gemarkungen_df = pd.DataFrame()
+
+        # set worker status
+        self.worker_running = False
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -262,7 +324,7 @@ class HeatNetTool:
         from .src.net_analysis import Streets, Source, Buildings, Graph, Net, Result, get_closest_point, calculate_GLF, calculate_volumeflow, calculate_diameter_velocity_loss
         from .src.load_curve import Temperature, LoadProfile, safe_in_excel
         from workalendar.europe import Germany
-
+        
     def select_output_file(self, dir, lineEdit, filetype):
         '''
         Opens a file dialog to select an output file and sets the selected path to a QLineEdit.
@@ -496,6 +558,66 @@ class HeatNetTool:
         # Add the filtered cities to the city ComboBox
         self.dlg.load_comboBox_city.addItems(sorted_cities)
 
+    def update_label(self, label, text, color):
+        label.setText(text)
+        label.setStyleSheet(f"color: {color}")
+        label.repaint()  # Repaint to apply both text and color changes immediately
+
+    def show_error_message(self, message, gui_elements):
+
+        if 'label' in gui_elements:
+            label = gui_elements['label']
+            self.update_label(label, 'aborted due to error', '#ff5555')
+    
+        # Show error in QMessageBox
+        QMessageBox.critical(self.dlg, "Error", message)
+        # update runner status
+        self.worker_running = False
+
+    def run_long_task(self, task, gui_elements, on_task_finished):
+        '''
+        Executes a long-running task in a separate thread, preventing the GUI from freezing.
+
+        This function moves a worker to a new thread to run a specified long task asynchronously. The worker is responsible for emitting signals that update GUI elements such as a progress bar and status label during the task. Upon task completion, the GUI elements are updated and cleanup is performed.
+
+        Parameters
+        ----------
+        task : callable
+            The long-running task to be executed. This should be a function that contains the main logic for the background task.
+        gui_elements : dict
+            A dictionary containing the GUI elements (like progress bars and labels) to be updated during the task. Expected keys are:
+            - 'progressBar': The progress bar widget to display task progress.
+            - 'label': The label widget to display status updates.
+        on_task_finished : callable
+            A callback function to be executed when the task finishes. This function is connected to the worker's `finished` signal.
+
+        Returns
+        -------
+        None
+        '''
+        self.worker = Worker(task, gui_elements)
+
+        # Connect signals to GUI elements
+        self.worker.progress_update.connect(gui_elements['progressBar'].setValue)
+        self.worker.label_update.connect(lambda text, color: self.update_label(gui_elements['label'], text, color))
+        
+        # Connect error massage signal
+        self.worker.error_occurred.connect(lambda message: self.show_error_message(message, gui_elements))
+
+        self.thread = QThread()
+        self.worker.moveToThread(self.thread)
+
+        # Start worker
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        # Start on_task_finished in main thread when worker finished
+        self.worker.finished.connect(on_task_finished)
+
+        self.thread.start()
+
     # Methods for loading layers and attributes to comboboxes
 
     def get_all_loaded_layers(self):
@@ -616,8 +738,8 @@ class HeatNetTool:
         self.load_layers_to_combobox(self.dlg.net_comboBox_source)
         self.load_layers_to_combobox(self.dlg.net_comboBox_polygon)
 
-    # Main Methods
-    def download_files(self):
+    # alternative main methods that run in QGIS main thread
+    def download_files_alt(self):
         '''
         Downloads and processes shapefiles for buildings, streets, and parcels for a selected city or municipality.
 
@@ -780,7 +902,7 @@ class HeatNetTool:
             self.dlg.load_label_feedback.setStyleSheet("color: rgb(0, 255, 0)")
             self.dlg.load_label_feedback.setText('Download complete!')
 
-    def download_zensus(self):
+    def download_zensus_alt(self):
 
         if self.dlg.load_lineEdit_zensus.text().strip() == "":
             self.dlg.load_label_zensus.setText('Select a Directory')
@@ -819,14 +941,14 @@ class HeatNetTool:
             heizungsart_zip = 'Zensus2022_Heizungsart.zip'
             energietraeger_zip = 'Zensus2022_Energietraeger.zip'
 
-            df_Heizungsart = read_file_from_zip(url_zensus, heizungsart_zip, 'Zensus2022_Heizungsart_100m-Gitter', '.csv')
+            df_Heizungsart = read_file_from_zip(url_zensus, heizungsart_zip, 'Zensus2022_Heizungsart_100m-Gitter', '.csv', encoding='latin1')
             # update progressBar
             self.dlg.load_progressBar_zensus.setValue(20)
-            df_Energietraeger = read_file_from_zip(url_zensus, energietraeger_zip, 'Zensus2022_Energietraeger_100m-Gitter', '.csv')
+            df_Energietraeger = read_file_from_zip(url_zensus, energietraeger_zip, 'Zensus2022_Energietraeger_100m-Gitter', '.csv', encoding='latin1')
 
             # only data within bbox
-            df_Heizungsart = df_Heizungsart[(df_Heizungsart['X_MP_100m'] > xmin) & (df_Heizungsart['X_MP_100m'] < xmax) & (df_Heizungsart['Y_MP_100m'] > ymin) & (df_Heizungsart['Y_MP_100m'] < ymax)]
-            df_Energietraeger = df_Energietraeger[(df_Energietraeger['X_MP_100m'] > xmin) & (df_Energietraeger['X_MP_100m'] < xmax) & (df_Energietraeger['Y_MP_100m'] > ymin) & (df_Energietraeger['Y_MP_100m'] < ymax)]
+            df_Heizungsart = df_Heizungsart[(df_Heizungsart['x_mp_100m'] > xmin) & (df_Heizungsart['x_mp_100m'] < xmax) & (df_Heizungsart['y_mp_100m'] > ymin) & (df_Heizungsart['y_mp_100m'] < ymax)]
+            df_Energietraeger = df_Energietraeger[(df_Energietraeger['x_mp_100m'] > xmin) & (df_Energietraeger['x_mp_100m'] < xmax) & (df_Energietraeger['y_mp_100m'] > ymin) & (df_Energietraeger['y_mp_100m'] < ymax)]
 
             # update progressBar
             self.dlg.load_progressBar_zensus.setValue(40)
@@ -865,9 +987,7 @@ class HeatNetTool:
             gdf_combined = gpd.sjoin(gdf_Heizungsart, gdf_Energietraeger, how='inner', predicate='intersects')
 
             # drop unwanted columns
-            gdf_combined = gdf_combined.drop(columns=['index_right', 'X_MP_100m_right', 'Y_MP_100m_right', 'Gitter_ID_100m'])
-
-            #gdf_combined_25832 = gdf_combined.to_crs(epsg=25832)
+            gdf_combined = gdf_combined.drop(columns=['index_right'])
 
             # add square geometry
             gdf_combined['geometry'] = gdf_combined.apply(lambda row: create_square(row['point'], 100), axis=1)
@@ -894,7 +1014,7 @@ class HeatNetTool:
             self.dlg.load_label_zensus.setStyleSheet("color: rgb(0, 255, 0)")
             self.dlg.load_label_zensus.setText('Download complete!')
 
-    def adjust_files(self):
+    def adjust_files_alt(self):
         '''
         Adjust and process building, street, and parcel data layers in a GIS project.
 
@@ -1024,7 +1144,7 @@ class HeatNetTool:
             self.dlg.adjust_label_feedback.setText('Completed!')
             self.dlg.adjust_label_feedback.repaint()
 
-    def status_analysis(self):
+    def status_analysis_alt(self):
         '''
          Perform a status analysis of building and street data, updating the GIS project with new attributes and geometries.
 
@@ -1130,7 +1250,7 @@ class HeatNetTool:
         self.dlg.status_label_response.setText('Completed!')
         self.dlg.status_label_response.repaint()
 
-    def network_analysis(self):
+    def network_analysis_alt(self):
         '''
         Conduct a network analysis for a district heating system, including setup, data loading,
         and computation of the optimal network path based on building heat demand and street layout.
@@ -1351,7 +1471,7 @@ class HeatNetTool:
         self.dlg.net_label_response.setStyleSheet("color: rgb(0, 255, 0)")
         self.dlg.net_label_response.repaint()
 
-    def create_result(self):
+    def create_result_alt(self):
         '''
         Generate and save the results of the network analysis, including a detailed
         energy demand profile and associated data for a district heating system.
@@ -1423,6 +1543,12 @@ class HeatNetTool:
         -------
         None
         '''
+        # The create_result_alt method has to much non thread-safe functions to run in the background. But it still needs to be checked
+        # if another process is already running, because the net analysis has to be finished before the result can be created
+        if self.worker_running == True:
+            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            return
+        
         # update progressBar
         self.dlg.net_progressBar.setValue(0)
 
@@ -1648,6 +1774,886 @@ class HeatNetTool:
         self.dlg.net_label_response.setStyleSheet("color: rgb(0, 255, 0)")
         self.dlg.net_label_response.repaint()
 
+    # Main Methods for background thread
+    def download_files(self, progress_update, label_update):
+        '''
+        Downloads and processes shapefiles for buildings, streets, and parcels for a selected city or municipality.
+
+        This function performs the following steps:
+
+        1. **Progress Bar Initialization**:
+        - Sets the progress bar to 0, indicating the start of the download and processing operation.
+
+        2. **Determine Selection**:
+        - Retrieves the selected city or municipality from the graphical user interface (GUI).
+        - Checks whether a city or municipality is selected and sets the appropriate parameter.
+
+        3. **Filter DataFrame**:
+        - Filters a DataFrame (`gemarkungen_df`) for the selected city or municipality based on the user’s selection.
+
+        4. **Download Buildings Shapefiles**:
+        - Accesses the URL for building data and downloads the relevant shapefiles based on the municipality key.
+
+        5. **Download Streets Shapefiles**:
+        - Accesses the URL for street data and downloads the relevant shapefiles based on the municipality key.
+
+        6. **Download Parcel Data**:
+        - Accesses a Web Feature Service (WFS) to download parcel data, ensuring that if a city is selected, only the relevant parcels are retrieved.
+
+        7. **Filter Geometries**:
+        - If only a city is selected, filters the building and street data to include only geometries that intersect with the selected parcels.
+
+        8. **Save Shapefile gdf as variable**:
+        - Saves the processed building, street, and parcel shapefiles to specified paths.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
+        # Note: In GUI city = district, municipality = city
+        
+        progress_update.emit(0) # update progressBar
+        self.download_status = '0'
+        
+
+        if self.dlg.load_lineEdit_buildings.text().strip() == "":
+            label_update.emit('Select a Directory','orange')
+
+        elif self.dlg.load_lineEdit_streets.text().strip() == "":
+            label_update.emit('Select a Directory','orange')
+
+        elif self.dlg.load_lineEdit_parcels.text().strip() == "":
+            label_update.emit('Select a Directory','orange')
+        
+        else:
+            label_update.emit('Starting...','white')
+
+            # URLs
+            # buildings
+            url_buildings = 'https://www.opengeodata.nrw.de/produkte/umwelt_klima/klima/kwp/'
+
+            # parcels
+            url_parcels = 'https://www.wfs.nrw.de/geobasis/wfs_nw_inspire-flurstuecke_alkis'
+            layer_parcels = 'cp:CadastralParcel'
+
+            # get name from combo box
+            if self.dlg.load_radioButton_municipality.isChecked():
+                name = self.dlg.load_comboBox_municipality.currentText()
+                parameter = 'municipality'
+            elif self.dlg.load_radioButton_city.isChecked():
+                name = self.dlg.load_comboBox_city.currentText()
+                parameter = 'city'
+            else:
+                label_update.emit('please choose city or district','orange')
+                return
+            
+            progress_update.emit(1) # update progressBar
+            
+            # filter df for city/municipality name
+            filtered_df = filter_df(name, self.gemarkungen_df, parameter)
+            
+            # city/municipality keys
+            municipality_key = filtered_df['gmdschl'][0]
+
+            progress_update.emit(5) # update progressBar
+            label_update.emit('Downloading...', 'white')
+
+            # buildings shapes
+            all_buildings_files = file_list_from_URL(url_buildings+'index.json')
+            progress_update.emit(10) # update progressBar
+            buildings_zip = search_filename(all_buildings_files, municipality_key)
+            progress_update.emit(15) # update progressBar
+            buildings_file_pattern = f'WBM-NRW_{municipality_key}' # file pattern maybe has to be renamed, when changes on the website occur
+            buildings_gdf = read_file_from_zip(url_buildings, buildings_zip, buildings_file_pattern)
+
+            progress_update.emit(35) # update progressBar
+
+            # streets shapes
+            streets_file_pattern = f'WBM-NRW-Waermelinien_{municipality_key}' # file pattern maybe has to be renamed, when changes on the website occur
+            streets_gdf = read_file_from_zip(url_buildings, buildings_zip, streets_file_pattern)
+
+            progress_update.emit(55) # update progressBar
+
+            # parcels
+            gdf_list_parcels=[] # if a whole municipality is selected filtered df consists of multiple cities which parcels will be saved in this list and later merged
+            for row  in filtered_df.itertuples():
+                bbox = row.bbox
+                key = row.schluessel
+                parcel_gdf_i, e = get_shape_from_wfs(url_parcels, key, bbox, layer_parcels)
+                if e == 1:
+                    label_update.emit(f'Too many parcels for key: {key}!\nMax. 100.000 parcels can be downloaded at once\nparcels incomplete', '#ff5555')
+                gdf_list_parcels.append(parcel_gdf_i)
+            parcels_gdf = pd.concat(gdf_list_parcels, ignore_index=True)
+
+            progress_update.emit(90) # update progressBar
+
+            # buffer(0) can sometimes repair invalid geometries
+            buildings_gdf['geometry'] = buildings_gdf['geometry'].buffer(0)
+            parcels_gdf['geometry'] = parcels_gdf['geometry'].buffer(0)
+
+            # The buildings and streets can only be downloaded at municipality level, if you only want one city, the 
+            # additional buildings are superfluous and only extend the calculation time of the following programs.
+            # Therefore, only buildings that are located on the parcels that are available at municipality level are retained
+            if parameter == 'city':
+                union = gpd.GeoDataFrame(geometry=[parcels_gdf.unary_union])
+                buildings_gdf = gpd.sjoin(buildings_gdf, union, predicate='intersects')
+                streets_gdf = gpd.sjoin(streets_gdf, union, predicate='intersects')
+
+            progress_update.emit(98) # update progressBar
+
+            # save gdfs as instance attributes
+            self.buildings_gdf = buildings_gdf
+            self.streets_gdf = streets_gdf
+            self.parcels_gdf = parcels_gdf
+
+            self.download_status = 'complete'
+
+    def download_zensus(self, progress_update, label_update):
+    
+        # set status for on_task_finished
+        self.download_zensus_status = 0
+
+        if self.dlg.load_lineEdit_zensus.text().strip() == "":
+            label_update.emit('Select a Directory', 'orange')
+        else:
+
+            # get name from combo box
+            if self.dlg.load_radioButton_municipality.isChecked():
+                name = self.dlg.load_comboBox_municipality.currentText()
+                parameter = 'municipality'
+            elif self.dlg.load_radioButton_city.isChecked():
+                name = self.dlg.load_comboBox_city.currentText()
+                parameter = 'city'
+            else:
+                label_update.emit('please choose city or district', 'orange')
+                return
+
+            label_update.emit('Loading...', 'white')
+            
+            progress_update.emit(1)
+
+            ## get area from self.gemarkungen in epsg3035
+
+            # filter df for city/municipality name
+            filtered_df = filter_df(name, self.gemarkungen_df, parameter)
+
+            zensus_bbox, zensus_area = get_area_for_zensus(filtered_df)
+
+            xmin, ymin, xmax, ymax = zensus_bbox
+
+            progress_update.emit(5)
+            
+            ## load zensus data
+            url_zensus = 'https://www.zensus2022.de/static/Zensus_Veroeffentlichung/'
+
+            heizungsart_zip = 'Zensus2022_Heizungsart.zip'
+            energietraeger_zip = 'Zensus2022_Energietraeger.zip'
+
+            df_Heizungsart = read_file_from_zip(url_zensus, heizungsart_zip, 'Zensus2022_Heizungsart_100m-Gitter', '.csv', encoding='latin1')
+            progress_update.emit(20)
+            df_Energietraeger = read_file_from_zip(url_zensus, energietraeger_zip, 'Zensus2022_Energietraeger_100m-Gitter', '.csv', encoding='latin1')
+
+            # only data within bbox
+            df_Heizungsart = df_Heizungsart[(df_Heizungsart['x_mp_100m'] > xmin) & (df_Heizungsart['x_mp_100m'] < xmax) & (df_Heizungsart['y_mp_100m'] > ymin) & (df_Heizungsart['y_mp_100m'] < ymax)]
+            df_Energietraeger = df_Energietraeger[(df_Energietraeger['x_mp_100m'] > xmin) & (df_Energietraeger['x_mp_100m'] < xmax) & (df_Energietraeger['y_mp_100m'] > ymin) & (df_Energietraeger['y_mp_100m'] < ymax)]
+            progress_update.emit(40)
+
+            ### clean data
+            df_Heizungsart = clean_data(df_Heizungsart)
+            progress_update.emit(50)
+            df_Energietraeger = clean_data(df_Energietraeger)
+            progress_update.emit(60)
+
+            ### add points
+            df_Heizungsart = add_point(df_Heizungsart)
+            progress_update.emit(70)
+            df_Energietraeger = add_point(df_Energietraeger)
+            progress_update.emit(80)
+
+            # create GeoDataFrames
+            gdf_Heizungsart = gpd.GeoDataFrame(df_Heizungsart, geometry='point')
+            gdf_Energietraeger = gpd.GeoDataFrame(df_Energietraeger, geometry='point')
+
+            # set crs
+            gdf_Heizungsart.set_crs(epsg=3035, inplace=True)
+            gdf_Energietraeger.set_crs(epsg=3035, inplace=True)
+
+            # Spatial Join
+            gdf_combined = gpd.sjoin(gdf_Heizungsart, gdf_Energietraeger, how='inner', predicate='intersects')
+
+            # drop unwanted columns
+            gdf_combined = gdf_combined.drop(columns=['index_right'])
+
+            # add square geometry
+            gdf_combined['geometry'] = gdf_combined.apply(lambda row: create_square(row['point'], 100), axis=1)
+
+            # drop point column
+            zensus_gdf = gdf_combined.drop(columns=['point'])
+
+            # Set the 'geometry' column as the active geometry column for the 'shape' object
+            zensus_gdf = zensus_gdf.set_geometry('geometry')
+
+            # Set the CRS for 'shape'
+            zensus_gdf.set_crs(epsg=3035, inplace=True)
+            
+            # save zensus_gdf as instance attribute
+            self.zensus_gdf = zensus_gdf
+
+            # set status for on_task_finished
+            self.download_zensus_status = 'complete'
+
+    def adjust_files(self, progress_update, label_update):
+        '''
+        Adjust and process building, street, and parcel data layers in a GIS project.
+
+        This method performs several operations on geospatial data, including:
+        
+        1. **Initialization**:
+        - Sets the initial value of the progress bar and provides feedback to the user interface.
+
+        2. **Parameter Definitions**:
+        - Defines the heat demand attribute (`heat_att`) and building age class bins (`bak_bins`) and labels (`bak_labels`).
+
+        3. **Data Loading**:
+        - Reads additional building information from an Excel file.
+
+        4. **Layer Path and Object Retrieval**:
+        - Retrieves file paths and layer objects for streets, buildings, and parcels from the selected options in the user interface.
+
+        5. **Adjustment Class Initialization**:
+        - Initializes instances of `Parcels_adj`, `Buildings_adj`, and `Streets_adj` classes for data processing.
+
+        6. **Building Data Adjustments**:
+        - **Heat Demand Filtering**: Filters out buildings without heat demand.
+        - **Spatial Join**: Joins buildings with parcels to add building age information.
+        - **Age Class Addition**: Adds building age classes and LANUV age and type information.
+        - **Load Profile Addition**: Integrates load profiles from the Excel data.
+        - **Data Cleanup**: Drops unwanted attributes and adds power information.
+        - **ID Assignment**: Assigns new IDs to buildings and merges building data as needed.
+
+        7. **Street Data Adjustments**:
+        - Rounds street coordinates and adds a boolean column to indicate possible routes.
+
+        8. **Saving and Layer Update**:
+        - Determines whether to create new files or overwrite existing ones based on user input.
+        - Saves the modified shapefiles and updates the QGIS project layers accordingly.
+
+        9. **Completion**:
+        - Finalizes the progress bar and provides completion feedback.
+
+        Returns
+        -------
+        None
+        '''
+        # set status for on_task_finished
+        self.adjust_files_status = 0
+        
+        progress_update.emit(0) # update progressBar
+        label_update.emit('Calculating...', "orange") # update label
+        
+        # heat demand attribute
+        heat_att = self.dlg.adjust_comboBox_heat.currentText()
+
+        # building age classes
+        bak_bins = [0, 1918, 1948, 1957, 1968, 1978, 1983, 1994, 2001, 9999]
+        bak_labels = ['B','C','D','E','F','G','H','I','J']
+        
+        streets_path, streets_layer_name, streets_layer_obj = self.get_layer_path_from_combobox(self.dlg.adjust_comboBox_streets)
+        buildings_path, buildings_layer_name, buildings_layer_obj = self.get_layer_path_from_combobox(self.dlg.adjust_comboBox_buildings)
+        parcels_path, parcels_layer_name, parcels_layer_obj  = self.get_layer_path_from_combobox(self.dlg.adjust_comboBox_parcels)
+
+        progress_update.emit(5) # update progressBar
+
+        parcels = Parcels_adj(parcels_path)
+        buildings = Buildings_adj(buildings_path, heat_att)
+        streets = Streets_adj(streets_path)
+
+        # test if buildings already have been adjusted
+        if 'Lastprofil' in buildings.gdf.columns:
+            label_update.emit('Buildings already adjusted!', 'rgb(0, 255, 0)') # update label
+            progress_update.emit(100) # update progressBar
+        else:
+            buildings.gdf = buildings.gdf[buildings.gdf[heat_att]>0].reset_index(drop=True) # only buildings with heat demand
+            progress_update.emit(10) # update progressBar
+            buildings.add_LANUV_age_and_type() # add building age and type by LANUV
+            progress_update.emit(20) # update progressBar
+            buildings.merge_buildings()
+            buildings.gdf['new_ID'] = buildings.gdf.index.astype('int32')
+            progress_update.emit(30) # update progressBar
+            buildings.gdf = spatial_join(buildings.gdf.copy(), parcels.gdf, ['validFrom']) # building age from parcels
+            progress_update.emit(40) # update progressBar
+            buildings.add_BAK(bak_bins,bak_labels) # add building age class
+            progress_update.emit(50) # update progressBar
+            buildings.add_Vlh_Loadprofile(self.excel_building_info)
+            progress_update.emit(60) # update progressBar
+            buildings.drop_unwanted()
+            progress_update.emit(70) # update progressBar
+            buildings.add_power()
+            buildings.add_custom_heat_demand(self.excel_building_demand_wg, self.excel_building_info)
+            buildings.add_connect_option()
+            buildings.rename_and_order_columns()
+
+            progress_update.emit(80) # update progressBar
+
+            streets.round_streets()
+            progress_update.emit(90) # update progressBar
+            streets.add_bool_column() # possible routes
+
+            # save gdfs as instance attributes
+            self.buildings_gdf = buildings.gdf
+            self.streets_gdf = streets.gdf
+            self.parcels_gdf = parcels.gdf
+            progress_update.emit(95) # update progressBar
+        self.adjust_files_status = 'complete'
+
+    def status_analysis(self, progress_update, label_update):
+        '''
+         Perform a status analysis of building and street data, updating the GIS project with new attributes and geometries.
+
+        This method conducts an analysis that involves the following steps:
+
+        1. **Progress Bar Initialization**:
+        - Sets the initial value of the progress bar to indicate the start of the process.
+
+        2. **Layer Path Retrieval**:
+        - Retrieves paths and layer objects for streets, parcels, and buildings from the respective combo boxes in the user interface.
+
+        3. **Attribute Selection**:
+        - Retrieves the selected heat and power attributes from the combo boxes.
+
+        4. **Output Path Specification**:
+        - Specifies the file path for saving the polygon data from a line edit field.
+
+        5. **Geospatial Data Loading**:
+        - Reads the shapefiles for streets, parcels, and buildings into GeoDataFrames.
+
+        6. **Warmth Load Density (WLD) Calculation**:
+        - Initializes a `WLD` object with the loaded buildings and streets.
+        - Calculates the centroid for buildings.
+        - Identifies the closest street to each building.
+        - Adds the length of connections between buildings and streets.
+        - Adds the specified heat attribute and calculates the Warmth Load Density (WLD).
+        - Updates the streets GeoDataFrame with the new attributes and saves it back to a shapefile.
+        - Adds the updated street layer to the GIS project with a specific style.
+
+        7. **Polygon Processing**:
+        - Initializes a `Polygons` object with the parcels, updated streets, and buildings.
+        - Selects parcels based on their connection to buildings within a specified distance.
+        - Applies a buffer, dissolve, and explode operation to refine the polygon geometries.
+        - Adds the specified heat and power attributes to the polygons.
+        - Saves the processed polygons to a shapefile.
+        - Adds the updated polygon layer to the GIS project with a specific style.
+
+        8. **Completion**:
+        - Updates the progress bar to indicate the completion of the analysis.
+
+        Returns
+        -------
+        None
+        '''
+        
+        progress_update.emit(0) # update progressBar
+        self.status_analysis_status = 0
+
+        # feedback
+        label_update.emit('Calculating...', 'orange')
+
+        # layer from combo box
+        streets_path, streets_layer_name, streets_layer_obj = self.get_layer_path_from_combobox(self.dlg.status_comboBox_streets)
+        parcels_path, parcels_layer_name, parcels_layer_obj = self.get_layer_path_from_combobox(self.dlg.status_comboBox_parcels)
+        buildings_path, buildings_layer_name, buildings_layer_obj = self.get_layer_path_from_combobox(self.dlg.status_comboBox_buildings)
+        
+        # attributes from layer
+        heat_attribute = self.dlg.status_comboBox_heat.currentText()
+        power_attribute = self.dlg.status_comboBox_power.currentText()
+
+        # path from lineEdit
+        polygon_path = self.dlg.status_lineEdit_polygons.text()
+
+        progress_update.emit(2) # update progressBar
+
+        # shapes to gdf
+        streets = gpd.read_file(streets_path)
+        parcels = gpd.read_file(parcels_path)
+        buildings = gpd.read_file(buildings_path)
+
+        # HLD/WLD
+        wld = WLD(buildings,streets)
+        progress_update.emit(5) # update progressBar
+        wld.get_centroid()
+        progress_update.emit(20) # update progressBar
+        wld.closest_street_buildings()
+        progress_update.emit(30) # update progressBar
+        wld.add_lenght()
+        progress_update.emit(40) # update progressBar
+        wld.add_heat_att(heat_att=heat_attribute)
+        progress_update.emit(50) # update progressBar
+        wld.add_WLD(heat_att=heat_attribute)
+        progress_update.emit(60) # update progressBar
+        
+        # polygons
+        polygons = Polygons(parcels, wld.streets, buildings)
+        polygons.select_parcels_by_building_connection(0.1)
+        progress_update.emit(70) # update progressBar
+        polygons.buffer_dissolve_and_explode(0.5)
+        progress_update.emit(80) # update progressBar
+        polygons.add_attributes(heat_attribute, power_attribute)
+        progress_update.emit(90) # update progressBar
+
+        # save gdfs as instance attributes
+        self.wld = wld.streets
+        self.polygons = polygons.polygons
+
+        # Set status as complete
+        self.status_analysis_status = 'complete'
+
+    def network_analysis(self, progress_update, label_update):
+        '''
+        Conduct a network analysis for a district heating system, including setup, data loading,
+        and computation of the optimal network path based on building heat demand and street layout.
+
+        This method performs the following steps:
+
+        1. **Progress Bar Initialization**:
+        - Initializes the progress bar to indicate the start of the analysis.
+
+        2. **User Feedback**:
+        - Displays an initial status message indicating that calculations are in progress.
+
+        3. **Load Pipe Data**:
+        - Loads pipe data from an Excel file for use in the network analysis.
+
+        4. **Retrieve Temperatures**:
+        - Retrieves supply and return temperatures from SpinBoxes in the user interface.
+
+        5. **Retrieve Layer Paths**:
+        - Retrieves the file paths and objects for source, streets, and buildings layers from combo boxes.
+
+        6. **Select Attributes**:
+        - Retrieves the selected heat and power attributes from combo boxes.
+
+        7. **Specify Output Path**:
+        - Retrieves the path for saving the resulting network shapefile from a line edit field.
+
+        8. **Progress Bar Update**:
+        - Updates the progress bar to reflect the completion of data retrieval steps.
+
+        9. **Instantiate Classes**:
+        - Creates instances of classes for buildings, source, and streets, loading the respective data.
+
+        10. **Polygon Filtering**:
+            - If a polygon is selected, filters buildings to those within the polygon boundaries.
+
+        11. **Drop Unwanted Routes**:
+            - Removes street segments marked as not possible routes, if the attribute exists.
+
+        12. **Create Connection Points**:
+            - Adds centroids to buildings and finds closest points to streets.
+            - Establishes connection points for sources to the street network.
+
+        13. **Graph Construction**:
+            - Constructs a network graph based on street geometry.
+            - Connects building centroids and source points to the graph.
+            - Adds edge attributes, such as length, to the graph.
+
+        14. **Connectivity Check**:
+            - Verifies that all points in the network are connected.
+            - If not, provides feedback and visualization to assist in fixing disconnections.
+
+        15. **Progress Bar Update**:
+            - Updates the progress bar after constructing the graph.
+
+        16. **Network Analysis**:
+            - Creates a `Net` object and performs a detailed network analysis, computing the optimal network for heat distribution based on the supply and return temperatures, pipe data, and building attributes.
+
+        17. **GeoDataFrame Creation and Saving**:
+            - Converts the graph to a GeoDataFrame with the computed network.
+            - Saves the GeoDataFrame as a shapefile at the specified output path.
+
+        18. **Add Layer to Project**:
+            - Adds the resulting network shapefile as a layer in the GIS project.
+
+        19. **Completion**:
+            - Finalizes the progress bar and provides user feedback indicating the successful completion of the network analysis.
+
+        20. **Error Handling**:
+            - Logs any exceptions encountered during the process and exits gracefully.
+
+        Returns
+        -------
+        None
+        '''
+        
+        progress_update.emit(0) # update progressBar
+        # set status
+        self.network_analysis_status = 0
+
+        # feedback
+        label_update.emit('Calculating...', 'orange')
+    
+        # Temperatures from SpinBox
+        t_supply = self.dlg.net_doubleSpinBox_supply.value()
+        t_return = self.dlg.net_doubleSpinBox_return.value()
+
+        if t_supply <= t_return:
+            # feedback
+            self.dlg.net_label_response.setText('The return temperature has to be smaller than the supply temperature!')
+            self.dlg.net_label_response.setStyleSheet("color: #ff5555")
+            self.dlg.net_label_response.repaint()
+            return
+
+        # Layer paths
+        source_path, source_layer, source_layer_obj = self.get_layer_path_from_combobox(self.dlg.net_comboBox_source)
+        streets_path, streets_layer, streets_layer_obj = self.get_layer_path_from_combobox(self.dlg.net_comboBox_streets)
+        buildings_path, buildings_layer, buildings_layer_obj = self.get_layer_path_from_combobox(self.dlg.net_comboBox_buildings)
+        
+        heat_attribute = self.dlg.net_comboBox_heat.currentText()
+        power_attribute = self.dlg.net_comboBox_power.currentText()
+       
+        progress_update.emit(2) # update progressBar
+
+        # Instantiate classes
+        buildings = Buildings(buildings_path, heat_attribute, buildings_layer)
+        source = Source(source_path, source_layer)
+        streets = Streets(streets_path, streets_layer)
+        
+        # check if polygon checkbox is checked
+        if self.dlg.net_checkBox_polygon.isChecked():
+            polygon_path, polygon_layer, polygon_layer_obj  = self.get_layer_path_from_combobox(self.dlg.net_comboBox_polygon)
+            # load polygon as gdf
+            if polygon_layer == None:
+                polygon = gpd.read_file(polygon_path)
+            else: 
+                polygon = gpd.read_file(polygon_path, layer=polygon_layer)
+
+            # only buildings within polygon
+            buildings.gdf = gpd.sjoin(buildings.gdf, polygon, how="inner", predicate="within")
+
+        # Drop unwanted routes if existing
+        try:
+            streets.gdf = streets.gdf[streets.gdf['possible_route']==1]
+        except:
+            pass
+
+        # Drop unconnected buildings if existing
+        try:
+            buildings.gdf = buildings.gdf[buildings.gdf['Anschluss']==1]
+        except:
+            pass
+
+        
+        progress_update.emit(5) # update progressBar
+
+        # create connection points
+        buildings.add_centroid()
+        buildings.closest_points_buildings(streets.gdf)
+        source.closest_points_sources(streets.gdf)
+        streets.add_connection_to_streets(buildings.gdf, source.gdf)
+        
+        progress_update.emit(15) # update progressBar
+
+        # Create graph
+        graph = Graph(crs=buildings.gdf.crs)
+        graph.create_street_network(streets.gdf)
+        graph.connect_centroids(buildings.gdf)
+        graph.connect_source(source.gdf)
+        graph.add_attribute_length()
+
+        progress_update.emit(25) # update progressBar
+
+        # Test connection
+        start_point = (source.gdf['geometry'][0].x, source.gdf['geometry'][0].y)
+        connected_points = graph.get_connected_points(start_point)
+        all_points = list(graph.graph.nodes)
+        if start_point not in connected_points:
+            connected_points.append(start_point)
+        if len(all_points) > len(connected_points):
+            print(len(all_points), len(connected_points))
+            # check if polygon is activated
+            if self.dlg.net_checkBox_polygon.isChecked():
+                # check if disconnected points are inside the polygon
+                disconnected_points = [point for point in all_points if point not in connected_points and point != start_point]
+                print( f'disconnected nodes: {len(disconnected_points)}')
+                print(disconnected_points)
+                if any(polygon['geometry'][0].contains(Point(point)) for point in disconnected_points):
+                    # feedback
+                    label_update.emit('Some points of the street network in your area are not connected! Please set their "possible_route"-attribute to zero or connect them to the street network by using the snapping tool.','#ff5555')
+                    # save parameters as self attributes to plot in main thread
+                    graph.start_point = start_point
+                    graph.connected_points = connected_points
+                    self.graph = graph
+                    self.network_analysis_status = 'plot'
+                    return
+            else:
+                disconnected_points = [point for point in all_points if point not in connected_points and point != start_point]
+                print( f'{len(disconnected_points)} disconnected nodes')
+                print(disconnected_points)
+                # feedback
+                label_update.emit('Some points of the street network are not connected! Please set their "possible_route"-attribute to zero or connect them to the street network by using the snapping tool.', '#ff5555')
+                # save parameters as self attributes to plot in main thread
+                graph.start_point = start_point
+                graph.connected_points = connected_points
+                self.graph = graph
+                self.network_analysis_status = 'plot'
+                return
+
+        progress_update.emit(30) # update progressBar
+
+        ### Net Analysis ###
+        net = Net(t_supply,t_return,crs=buildings.gdf.crs)
+        net.network_analysis(graph.graph, buildings.gdf, source.gdf, self.pipe_info, power_att=power_attribute, progressBar=self.dlg.net_progressBar)
+
+        progress_update.emit(70) # update progressBar
+
+        # GeoDataFrame from net
+        net.ensure_power_attribute()
+        net.graph_to_gdf()
+        
+        # save net as instance attribute
+        self.net_gdf = net.gdf
+
+        # set net status as completed
+        self.network_analysis_status = 'complete'
+
+    # Methods to start main methods in background
+    def start_download_files(self):
+        '''
+        Starts the process of downloading shapefiles for buildings, streets, and parcels and updates the GUI elements accordingly.
+
+        This method initializes the GUI elements (progress bar and label), starts the download process in a background thread using the 
+        `run_long_task` method, and defines a callback function `on_task_finished` to handle the post-download operations. 
+        Upon successful download, the shapefiles are saved to the user-specified paths and added to the QGIS project.
+
+        Steps:
+        1. Initializes GUI elements such as the progress bar and status label.
+        2. Starts the download task in the background.
+        3. When the download is complete, the shapefiles for buildings, streets, and parcels are saved to specified locations.
+        4. The shapefiles are added to the QGIS project.
+        5. Updates the GUI with a completion message and sets the progress bar to 100%.
+
+        Notes:
+        - If the `download_status` is not 'complete', no further action is taken.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
+        # Chek if another process is already running
+        if self.worker_running == True:
+            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            return
+        
+        gui_elements = {
+            'progressBar': self.dlg.load_progressBar, # progress bar 
+            'label': self.dlg.load_label_feedback     # feedback label
+        }
+        
+        def on_task_finished():
+
+            if self.download_status == 'complete':
+                # Get paths from line edits
+                buildings_path = self.dlg.load_lineEdit_buildings.text()
+                streets_path = self.dlg.load_lineEdit_streets.text()
+                parcels_path = self.dlg.load_lineEdit_parcels.text()
+
+                # Save shapefiles 
+                self.buildings_gdf.to_file(buildings_path)
+                self.streets_gdf.to_file(streets_path)
+                self.parcels_gdf.to_file(parcels_path)
+
+                # Füge die Shapefiles zum QGIS Projekt hinzu
+                self.add_shapefile_to_project(parcels_path, style='parcels', group_name='Basic Data')
+                self.add_shapefile_to_project(buildings_path, style='buildings', group_name='Basic Data')
+                self.add_shapefile_to_project(streets_path, style='streets', group_name='Basic Data')
+
+                # GUI-Feedback aktualisieren
+                self.dlg.load_progressBar.setValue(100)
+                self.dlg.load_label_feedback.setStyleSheet("color: rgb(0, 255, 0)")
+                self.dlg.load_label_feedback.setText('Download complete!')
+
+                # Reset worker_running
+                self.worker_running = False
+            else:
+                return
+        # Start the background process
+        self.worker_running = True
+        self.run_long_task(self.download_files, gui_elements, on_task_finished)
+    
+    def start_download_zensus(self):
+        # check if another process is already running
+        if self.worker_running == True:
+            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            return
+        # define GUI elements
+        gui_elements = {
+            'progressBar': self.dlg.load_progressBar_zensus, # progress bar 
+            'label': self.dlg.load_label_zensus     # feedback label
+        }
+        def on_task_finished():
+            # check if the backround task is complete
+            if self.download_zensus_status == 'complete':
+                # get path from lineEdit
+                path = self.dlg.load_lineEdit_zensus.text()
+                
+                # save gdf to file
+                self.zensus_gdf.to_file(path)
+
+                # add shapefile to project
+                self.add_shapefile_to_project(path, 'zensus')
+
+                # update progressBar
+                self.dlg.load_progressBar_zensus.setValue(100)
+                self.dlg.load_label_zensus.setStyleSheet("color: rgb(0, 255, 0)")
+                self.dlg.load_label_zensus.setText('Download complete!')
+                # Reset worker_running
+                self.worker_running = False
+            else:
+                return
+        self.worker_running = True
+        self.run_long_task(self.download_zensus, gui_elements, on_task_finished)
+
+    def start_adjust_files(self):
+        # check if another process is already running
+        if self.worker_running == True:
+            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            return
+        
+        # import building_info ### Excel files have to be imported in main thread. Imports in background lead to a crasg because of windows acces violation
+        excel_path = self.plugin_dir+'/data/building_info.xlsx'
+        self.excel_building_info = pd.read_excel(excel_path, sheet_name='database')
+        self.excel_building_demand_wg = pd.read_excel(excel_path, sheet_name='Grunddaten_Gebaeude', nrows=13, usecols='A:D')
+
+        # define GUI elements
+        gui_elements = {
+            'progressBar': self.dlg.adjust_progressBar, # progress bar 
+            'label': self.dlg.adjust_label_feedback     # feedback label
+        }
+        def on_task_finished():
+            # check if the backround task is complete
+            if self.adjust_files_status == 'complete':
+                # get paths from layers
+                streets_path, streets_layer_name, streets_layer_obj = self.get_layer_path_from_combobox(self.dlg.adjust_comboBox_streets)
+                buildings_path, buildings_layer_name, buildings_layer_obj = self.get_layer_path_from_combobox(self.dlg.adjust_comboBox_buildings)
+                
+                # get path from lineEdit if new is checked
+                if self.dlg.adjust_radioButton_new.isChecked():
+                    buildings_path = self.dlg.adjust_lineEdit_buildings.text()
+                    streets_path = self.dlg.adjust_lineEdit_streets.text()
+
+                # save shapes
+                self.buildings_gdf.to_file(buildings_path)
+                self.streets_gdf.to_file(streets_path)
+
+                # check if files are overwritten or newly created
+                if self.dlg.adjust_radioButton_new.isChecked():
+                    self.add_shapefile_to_project(streets_path, style='streets_adj', group_name='Adjusted Files')
+                    self.add_shapefile_to_project(buildings_path, style='buildings_adj', group_name='Adjusted Files')
+                else:
+                    QgsProject.instance().removeMapLayer(buildings_layer_obj)
+                    QgsProject.instance().removeMapLayer(streets_layer_obj)
+                    self.add_shapefile_to_project(streets_path, style = 'streets', group_name='Adjusted Files')
+                    self.add_shapefile_to_project(buildings_path, style = 'buildings', group_name='Adjusted Files')
+                
+                self.dlg.adjust_progressBar.setValue(100) # update progressBar
+
+                self.dlg.adjust_label_feedback.setStyleSheet("color: rgb(0, 255, 0)")
+                self.dlg.adjust_label_feedback.setText('Completed!')
+                self.dlg.adjust_label_feedback.repaint()
+                # Reset worker_running
+                self.worker_running = False
+        self.worker_running = True
+        self.run_long_task(self.adjust_files, gui_elements, on_task_finished)
+
+    def start_status_analysis(self):
+        # check if another process is already running
+        if self.worker_running == True:
+            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            return
+        # define GUI elements
+        gui_elements = {
+            'progressBar': self.dlg.status_progressBar, # progress bar 
+            'label': self.dlg.status_label_response   # feedback label
+        }
+        def on_task_finished():
+            # check if the backround task is complete
+            if self.status_analysis_status == 'complete':
+                # layer from combo box
+                streets_path, streets_layer_name, streets_layer_obj = self.get_layer_path_from_combobox(self.dlg.status_comboBox_streets)
+                
+                # path from lineEdit
+                polygon_path = self.dlg.status_lineEdit_polygons.text()
+
+                # save shapefiles
+                self.wld.to_file(streets_path)
+                self.polygons.to_file(polygon_path)
+
+                # add shapefiles to project
+                self.add_shapefile_to_project(streets_path, 'hld', 'Heat Density')
+                self.add_shapefile_to_project(polygon_path, 'polygons', 'Heat Density')
+
+                # update progressBar
+                self.dlg.status_progressBar.setValue(100)
+                self.dlg.status_label_response.setStyleSheet("color: rgb(0, 255, 0)")
+                self.dlg.status_label_response.setText('Complete!')
+
+                # Reset worker_running
+                self.worker_running = False
+            else:
+                return
+        self.worker_running = True
+        self.run_long_task(self.status_analysis, gui_elements, on_task_finished)
+    
+    def start_network_analysis(self):
+        # check if another process is already running
+        if self.worker_running == True:
+            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            return
+        
+        # define GUI elements
+        gui_elements = {
+            'progressBar': self.dlg.net_progressBar, # progress bar 
+            'label': self.dlg.net_label_response   # feedback label
+        }
+
+        # pipe info
+        excel_file_path = Path(self.plugin_dir) / 'data/pipe_data.xlsx'
+        self.pipe_info = pd.read_excel(excel_file_path, sheet_name='pipe_data')
+
+        def on_task_finished():
+            # check if the backround task is complete
+            if self.network_analysis_status == 'complete':
+                # path to save net shape file
+                net_path = self.dlg.net_lineEdit_net.text()
+
+                # save net shapefile
+                self.net_gdf.to_file(net_path)
+
+                # load net as layer
+                self.add_shapefile_to_project(net_path, 'net', group_name='Net')
+
+                # update progressBar
+                self.dlg.net_progressBar.setValue(100)
+                # feedback
+                self.dlg.net_label_response.setText('Completed')
+                self.dlg.net_label_response.setStyleSheet("color: rgb(0, 255, 0)")
+                self.dlg.net_label_response.repaint()
+            elif self.network_analysis_status == 'plot':
+                self.graph.plot_graph(self.graph.start_point, self.graph.connected_points)
+            # Reset worker_running
+            self.worker_running = False
+            return
+        self.worker_running = True
+        self.run_long_task(self.network_analysis, gui_elements, on_task_finished)
+    
+    # run method that starts, when the icon is clicked in QGIS
     def run(self):
         """Run method that performs all the real work"""
 
@@ -1666,12 +2672,14 @@ class HeatNetTool:
                 import pandas as pd
                 import geopandas as gpd
                 from shapely import Point
-                from .src.download_files import file_list_from_URL, search_filename, read_file_from_zip, filter_df, get_shape_from_wfs
+                from .src.download_files import file_list_from_URL, search_filename, read_file_from_zip, filter_df, get_shape_from_wfs, clean_data, add_point, create_square, get_area_for_zensus
                 from .src.adjust_files import Streets_adj, Buildings_adj, Parcels_adj, spatial_join
                 from .src.status_analysis import WLD, Polygons
                 from .src.net_analysis import Streets, Source, Buildings, Graph, Net, Result, get_closest_point, calculate_GLF, calculate_volumeflow, calculate_diameter_velocity_loss
                 from .src.load_curve import Temperature, LoadProfile, safe_in_excel
                 from workalendar.europe import Germany
+                from matplotlib.figure import Figure
+                import matplotlib.pyplot as plt
             except Exception as e:
                 message_box = QMessageBox()
                 message_box.setIcon(QMessageBox.Warning)
@@ -1697,12 +2705,15 @@ class HeatNetTool:
                 lambda: self.select_output_file(self.project_dir, self.dlg.load_lineEdit_streets,'*.gpkg;;*.shp'))
             
             # Start Download Files 
-            self.dlg.load_pushButton_start.clicked.connect(self.download_files)
+            #self.dlg.load_pushButton_start.clicked.connect(self.download_files_alt) # main thread
+            self.dlg.load_pushButton_start.clicked.connect(self.start_download_files) # background
 
             # zensus
             self.dlg.load_pushButton_zensus.clicked.connect(
                 lambda: self.select_output_file(self.project_dir, self.dlg.load_lineEdit_zensus,'*.gpkg;;*.shp'))
-            self.dlg.load_pushButton_start_zensus.clicked.connect(self.download_zensus)
+            
+            #self.dlg.load_pushButton_start_zensus.clicked.connect(self.download_zensus_alt) # main thread
+            self.dlg.load_pushButton_start_zensus.clicked.connect(self.start_download_zensus) # background
 
             ### Adjust ###
 
@@ -1713,7 +2724,8 @@ class HeatNetTool:
                 lambda: self.select_output_file(self.project_dir, self.dlg.adjust_lineEdit_streets,'*.gpkg;;*.shp'))
             
             # Start Adjust Files 
-            self.dlg.adjust_pushButton_start.clicked.connect(self.adjust_files)
+            # self.dlg.adjust_pushButton_start.clicked.connect(self.adjust_files_alt) # main thread
+            self.dlg.adjust_pushButton_start.clicked.connect(self.start_adjust_files) # background thread
 
             ### status ###
 
@@ -1722,7 +2734,7 @@ class HeatNetTool:
                 lambda: self.select_output_file(self.project_dir, self.dlg.status_lineEdit_polygons,'*.gpkg;;*.shp'))
             
             # start status analysis
-            self.dlg.status_pushButton_start.clicked.connect(self.status_analysis)
+            self.dlg.status_pushButton_start.clicked.connect(self.start_status_analysis)
 
             ### Net ###
 
@@ -1735,27 +2747,33 @@ class HeatNetTool:
                 lambda: self.select_input_file(self.project_dir, self.dlg.net_lineEdit_temperature,'*.xlsx'))
 
             # start network analysis
-            self.dlg.net_pushButton_start.clicked.connect(self.network_analysis)
+            self.dlg.net_pushButton_start.clicked.connect(self.start_network_analysis)
 
             # create result file
-            self.dlg.net_pushButton_create_result.clicked.connect(self.create_result)
+            self.dlg.net_pushButton_create_result.clicked.connect(self.create_result_alt)
         
         # Create F|Heat layer structure
         self.create_layer_tree_structure()
 
-        # updates when tab is changed
-        #self.dlg.tabWidget.currentChanged.connect(self.tab_change)
-
         # update the download options
         self.dlg.load_comboBox_municipality.currentIndexChanged.connect(self.adapt_download_options)
 
-        # Connect signal for status_comboBox_buildings to load attributes on change
+        # Connect attribute combobox to layer combobox
+        self.load_attributes('adjust_comboBox_buildings', 'adjust_comboBox_heat')
+        self.dlg.adjust_comboBox_buildings.currentIndexChanged.connect(
+            lambda: self.load_attributes('adjust_comboBox_buildings', 'adjust_comboBox_heat'))
+
+        # Connect attribute combobox to layer combobox
+        self.load_attributes('status_comboBox_buildings', 'status_comboBox_heat')
+        self.load_attributes('status_comboBox_buildings', 'status_comboBox_power')
         self.dlg.status_comboBox_buildings.currentIndexChanged.connect(
             lambda: self.load_attributes('status_comboBox_buildings', 'status_comboBox_heat'))
         self.dlg.status_comboBox_buildings.currentIndexChanged.connect(
             lambda: self.load_attributes('status_comboBox_buildings', 'status_comboBox_power'))
         
-        # Connect signal for net_comboBox_buildings to load attributes on change
+        # Connect attribute combobox to layer combobox
+        self.load_attributes('net_comboBox_buildings', 'net_comboBox_heat')
+        self.load_attributes('net_comboBox_buildings', 'net_comboBox_power')
         self.dlg.net_comboBox_buildings.currentIndexChanged.connect(
             lambda: self.load_attributes('net_comboBox_buildings', 'net_comboBox_heat'))
         self.dlg.net_comboBox_buildings.currentIndexChanged.connect(
