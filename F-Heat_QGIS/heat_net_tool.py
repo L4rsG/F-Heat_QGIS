@@ -1815,13 +1815,13 @@ class HeatNetTool:
         
 
         if self.dlg.load_lineEdit_buildings.text().strip() == "":
-            label_update.emit('Select a Directory','orange')
+            label_update.emit('Specify a file path for the buildings','orange')
 
         elif self.dlg.load_lineEdit_streets.text().strip() == "":
-            label_update.emit('Select a Directory','orange')
+            label_update.emit('Specify a file path for the strets','orange')
 
         elif self.dlg.load_lineEdit_parcels.text().strip() == "":
-            label_update.emit('Select a Directory','orange')
+            label_update.emit('Specify a file path for the parcels','orange')
         
         else:
             label_update.emit('Starting...','white')
@@ -1912,7 +1912,7 @@ class HeatNetTool:
         self.download_zensus_status = 0
 
         if self.dlg.load_lineEdit_zensus.text().strip() == "":
-            label_update.emit('Select a Directory', 'orange')
+            label_update.emit('Specify a file path for the Zensus data', 'orange')
         else:
 
             # get name from combo box
@@ -2047,10 +2047,22 @@ class HeatNetTool:
         self.adjust_files_status = 0
         
         progress_update.emit(0) # update progressBar
-        label_update.emit('Calculating...', "orange") # update label
+        label_update.emit('Calculating...', 'white') # update label
         
         # heat demand attribute
         heat_att = self.dlg.adjust_comboBox_heat.currentText()
+
+        if heat_att == 'Select Attribute':
+            label_update.emit('Please select an Attribute as heat demand.','orange')
+            return
+        
+        if self.dlg.adjust_radioButton_new.isChecked():
+            if self.dlg.adjust_lineEdit_buildings.text().strip() == "":
+                label_update.emit('Specify a file path for the buildings','orange')
+                return
+            if self.dlg.adjust_lineEdit_streets.text().strip() == "":
+                label_update.emit('Specify a file path for the streets','orange')
+                return
 
         # building age classes
         bak_bins = [0, 1918, 1948, 1957, 1968, 1978, 1983, 1994, 2001, 9999]
@@ -2154,7 +2166,7 @@ class HeatNetTool:
         self.status_analysis_status = 0
 
         # feedback
-        label_update.emit('Calculating...', 'orange')
+        label_update.emit('Calculating...', 'white')
 
         # layer from combo box
         streets_path, streets_layer_name, streets_layer_obj = self.get_layer_path_from_combobox(self.dlg.status_comboBox_streets)
@@ -2164,6 +2176,18 @@ class HeatNetTool:
         # attributes from layer
         heat_attribute = self.dlg.status_comboBox_heat.currentText()
         power_attribute = self.dlg.status_comboBox_power.currentText()
+
+        # check if attributes and paths are selected correctly
+        if heat_attribute == 'Select Attribute':
+            label_update.emit('Please select an Attribute as heat demand.','orange')
+            return
+        if power_attribute == 'Select Attribute':
+            label_update.emit('Please select an Attribute as thermal power.','orange')
+            return
+        
+        if self.dlg.status_lineEdit_polygons.text().strip() == "":
+            label_update.emit('Specify a file path for the heat density output','orange')
+            return
 
         # path from lineEdit
         polygon_path = self.dlg.status_lineEdit_polygons.text()
@@ -2287,7 +2311,7 @@ class HeatNetTool:
         self.network_analysis_status = 0
 
         # feedback
-        label_update.emit('Calculating...', 'orange')
+        label_update.emit('Calculating...', 'white')
     
         # Temperatures from SpinBox
         t_supply = self.dlg.net_doubleSpinBox_supply.value()
@@ -2307,6 +2331,21 @@ class HeatNetTool:
         
         heat_attribute = self.dlg.net_comboBox_heat.currentText()
         power_attribute = self.dlg.net_comboBox_power.currentText()
+
+        # check if attributes and paths are selected correctly
+        if heat_attribute == 'Select Attribute':
+            label_update.emit('Please select an Attribute as heat demand.','orange')
+            return
+        if power_attribute == 'Select Attribute':
+            label_update.emit('Please select an Attribute as thermal power.','orange')
+            return
+
+        if self.dlg.net_lineEdit_net.text().strip() == "":
+            label_update.emit('Specify a file path for the net shapefile output','orange')
+            return
+        if self.dlg.net_lineEdit_net.text().strip() == "":
+            label_update.emit('Specify a file path for the result file','orange')
+            return
        
         progress_update.emit(2) # update progressBar
 
@@ -2497,9 +2536,6 @@ class HeatNetTool:
             label_update('This QGIS project has no valid directory!\nPlease save the project.', '#ff5555')
             return
 
-        # feedback
-        label_update.emit('Calculating...', 'orange')
-
         # Load Profiles
         load_profiles = ['EFH', 'MFH', 'GHA', 'GMK', 'GKO']
 
@@ -2518,6 +2554,24 @@ class HeatNetTool:
         # net path
         net_path = self.dlg.net_lineEdit_net.text()
         net_gdf = gpd.read_file(net_path)
+
+        # check if attributes and paths are selected correctly
+        if heat_attribute == 'Select Attribute':
+            label_update.emit('Please select an Attribute as heat demand.','orange')
+            return
+        if power_attribute == 'Select Attribute':
+            label_update.emit('Please select an Attribute as thermal power.','orange')
+            return
+
+        if self.dlg.net_lineEdit_net.text().strip() == "":
+            label_update.emit('Specify a file path for the net shapefile output','orange')
+            return
+        if self.dlg.net_lineEdit_result.text().strip() == "":
+            label_update.emit('Specify a file path for the result file','orange')
+            return
+        
+        # feedback
+        label_update.emit('Calculating...', 'orange')
 
         # Instantiate classes
         buildings = Buildings(buildings_path, heat_attribute, buildings_layer)
@@ -2884,6 +2938,13 @@ class HeatNetTool:
         # temperature
         if self.dlg.net_checkBox_temperature.isChecked():
             temp_path = self.dlg.net_lineEdit_temperature.text()
+
+            # chek if line edit is empty
+            if temp_path.strip() == "":
+                self.dlg.net_label_response.setText('Specify a file path for your custom temperature or uncheck the box.')
+                self.dlg.net_label_response.setStyleSheet('color: orange')
+                self.dlg.net_label_response.repaint()
+                return
         else:
             temp_path = Path(self.plugin_dir) / 'data/example_temperature.xlsx'
         self.temp_profile = pd.read_excel(temp_path)
