@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
-    <height>661</height>
+    <width>595</width>
+    <height>856</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -90,8 +90,8 @@ QTabWidget  &gt; QWidget &gt; QWidget  {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>557</width>
-        <height>838</height>
+        <width>573</width>
+        <height>834</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_10">
@@ -1001,6 +1001,9 @@ p, li { white-space: pre-wrap; }
                   <width>16777215</width>
                   <height>22</height>
                  </size>
+                </property>
+                <property name="currentText">
+                 <string/>
                 </property>
                 <property name="allowEmptyLayer">
                  <bool>false</bool>
