@@ -75,7 +75,7 @@ The full procedure is shown here using a complete example.
         :align: center
 
 
-#. For further calculations, the downloaded shapefiles of the buildings and streets must be adjusted. Toggle the dropdown lists to select the correct layers for streets, parcels and buildings.
+#. For further calculations, the downloaded shapefiles of the buildings and streets must be adjusted. Toggle the dropdown lists to select the correct layers for streets, parcels and buildings. Choose the desired attribute of the buildings layer as heat demand. For the downloaded data, you can choose RW_WW where RW = Raumwärme(space heating) and WW = Warmwasser(water heating) are combined.
 
     .. figure:: images//example/5adjust.png
         :alt: 5adjsut.png
