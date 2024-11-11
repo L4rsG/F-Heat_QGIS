@@ -15,7 +15,7 @@ def file_list_from_URL(url):
     '''lists downloadable files from given URL
 
     This function downloads the content from the specified URL, decodes the content,
-    evaluates it as a dictionary, and extracts a list of files from the dictionary.
+    evaluates it as a dictionary, and extracts a list of files from all dataset entries.
 
     Parameters
     ----------
@@ -25,15 +25,19 @@ def file_list_from_URL(url):
     Returns
     -------
     list
-        A list of files found in the dictionary under the key 'datasets' -> 1 -> 'files'.
+        A list of files found in all entries under 'datasets'.
     '''
     filestring = ''
     for line in urllib.request.urlopen(url):
         d = line.decode('latin1')
         d = d.strip()
         filestring += d
-    dict=ast.literal_eval(filestring)
-    files = dict['datasets'][1]['files']
+    data_dict = ast.literal_eval(filestring)
+
+    files = []
+    for dataset in data_dict.get('datasets', []):
+        files.extend(dataset.get('files', []))
+    
     return files
 
 def search_filename(files, city_id):
@@ -60,6 +64,7 @@ def search_filename(files, city_id):
     '''
     file_name = 'No data found'
     for item in files:
+        print(item)
         if str(city_id) in item['name']:
             file_name = item['name']
             break
