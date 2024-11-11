@@ -1860,6 +1860,12 @@ class HeatNetTool:
             all_buildings_files = file_list_from_URL(url_buildings+'index.json')
             progress_update.emit(10) # update progressBar
             buildings_zip = search_filename(all_buildings_files, municipality_key)
+            
+            # Check if Data is found
+            if buildings_zip == 'No data found':
+                label_update.emit('Error, no data found. Data source was possibly renamed.', '#ff5555')
+                return
+            
             progress_update.emit(15) # update progressBar
             buildings_file_pattern = f'WBM-NRW_{municipality_key}' # file pattern maybe has to be renamed, when changes on the website occur
             buildings_gdf = read_file_from_zip(url_buildings, buildings_zip, buildings_file_pattern)
