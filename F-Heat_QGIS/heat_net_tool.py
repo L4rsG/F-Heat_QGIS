@@ -55,7 +55,9 @@ class Worker(QThread):
     '''
     Worker class that runs long-running tasks in a separate thread and emits signals for GUI updates.
 
-    This class inherits from QThread and is designed to handle the execution of background tasks. It provides signals to update the GUI (progress bar, label, etc.) and notify when the task is completed. The task is passed as a callable and is executed in the `run()` method.
+    This class inherits from QThread and is designed to handle the execution of background tasks. 
+    It provides signals to update the GUI (progress bar, label, etc.) and notify when the task is completed. 
+    The task is passed as a callable and is executed in the `run()` method.
 
     Attributes
     ----------
@@ -1828,7 +1830,7 @@ class HeatNetTool:
 
             # URLs
             # buildings
-            url_buildings = 'https://www.opengeodata.nrw.de/produkte/umwelt_klima/klima/kwp/'
+            url_buildings = 'https://www.opengeodata.nrw.de/produkte/umwelt_klima/energie/kwp/'
 
             # parcels
             url_parcels = 'https://www.wfs.nrw.de/geobasis/wfs_nw_inspire-flurstuecke_alkis'
