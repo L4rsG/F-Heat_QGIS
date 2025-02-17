@@ -1555,6 +1555,9 @@ class HeatNetTool:
         buildings = Buildings(buildings_path, heat_attribute, buildings_layer)
         source = Source(source_path, source_layer)
         streets = Streets(streets_path, streets_layer)
+
+        # filter buildings
+        buildings.gdf = buildings.gdf[buildings.gdf['Anschluss']==1]
         
         # check if polygon checkbox is checked
         if self.dlg.net_checkBox_polygon.isChecked():
