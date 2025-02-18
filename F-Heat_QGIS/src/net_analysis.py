@@ -502,7 +502,7 @@ class Graph:
                 return list(component - {input_point})
         return []
 
-    def plot_graph(self, input_point, connected_points):
+    def plot_graph(self, input_point, connected_points, disconnected_buildings):
         '''
         Plots the graph with connected points highlighted.
 
@@ -512,19 +512,23 @@ class Graph:
             The input point coordinates.
         connected_points : list
             A list of points connected to the input point.
+        disconnected_buildins : list
+            A list of building centroids disconnected from the imput point
         '''
+        # Position dictionary for nodes, mapping each node to its (x, y) coordinates for plotting
         pos = {node: (node[0], node[1]) for node in self.graph.nodes}
-        node_colors = ['blue' if node == input_point else 'red' for node in self.graph.nodes]
-
-        # Color connected points
-        for node in connected_points:
-            node_colors[list(self.graph.nodes).index(node)] = '#00ff33'
+        # Node colors
+        node_colors = [
+            '#0000FF' if node == input_point  # blue
+            else '#00FF00' if node in connected_points  # green
+            else '#800080' if node in disconnected_buildings  # violet
+            else '#FFA500' for node in self.graph.nodes]  # orange
 
         plt.figure(figsize=(20, 20))
         plt.title('Graph Network with connected and disconnected Points')
 
         # Legend
-        legend_labels = {'Source': 'blue', 'Connected Points': '#00ff33', 'Disconnected Points': 'red'}
+        legend_labels = {'Source': '#0000FF', 'Connected Points': '#00FF00', 'Disconnected Points': '#FFA500', 'Disconnected Buildings': '#800080'}
         legend_handles = [plt.Line2D([0], [0], marker='o', color=color, label=label, linestyle='None') for label, color in legend_labels.items()]
         plt.legend(handles=legend_handles, loc='upper right', fontsize=10)
 

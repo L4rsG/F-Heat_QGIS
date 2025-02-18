@@ -1030,6 +1030,9 @@ class HeatNetTool:
         # heat demand attribute
         heat_att = self.dlg.adjust_comboBox_heat.currentText()
 
+        # bool to check if buildings are already adjusted
+        self.bool_files_already_adjusted = None
+
         if heat_att == 'Select Attribute':
             label_update.emit('Please select an Attribute as heat demand.','orange')
             return
@@ -1057,10 +1060,12 @@ class HeatNetTool:
         streets = Streets_adj(streets_path)
 
         # test if buildings already have been adjusted
-        if 'Lastprofil' in buildings.gdf.columns:
+        if 'Leistung_th [kW]' in buildings.gdf.columns:
+            self.bool_files_already_adjusted = True
             label_update.emit('Buildings already adjusted!', 'rgb(0, 255, 0)') # update label
             progress_update.emit(100) # update progressBar
         else:
+            self.bool_files_already_adjusted = False
             buildings.gdf = buildings.gdf[buildings.gdf[heat_att]>0].reset_index(drop=True) # only buildings with heat demand
             progress_update.emit(10) # update progressBar
             buildings.add_LANUV_age_and_type() # add building age and type by LANUV
@@ -1092,7 +1097,6 @@ class HeatNetTool:
             self.streets_gdf = streets.gdf
             self.parcels_gdf = parcels.gdf
             progress_update.emit(95) # update progressBar
-        self.adjust_files_status = 'complete'
 
     def status_analysis(self, progress_update, label_update):
         '''
@@ -1383,34 +1387,50 @@ class HeatNetTool:
         if start_point not in connected_points:
             connected_points.append(start_point)
         if len(all_points) > len(connected_points):
-            print(len(all_points), len(connected_points))
-            # check if polygon is activated
-            if self.dlg.net_checkBox_polygon.isChecked():
-                # check if disconnected points are inside the polygon
-                disconnected_points = [point for point in all_points if point not in connected_points and point != start_point]
-                print( f'disconnected nodes: {len(disconnected_points)}')
-                print(disconnected_points)
-                if any(polygon['geometry'][0].contains(Point(point)) for point in disconnected_points):
-                    # feedback
-                    label_update.emit('Some points of the street network in your area are not connected! Please set their "possible_route"-attribute to zero or connect them to the street network by using the snapping tool.','#ff5555')
-                    # save parameters as self attributes to plot in main thread
-                    graph.start_point = start_point
-                    graph.connected_points = connected_points
-                    self.graph = graph
-                    self.network_analysis_status = 'plot'
-                    return
-            else:
-                disconnected_points = [point for point in all_points if point not in connected_points and point != start_point]
-                print( f'{len(disconnected_points)} disconnected nodes')
-                print(disconnected_points)
+            # get disconnected points
+            disconnected_points = [point for point in all_points if point not in connected_points and point != start_point]
+            # building centroids
+            building_centroids = [(centroid.x, centroid.y) for centroid in buildings.gdf['centroid']]
+            # check if building centroids are disconnected
+            disconnected_buildings = [centroid for centroid in building_centroids if centroid in disconnected_points]
+            if disconnected_buildings:
                 # feedback
-                label_update.emit('Some points of the street network are not connected! Please set their "possible_route"-attribute to zero or connect them to the street network by using the snapping tool.', '#ff5555')
+                label_update.emit('Some Buildings are not connected to the street network! Please connect the nearest street to the street network by using the snapping tool or set the "possible_route"-attribute of their corresponding street to zero to connect them to another street.', '#ff5555')
                 # save parameters as self attributes to plot in main thread
                 graph.start_point = start_point
                 graph.connected_points = connected_points
+                graph.disconnected_buildings = disconnected_buildings
                 self.graph = graph
                 self.network_analysis_status = 'plot'
                 return
+            
+            # # check if polygon is activated
+            # if self.dlg.net_checkBox_polygon.isChecked():
+            #     # check if disconnected points are inside the polygon
+            #     disconnected_points = [point for point in all_points if point not in connected_points and point != start_point]
+            #     #print( f'disconnected nodes: {len(disconnected_points)}')
+            #     #print(disconnected_points)
+            #     if any(polygon['geometry'][0].contains(Point(point)) for point in disconnected_points):
+            #         # feedback
+            #         label_update.emit('Some points of the street network in your area are not connected! Please set their "possible_route"-attribute to zero or connect them to the street network by using the snapping tool.','#ff5555')
+            #         # save parameters as self attributes to plot in main thread
+            #         graph.start_point = start_point
+            #         graph.connected_points = connected_points
+            #         self.graph = graph
+            #         self.network_analysis_status = 'plot'
+            #         return
+            # else:
+                
+            #     #print( f'{len(disconnected_points)} disconnected nodes')
+            #     #print(disconnected_points)
+            #     # feedback
+            #     label_update.emit('Some points of the street network are not connected! Please set their "possible_route"-attribute to zero or connect them to the street network by using the snapping tool.', '#ff5555')
+            #     # save parameters as self attributes to plot in main thread
+            #     graph.start_point = start_point
+            #     graph.connected_points = connected_points
+            #     self.graph = graph
+            #     self.network_analysis_status = 'plot'
+            #     return
 
         progress_update.emit(30) # update progressBar
 
@@ -1786,7 +1806,7 @@ class HeatNetTool:
         }
         def on_task_finished():
             # check if the backround task is complete
-            if self.adjust_files_status == 'complete':
+            if self.bool_files_already_adjusted == False:
                 # get paths from layers
                 streets_path, streets_layer_name, streets_layer_obj = self.get_layer_path_from_combobox(self.dlg.adjust_comboBox_streets)
                 buildings_path, buildings_layer_name, buildings_layer_obj = self.get_layer_path_from_combobox(self.dlg.adjust_comboBox_buildings)
@@ -1893,7 +1913,7 @@ class HeatNetTool:
                 self.dlg.net_label_response.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.net_label_response.repaint()
             elif self.network_analysis_status == 'plot':
-                self.graph.plot_graph(self.graph.start_point, self.graph.connected_points)
+                self.graph.plot_graph(self.graph.start_point, self.graph.connected_points, self.graph.disconnected_buildings)
             # Reset worker_running
             self.worker_running = False
             return
