@@ -105,9 +105,9 @@ class Streets_adj():
         '''
         Adds a boolean column to the GeoDataFrame indicating possible routes.
 
-        This method adds a new column 'possible_route' to the GeoDataFrame, initialized with the value 1 for all rows.
+        This method adds a new column 'Moegliche_Route' (= possible route) to the GeoDataFrame, initialized with the value 1 for all rows.
         '''
-        self.gdf['possible_route'] = 1
+        self.gdf['Moegliche_Route'] = 1
 
 class Buildings_adj():
     '''
@@ -168,7 +168,7 @@ class Buildings_adj():
         '''
         Adds full load hours and load profiles to the buildings.
 
-        This method merges the building data with external Excel data containing full load hours (Vlh)
+        This method merges the building data with external Excel data containing full load hours (Volllaststunden Vlh)
         and load profiles based on the 'citygml_fu' attribute of the buildings.
 
         Parameters
@@ -272,7 +272,7 @@ class Buildings_adj():
         # Convert the validFrom attribute to year
         self.gdf['jahr'] = self.gdf['validFrom'].apply(self.extract_year)
 
-        # Classify buildings into age groups
+        # Classify buildings into age groups (Baualtersklassen BAK)
         self.gdf['BAK'] = pd.cut(self.gdf['jahr'], bins=bins, labels=labels, right=True)
         self.gdf['BAK'] = self.gdf['BAK'].astype(str)
         self.gdf.drop(columns=['jahr'], inplace = True)

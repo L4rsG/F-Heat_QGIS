@@ -446,7 +446,7 @@ class HeatNetTool:
         shapefile_path : str
             The file path of the shapefile to add.
         style : str, optional
-            The name of the style to apply to the layer. Options include 'hld', 'polygons', 'net', 'streets', 'buildings', 'parcels'.
+            The name of the style to apply to the layer. Options include 'wld', 'polygons', 'net', 'streets', 'buildings', 'parcels'.
         group_name : str
             Layer group where the layer should be added
 
@@ -480,12 +480,12 @@ class HeatNetTool:
             QgsProject.instance().addMapLayer(layer)
 
         # Apply style
-        if style == 'hld':
-            style_path = self.plugin_dir + '/layerstyles/hld.qml'
+        if style == 'wld':
+            style_path = self.plugin_dir + '/layerstyles/wld.qml'
             layer.loadNamedStyle(style_path)
 
         if style == 'polygons':
-            style_path = self.plugin_dir + '/layerstyles/polygons.qml'
+            style_path = self.plugin_dir + '/layerstyles/heat density polygons.qml'
             layer.loadNamedStyle(style_path)
 
         if style == 'net':
@@ -1004,7 +1004,7 @@ class HeatNetTool:
         - **Spatial Join**: Joins buildings with parcels to add building age information.
         - **Age Class Addition**: Adds building age classes and LANUV age and type information.
         - **Load Profile Addition**: Integrates load profiles from the Excel data.
-        - **Data Cleanup**: Drops unwanted attributes and adds power information.
+        - **Data Cleanup**: Drops unwanted attributes and adds thermal power information.
         - **ID Assignment**: Assigns new IDs to buildings and merges building data as needed.
 
         7. **Street Data Adjustments**:
@@ -1111,7 +1111,7 @@ class HeatNetTool:
         - Retrieves paths and layer objects for streets, parcels, and buildings from the respective combo boxes in the user interface.
 
         3. **Attribute Selection**:
-        - Retrieves the selected heat and power attributes from the combo boxes.
+        - Retrieves the selected heat and thermal power attributes from the combo boxes.
 
         4. **Output Path Specification**:
         - Specifies the file path for saving the polygon data from a line edit field.
@@ -1132,7 +1132,7 @@ class HeatNetTool:
         - Initializes a `Polygons` object with the parcels, updated streets, and buildings.
         - Selects parcels based on their connection to buildings within a specified distance.
         - Applies a buffer, dissolve, and explode operation to refine the polygon geometries.
-        - Adds the specified heat and power attributes to the polygons.
+        - Adds the specified heat and thermal power attributes to the polygons.
         - Saves the processed polygons to a shapefile.
         - Adds the updated polygon layer to the GIS project with a specific style.
 
@@ -1203,6 +1203,10 @@ class HeatNetTool:
         progress_update.emit(80) # update progressBar
         polygons.add_attributes(heat_attribute, power_attribute)
         progress_update.emit(90) # update progressBar
+        
+        # translate columns
+        wld.rename_columns()
+        polygons.rename_columns()
 
         # save gdfs as instance attributes
         self.wld = wld.streets
@@ -1210,7 +1214,7 @@ class HeatNetTool:
 
         # Set status as complete
         self.status_analysis_status = 'complete'
-
+    
     def network_analysis(self, progress_update, label_update):
         '''
         Conduct a network analysis for a district heating system, including setup, data loading,
@@ -1436,13 +1440,16 @@ class HeatNetTool:
 
         ### Net Analysis ###
         net = Net(t_supply,t_return,crs=buildings.gdf.crs)
-        net.network_analysis(graph.graph, buildings.gdf, source.gdf, self.pipe_info, power_att=power_attribute, progressBar=self.dlg.net_progressBar)
+        net.network_analysis(graph.graph, buildings.gdf, source.gdf, self.pipe_info, power_th_att=power_attribute, progressBar=self.dlg.net_progressBar)
 
         progress_update.emit(70) # update progressBar
 
         # GeoDataFrame from net
-        net.ensure_power_attribute()
+        net.ensure_power_th_attribute()
         net.graph_to_gdf()
+
+        # translate
+        net.rename_columns()
         
         # save net as instance attribute
         self.net_gdf = net.gdf
@@ -1596,6 +1603,12 @@ class HeatNetTool:
         ### result ###
         result_path = self.dlg.net_lineEdit_result.text()
         result = Result(result_path)
+
+        # Check if excel file is already open
+        if result.is_excel_file_open():
+            label_update.emit('Excel result file is already open. Please close the result file to save new result.', 'orange')
+            self.worker_running = False # Reset worker_running
+            return
 
         result.create_data_dict(buildings.gdf, net_gdf, load_profiles, self.dn_list, heat_attribute, t_supply, t_return)
         result.create_df_from_dataDict(net_name = os.path.splitext(os.path.basename(net_path))[0])
@@ -1864,7 +1877,7 @@ class HeatNetTool:
                 self.polygons.to_file(polygon_path)
 
                 # add shapefiles to project
-                self.add_shapefile_to_project(streets_path, 'hld', 'Heat Density')
+                self.add_shapefile_to_project(streets_path, 'wld', 'Heat Density')
                 self.add_shapefile_to_project(polygon_path, 'polygons', 'Heat Density')
 
                 # update progressBar

@@ -1,6 +1,6 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
 <qgis styleCategories="Symbology|Diagrams|Legend" version="3.34.10-Prizren">
-  <renderer-v2 graduatedMethod="GraduatedColor" forceraster="0" attr="HLD [kWh/a*m]" enableorderby="0" symbollevels="0" referencescale="-1" type="graduatedSymbol">
+  <renderer-v2 graduatedMethod="GraduatedColor" forceraster="0" attr="WLD [kWh/a*m]" enableorderby="0" symbollevels="0" referencescale="-1" type="graduatedSymbol">
     <ranges>
       <range label="0 - 700 kWh/m·a" lower="0.000000000000000" render="true" upper="700.000000000000000" uuid="0" symbol="0"/>
       <range label="700 - 1500 kWh/m·a" lower="700.000000000000000" render="true" upper="1500.000000000000000" uuid="1" symbol="1"/>

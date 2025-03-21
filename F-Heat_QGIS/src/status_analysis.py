@@ -63,7 +63,7 @@ class WLD:
         '''
         Adds a column for the length of each street segment to the streets GeoDataFrame.
         '''
-        self.streets['Laenge [m]'] = self.streets['geometry'].length
+        self.streets['length'] = self.streets['geometry'].length
 
     def add_heat_att(self,heat_att):
         '''
@@ -78,10 +78,10 @@ class WLD:
         self.streets[f'{heat_att}'] = 0
 
         for idx, row in self.buildings.iterrows():
-            wvbr = row[heat_att]
+            heat_demand = row[heat_att]
             id = row['street_id']
             
-            self.streets.loc[id, f'{heat_att}'] += wvbr
+            self.streets.loc[id, f'{heat_att}'] += heat_demand
             self.streets.at[id, 'connected'].append(row['new_ID'])
             
         # Convert the list of polygons to a comma-separated string: [123, 456, 789] >>> "123,456,789"
@@ -97,54 +97,64 @@ class WLD:
         heat_att : str
             The attribute in the streets GeoDataFrame representing heat consumption.
         '''
-        self.streets['HLD [kWh/a*m]'] = np.where(
-            self.streets['Laenge [m]'] != 0, self.streets[f'{heat_att}'] / self.streets['Laenge [m]'], np.nan)
+        self.streets['WLD [kWh/a*m]'] = np.where(
+            self.streets['length'] != 0, self.streets[f'{heat_att}'] / self.streets['length'], np.nan)
+    
+    def rename_columns(self):
+        '''
+        renames columns of self.streets.
+        '''
+        rename_dict = {
+            'length': 'Laenge',
+            'connected': 'angeschlossen'
+        }
+        self.streets = self.streets.rename(columns=rename_dict)
         
 class Polygons:
     '''
-    A class to process parcels, heat line density (HLD), and building data.
+    A class to process parcels, heat line density (Wärmeliniendichte WLD), and building data.
 
     Attributes
     ----------
     parcels : GeoDataFrame
         GeoDataFrame of parcels.
-    hld : GeoDataFrame
+    wld : GeoDataFrame
         GeoDataFrame of heat line density.
     buildings : GeoDataFrame
         GeoDataFrame of buildings.
     '''
 
-    def __init__(self, parcels, hld, buildings):
+    def __init__(self, parcels, wld, buildings):
         '''
-        Initializes the Polygons class with the given parcels, HLD, and building data.
+        Initializes the Polygons class with the given parcels, WLD, and building data.
 
         Parameters
         ----------
         parcels : GeoDataFrame
             GeoDataFrame of parcels.
-        hld : GeoDataFrame
+        wld : GeoDataFrame
             GeoDataFrame of heat line density.
         buildings : GeoDataFrame
             GeoDataFrame of buildings.
         '''
         self.parcels = parcels
-        self.hld = hld
+        self.wld = wld
         self.buildings = buildings
     
-    def select_parcels_by_building_connection(self, HLD_value):
+    def select_parcels_by_building_connection(self, WLD_value):
         '''
-        Selects parcels based on connected buildings and a HLD threshold.
+        Selects parcels based on connected buildings and a WLD threshold.
 
         Parameters
         ----------
-        HLD_value : float
-            Threshold value of heat line density (HLD).
+        WLD_value : float
+            Threshold value of heat line density (Waermeliniendichte WLD).
         '''
-        # Filter HLD for values > HLD_value
-        filtered_hld = self.hld[self.hld['HLD [kWh/a*m]']>= HLD_value] 
+        # Filter WLD for values > WLD_value
+        filtered_wld = self.wld[self.wld['WLD [kWh/a*m]']>= WLD_value] 
 
         # Extract all connected building IDs from the 'connected' column
-        connected_building_ids = [int(id) for sublist in filtered_hld['connected'].dropna().str.split(',').tolist() if isinstance(sublist, list) for id in sublist]
+        connected_building_ids = [int(id) for sublist in filtered_wld['connected'].dropna().str.split(',').tolist() if isinstance(sublist, list) for id in sublist]
 
         # Select buildings that are in the list of connected building IDs
         connected_buildings = self.buildings[self.buildings['new_ID'].isin(connected_building_ids)]
@@ -236,8 +246,8 @@ class Polygons:
 
         # add columns for attributes
         self.polygons['Connections'] = 0
-        self.polygons['Heat_Demand [kWh]'] = 0.0
-        self.polygons['Power [kW]'] = 0.0
+        self.polygons['Heat_Demand [kWh/a]'] = 0.0
+        self.polygons['Power_th [kW]'] = 0.0
 
         for idx, polygon in self.polygons.iterrows():
             # buildings within polygon
@@ -247,13 +257,27 @@ class Polygons:
             self.polygons.loc[idx, 'Connections'] = len(contained_buildings)
 
             # cumulated heat demand
-            self.polygons.loc[idx, 'Heat_Demand [kWh]'] = contained_buildings[heat_attribute].sum()
+            self.polygons.loc[idx, 'Heat_Demand [kWh/a]'] = contained_buildings[heat_attribute].sum()
             
             # accumulated power
-            self.polygons.loc[idx,'Power [kW]'] = contained_buildings[power_attribute].sum()
+            self.polygons.loc[idx,'Power_th [kW]'] = contained_buildings[power_attribute].sum()
         
         # heat deman per area 
-        self.polygons['Demand/Area[MWh/ha]'] = 10 * self.polygons['Heat_Demand [kWh]'] / self.polygons['Area [m²]'] # 1000 kW 10000 m^2 in 1 MW 1 ha
+        self.polygons['Demand/Area [MWh/ha*a]'] = 10 * self.polygons['Heat_Demand [kWh/a]'] / self.polygons['Area [m²]'] # 1000 kW 10000 m^2 in 1 MW 1 ha
         
         # mean power
-        self.polygons['Mean_Power [kW]'] = self.polygons['Power [kW]'] / self.polygons['Connections']
+        self.polygons['Mean_Power_th [kW]'] = self.polygons['Power_th [kW]'] / self.polygons['Connections']
+    
+    def rename_columns(self):
+        '''
+        renames columns of self.polygons.
+        '''
+        rename_dict = {
+            'Area [m²]': 'Flaeche [m²]',
+            'Connections': 'Anschluesse',
+            'Heat_Demand [kWh/a]': 'Waermebedarf [kWh/a]',
+            'Power_th [kW]': 'Thermische Leistung [kW]',
+            'Demand/Area [MWh/ha*a]': 'Waermebedarf/Flaeche [MWh/ha*a]',
+            'Mean_Power_th [kW]': 'Mittlere thermische Leistung [kW]'
+        }
+        self.polygons = self.polygons.rename(columns=rename_dict)
