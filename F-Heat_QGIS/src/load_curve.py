@@ -186,44 +186,6 @@ class Temperature:
                 dataframes.append(filtered_data)
         average_data = pd.concat(dataframes).groupby(level=0).mean().reset_index(drop=True)
         return average_data
-    
-def safe_in_excel(path, df, col = 0, index_bool=False, sheet = 'Lastprofil'):
-    '''
-    Saves the dataframe to the specified Excel file and sheet.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        The dataframe to save.
-    col : int, optional
-        The starting column index in the Excel sheet (default is 0).
-    index_bool : bool, optional
-        Whether to include the dataframe index in the Excel file (default is False).
-    sheet_option : str, optional
-        The option for handling existing sheets (default is 'replace'). Options: 'error', 'new', 'replace', 'overlay'.
-    sheet : str, optional
-        The name of the Excel sheet (default is 'Lastprofil').
-    '''
-    filename = path
-    # Open excel file and write the data frame in stated sheet
-    with pd.ExcelWriter(filename, engine='openpyxl', mode='w') as writer:
-        df.to_excel(writer, sheet_name=sheet, index=index_bool, startcol=col)
-
-    # Adjust cell size
-    wb = load_workbook(filename = path)        
-    ws = wb[sheet]
-    for col in ws.columns:
-        max_length = 0
-        column = col[0].column_letter # Get the column name
-        for cell in col:
-            try: # Necessary to avoid error on empty cells
-                if len(str(cell.value)) > max_length:
-                    max_length = len(str(cell.value))
-            except:
-                pass
-        adjusted_width = (max_length+1)
-        ws.column_dimensions[column].width = adjusted_width
-    wb.save(filename)
 
 class LoadProfile:
     '''
