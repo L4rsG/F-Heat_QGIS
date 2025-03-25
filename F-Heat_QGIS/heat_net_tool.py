@@ -46,7 +46,7 @@ try:
     from .src.adjust_files import Streets_adj, Buildings_adj, Parcels_adj, spatial_join
     from .src.status_analysis import WLD, Polygons
     from .src.net_analysis import Streets, Source, Buildings, Graph, Net, Result, get_closest_point, calculate_GLF, calculate_volumeflow, calculate_diameter_velocity_loss
-    from .src.load_curve import Temperature, LoadProfile, safe_in_excel
+    from .src.load_curve import Temperature, LoadProfile
     from workalendar.europe import Germany
     from matplotlib.figure import Figure
     import matplotlib.pyplot as plt
@@ -246,7 +246,7 @@ class HeatNetTool:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon_path = ':/plugins/heat_net_tool/icon.png'
+        icon_path = ':/plugins/heat_net_tool/icon.png' # dev environment. This path is saved in resources.qrc. If icon needs to be changed resources.qrc has to be recompiled to .py
         self.add_action(
             icon_path,
             text=self.tr(u'F|Heat'),
@@ -279,14 +279,14 @@ class HeatNetTool:
         '''
         # feedback
         self.dlg.intro_label.setText(self.tr('Starting Installation. Check cmd for progress.'))
-        self.dlg.intro_label.setStyleSheet("color: orange")
+        self.dlg.intro_label.setStyleSheet('color: orange')
         self.dlg.intro_label.repaint()
 
         # get requirements
         requirements_path =  self.plugin_dir+'/requirements.txt'
         if not os.path.exists(requirements_path):
-            self.dlg.intro_label.setText(f"Error: {requirements_path} not found.")
-            self.dlg.intro_label.setStyleSheet("color: #ff5555")
+            self.dlg.intro_label.setText(f'Error: {requirements_path} not found.')
+            self.dlg.intro_label.setStyleSheet('color: #ff5555')
             self.dlg.intro_label.repaint()
             
         with open(requirements_path, 'r') as file:
@@ -300,7 +300,7 @@ class HeatNetTool:
                 import ensurepip
                 ensurepip.bootstrap()
             except Exception as e:
-                print(f"Error while installing pip: {e}")
+                print(f'Error while installing pip: {e}')
 
         current_executable = sys.executable
         python_executable = os.path.join(os.path.dirname(current_executable), 'python.exe')
@@ -323,7 +323,7 @@ class HeatNetTool:
         from .src.adjust_files import Streets_adj, Buildings_adj, Parcels_adj, spatial_join
         from .src.status_analysis import WLD, Polygons
         from .src.net_analysis import Streets, Source, Buildings, Graph, Net, Result, get_closest_point, calculate_GLF, calculate_volumeflow, calculate_diameter_velocity_loss
-        from .src.load_curve import Temperature, LoadProfile, safe_in_excel
+        from .src.load_curve import Temperature, LoadProfile
         from workalendar.europe import Germany
         from matplotlib.figure import Figure
         import matplotlib.pyplot as plt
@@ -1744,7 +1744,9 @@ class HeatNetTool:
         }
         
         def on_task_finished():
+            '''function that is executed, once the background task is complete'''
 
+            # Check if background tasl is complete
             if self.download_status == 'complete':
                 # Get paths from line edits
                 buildings_path = self.dlg.load_lineEdit_buildings.text()
@@ -1783,6 +1785,7 @@ class HeatNetTool:
             'label': self.dlg.load_label_zensus     # feedback label
         }
         def on_task_finished():
+            '''function that is executed, once the background task is complete'''
             # check if the backround task is complete
             if self.download_zensus_status == 'complete':
                 # get path from lineEdit
@@ -1821,6 +1824,7 @@ class HeatNetTool:
             'label': self.dlg.adjust_label_feedback     # feedback label
         }
         def on_task_finished():
+            '''function that is executed, once the background task is complete'''
             # check if the backround task is complete
             if self.bool_files_already_adjusted == False:
                 # get paths from layers
@@ -1867,6 +1871,7 @@ class HeatNetTool:
             'label': self.dlg.status_label_response   # feedback label
         }
         def on_task_finished():
+            '''function that is executed, once the background task is complete'''
             # check if the backround task is complete
             if self.status_analysis_status == 'complete':
                 # layer from combo box
@@ -1911,6 +1916,7 @@ class HeatNetTool:
         self.pipe_info = pd.read_excel(excel_file_path, sheet_name='pipe_data')
 
         def on_task_finished():
+            '''function that is executed, once the background task is complete'''
             # check if the backround task is complete
             if self.network_analysis_status == 'complete':
                 # path to save net shape file
@@ -1937,6 +1943,7 @@ class HeatNetTool:
         self.run_long_task(self.network_analysis, gui_elements, on_task_finished)
     
     def start_create_result(self):
+        
         # check if another process is already running
         if self.worker_running == True:
             QMessageBox.warning(self.dlg, self.tr('Warning'), self.tr('A process is already running. Please wait for completion to start a new process.'))
@@ -1967,12 +1974,13 @@ class HeatNetTool:
         self.temp_profile = pd.read_excel(temp_path)
 
         def on_task_finished():
+            '''function that is executed, once the background task is complete'''
             if self.result_status == 'complete':
 
                 result = self.result
 
                 # Copy result file to user path
-                costs_path = Path(self.plugin_dir) / 'data/costs.xlsx'
+                costs_path = Path(self.plugin_dir) / 'data/result.xlsx'
                 result.copy_excel_file(costs_path)
 
                 # Save result
@@ -2037,7 +2045,7 @@ class HeatNetTool:
                 from .src.adjust_files import Streets_adj, Buildings_adj, Parcels_adj, spatial_join
                 from .src.status_analysis import WLD, Polygons
                 from .src.net_analysis import Streets, Source, Buildings, Graph, Net, Result, get_closest_point, calculate_GLF, calculate_volumeflow, calculate_diameter_velocity_loss
-                from .src.load_curve import Temperature, LoadProfile, safe_in_excel
+                from .src.load_curve import Temperature, LoadProfile
                 from workalendar.europe import Germany
                 from matplotlib.figure import Figure
                 import matplotlib.pyplot as plt
