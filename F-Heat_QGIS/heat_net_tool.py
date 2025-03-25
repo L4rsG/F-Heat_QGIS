@@ -48,6 +48,8 @@ try:
     from .src.net_analysis import Streets, Source, Buildings, Graph, Net, Result, get_closest_point, calculate_GLF, calculate_volumeflow, calculate_diameter_velocity_loss
     from .src.load_curve import Temperature, LoadProfile, safe_in_excel
     from workalendar.europe import Germany
+    from matplotlib.figure import Figure
+    import matplotlib.pyplot as plt
 except:
     pass
 
@@ -131,7 +133,7 @@ class HeatNetTool:
         locale_path = os.path.join(
             self.plugin_dir,
             'i18n',
-            'HeatNetTool_{}.qm'.format(locale))
+            '{}.qm'.format(locale))
 
         if os.path.exists(locale_path):
             self.translator = QTranslator()
@@ -140,7 +142,7 @@ class HeatNetTool:
 
         # Declare instance attributes
         self.actions = []
-        self.menu = self.tr(u'&Heat Net Tool ')
+        self.menu = self.tr(u'&F|Heat ')
 
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
@@ -247,7 +249,7 @@ class HeatNetTool:
         icon_path = ':/plugins/heat_net_tool/icon.png'
         self.add_action(
             icon_path,
-            text=self.tr(u'Toolbox for planning district heating networks'),
+            text=self.tr(u'F|Heat'),
             callback=self.run,
             parent=self.iface.mainWindow())
 
@@ -258,7 +260,7 @@ class HeatNetTool:
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&Heat Net Tool '),
+                self.tr(u'&F|Heat '),
                 action)
             self.iface.removeToolBarIcon(action)
 
@@ -276,7 +278,7 @@ class HeatNetTool:
         None
         '''
         # feedback
-        self.dlg.intro_label.setText('Starting Installation. Check cmd for progress.')
+        self.dlg.intro_label.setText(self.tr('Starting Installation. Check cmd for progress.'))
         self.dlg.intro_label.setStyleSheet("color: orange")
         self.dlg.intro_label.repaint()
 
@@ -293,15 +295,12 @@ class HeatNetTool:
         # check if pip is installed
         try:
             import pip
-            print("pip ist bereits installiert.")
         except ImportError:
-            print("pip ist nicht installiert. Versuche, pip zu installieren...")
             try:
                 import ensurepip
                 ensurepip.bootstrap()
-                print("pip wurde erfolgreich installiert.")
             except Exception as e:
-                print(f"Fehler beim Installieren von pip: {e}")
+                print(f"Error while installing pip: {e}")
 
         current_executable = sys.executable
         python_executable = os.path.join(os.path.dirname(current_executable), 'python.exe')
@@ -312,7 +311,7 @@ class HeatNetTool:
             subprocess.check_call(["cmd", "/K"] + cmd)  # /K ceeps window open
         except subprocess.CalledProcessError as e:
             # feedback
-            self.dlg.intro_label.setText(f"Process finished or aborted.")
+            self.dlg.intro_label.setText(self.tr(f"Process finished or aborted."))
             self.dlg.intro_label.setStyleSheet("color: white")
             self.dlg.intro_label.repaint()
 
@@ -326,6 +325,8 @@ class HeatNetTool:
         from .src.net_analysis import Streets, Source, Buildings, Graph, Net, Result, get_closest_point, calculate_GLF, calculate_volumeflow, calculate_diameter_velocity_loss
         from .src.load_curve import Temperature, LoadProfile, safe_in_excel
         from workalendar.europe import Germany
+        from matplotlib.figure import Figure
+        import matplotlib.pyplot as plt
         
     def select_output_file(self, dir, lineEdit, filetype):
         '''
@@ -345,7 +346,7 @@ class HeatNetTool:
         None
         '''
         filename, _filter = QFileDialog.getSaveFileName(
-            self.dlg, "Select output file ",dir, filetype)
+            self.dlg, self.tr("Select output file "),dir, filetype)
         lineEdit.setText(filename)
     
     def select_input_file(self, dir, lineEdit, filetype):
@@ -366,7 +367,7 @@ class HeatNetTool:
         None
         '''
         filename, _filter = QFileDialog.getOpenFileName(
-            self.dlg, "Select input file", dir, filetype)
+            self.dlg, self.tr("Select input file"), dir, filetype)
         if filename:  # Check if the user selected a file
             lineEdit.setText(filename)
 
@@ -431,7 +432,7 @@ class HeatNetTool:
             fheat_group = root.addGroup('F|Heat')
 
             # Define the subgroups
-            subgroups = ['Net', 'Heat Density', 'Adjusted Files', 'Basic Data']
+            subgroups = [self.tr('Net'), self.tr('Heat Density'), self.tr('Adjusted Files'), self.tr('Basic Data')]
             
             # Add each subgroup to 'FHeat'
             for subgroup in subgroups:
@@ -569,7 +570,7 @@ class HeatNetTool:
 
         if 'label' in gui_elements:
             label = gui_elements['label']
-            self.update_label(label, 'aborted due to error', '#ff5555')
+            self.update_label(label, self.tr('aborted due to error'), '#ff5555')
     
         # Show error in QMessageBox
         QMessageBox.critical(self.dlg, "Error", message)
@@ -641,6 +642,7 @@ class HeatNetTool:
 
         return loaded_layers
 
+    #obsolete
     def load_layers_to_combobox(self, combobox):
         '''
         Load names of all the loaded layers into a QComboBox.
@@ -720,6 +722,7 @@ class HeatNetTool:
         if layer_name in [layer.name() for layer in layers]:
             self.load_attributes_to_combobox(layer_name, getattr(self.dlg, combobox_out))
     
+    # obsolete
     def tab_change(self):
         '''
         Update ComboBoxes with loaded layers when the tab is changed.
@@ -787,16 +790,16 @@ class HeatNetTool:
         
 
         if self.dlg.load_lineEdit_buildings.text().strip() == "":
-            label_update.emit('Specify a file path for the buildings','orange')
+            label_update.emit(self.tr('Specify a file path for the buildings'),'orange')
 
         elif self.dlg.load_lineEdit_streets.text().strip() == "":
-            label_update.emit('Specify a file path for the strets','orange')
+            label_update.emit(self.tr('Specify a file path for the streets'),'orange')
 
         elif self.dlg.load_lineEdit_parcels.text().strip() == "":
-            label_update.emit('Specify a file path for the parcels','orange')
+            label_update.emit(self.tr('Specify a file path for the parcels'),'orange')
         
         else:
-            label_update.emit('Starting...','white')
+            label_update.emit(self.tr('Starting...'),'white')
 
             # URLs
             # buildings
@@ -814,7 +817,7 @@ class HeatNetTool:
                 name = self.dlg.load_comboBox_city.currentText()
                 parameter = 'city'
             else:
-                label_update.emit('please choose city or district','orange')
+                label_update.emit(self.tr('please choose city or district'),'orange')
                 return
             
             progress_update.emit(1) # update progressBar
@@ -826,7 +829,7 @@ class HeatNetTool:
             municipality_key = filtered_df['gmdschl'][0]
 
             progress_update.emit(5) # update progressBar
-            label_update.emit('Downloading...', 'white')
+            label_update.emit(self.tr('Downloading...'), 'white')
 
             # buildings shapes
             all_buildings_files = file_list_from_URL(url_buildings+'index.json')
@@ -835,7 +838,7 @@ class HeatNetTool:
             
             # Check if Data is found
             if buildings_zip == 'No data found':
-                label_update.emit('Error, no data found. Data source was possibly renamed.', '#ff5555')
+                label_update.emit(self.tr('Error, no data found. Data source was possibly renamed.'), '#ff5555')
                 return
             
             progress_update.emit(15) # update progressBar
@@ -857,7 +860,7 @@ class HeatNetTool:
                 key = row.schluessel
                 parcel_gdf_i, e = get_shape_from_wfs(url_parcels, key, bbox, layer_parcels)
                 if e == 1:
-                    label_update.emit(f'Too many parcels for key: {key}!\nMax. 100.000 parcels can be downloaded at once\nparcels incomplete', '#ff5555')
+                    label_update.emit(self.tr('Too many parcels for key: {}!\nMax. 100,000 parcels can be downloaded at once\nparcels incomplete').format(key), '#ff5555')
                 gdf_list_parcels.append(parcel_gdf_i)
             parcels_gdf = pd.concat(gdf_list_parcels, ignore_index=True)
 
@@ -890,7 +893,7 @@ class HeatNetTool:
         self.download_zensus_status = 0
 
         if self.dlg.load_lineEdit_zensus.text().strip() == "":
-            label_update.emit('Specify a file path for the Zensus data', 'orange')
+            label_update.emit(self.tr('Specify a file path for the Zensus data'), 'orange')
         else:
 
             # get name from combo box
@@ -901,10 +904,10 @@ class HeatNetTool:
                 name = self.dlg.load_comboBox_city.currentText()
                 parameter = 'city'
             else:
-                label_update.emit('please choose city or district', 'orange')
+                label_update.emit(self.tr('please choose city or district'), 'orange')
                 return
 
-            label_update.emit('Loading...', 'white')
+            label_update.emit(self.tr('Loading...'), 'white')
             
             progress_update.emit(1)
 
@@ -1025,7 +1028,7 @@ class HeatNetTool:
         self.adjust_files_status = 0
         
         progress_update.emit(0) # update progressBar
-        label_update.emit('Calculating...', 'white') # update label
+        label_update.emit(self.tr('Calculating...'), 'white') # update label
         
         # heat demand attribute
         heat_att = self.dlg.adjust_comboBox_heat.currentText()
@@ -1033,16 +1036,16 @@ class HeatNetTool:
         # bool to check if buildings are already adjusted
         self.bool_files_already_adjusted = None
 
-        if heat_att == 'Select Attribute':
-            label_update.emit('Please select an Attribute as heat demand.','orange')
+        if heat_att == self.tr('Select Attribute'):
+            label_update.emit(self.tr('Please select an Attribute as heat demand.'),'orange')
             return
         
         if self.dlg.adjust_radioButton_new.isChecked():
             if self.dlg.adjust_lineEdit_buildings.text().strip() == "":
-                label_update.emit('Specify a file path for the buildings','orange')
+                label_update.emit(self.tr('Specify a file path for the buildings'),'orange')
                 return
             if self.dlg.adjust_lineEdit_streets.text().strip() == "":
-                label_update.emit('Specify a file path for the streets','orange')
+                label_update.emit(self.tr('Specify a file path for the streets'),'orange')
                 return
 
         # building age classes
@@ -1062,7 +1065,7 @@ class HeatNetTool:
         # test if buildings already have been adjusted
         if 'Leistung_th [kW]' in buildings.gdf.columns:
             self.bool_files_already_adjusted = True
-            label_update.emit('Buildings already adjusted!', 'rgb(0, 255, 0)') # update label
+            label_update.emit(self.tr('Buildings already adjusted!'), 'rgb(0, 255, 0)') # update label
             progress_update.emit(100) # update progressBar
         else:
             self.bool_files_already_adjusted = False
@@ -1148,7 +1151,7 @@ class HeatNetTool:
         self.status_analysis_status = 0
 
         # feedback
-        label_update.emit('Calculating...', 'white')
+        label_update.emit(self.tr('Calculating...'), 'white')
 
         # layer from combo box
         streets_path, streets_layer_name, streets_layer_obj = self.get_layer_path_from_combobox(self.dlg.status_comboBox_streets)
@@ -1160,15 +1163,15 @@ class HeatNetTool:
         power_attribute = self.dlg.status_comboBox_power.currentText()
 
         # check if attributes and paths are selected correctly
-        if heat_attribute == 'Select Attribute':
-            label_update.emit('Please select an Attribute as heat demand.','orange')
+        if heat_attribute == self.tr('Select Attribute'):
+            label_update.emit(self.tr('Please select an Attribute as heat demand.'),'orange')
             return
-        if power_attribute == 'Select Attribute':
-            label_update.emit('Please select an Attribute as thermal power.','orange')
+        if power_attribute == self.tr('Select Attribute'):
+            label_update.emit(self.tr('Please select an Attribute as thermal power.'),'orange')
             return
         
         if self.dlg.status_lineEdit_polygons.text().strip() == "":
-            label_update.emit('Specify a file path for the heat density output','orange')
+            label_update.emit(self.tr('Specify a file path for the heat density output'),'orange')
             return
 
         # path from lineEdit
@@ -1297,7 +1300,7 @@ class HeatNetTool:
         self.network_analysis_status = 0
 
         # feedback
-        label_update.emit('Calculating...', 'white')
+        label_update.emit(self.tr('Calculating...'), 'white')
     
         # Temperatures from SpinBox
         t_supply = self.dlg.net_doubleSpinBox_supply.value()
@@ -1305,7 +1308,7 @@ class HeatNetTool:
 
         if t_supply <= t_return:
             # feedback
-            self.dlg.net_label_response.setText('The return temperature has to be smaller than the supply temperature!')
+            self.dlg.net_label_response.setText(self.tr('The return temperature has to be smaller than the supply temperature!'))
             self.dlg.net_label_response.setStyleSheet("color: #ff5555")
             self.dlg.net_label_response.repaint()
             return
@@ -1319,18 +1322,18 @@ class HeatNetTool:
         power_attribute = self.dlg.net_comboBox_power.currentText()
 
         # check if attributes and paths are selected correctly
-        if heat_attribute == 'Select Attribute':
-            label_update.emit('Please select an Attribute as heat demand.','orange')
+        if heat_attribute == self.tr('Select Attribute'):
+            label_update.emit(self.tr('Please select an Attribute as heat demand.'),'orange')
             return
-        if power_attribute == 'Select Attribute':
-            label_update.emit('Please select an Attribute as thermal power.','orange')
+        if power_attribute == self.tr('Select Attribute'):
+            label_update.emit(self.tr('Please select an Attribute as thermal power.'),'orange')
             return
 
         if self.dlg.net_lineEdit_net.text().strip() == "":
-            label_update.emit('Specify a file path for the net shapefile output','orange')
+            label_update.emit(self.tr('Specify a file path for the net shapefile output'),'orange')
             return
         if self.dlg.net_lineEdit_net.text().strip() == "":
-            label_update.emit('Specify a file path for the result file','orange')
+            label_update.emit(self.tr('Specify a file path for the result file'),'orange')
             return
        
         progress_update.emit(2) # update progressBar
@@ -1354,7 +1357,7 @@ class HeatNetTool:
 
         # Drop unwanted routes if existing
         try:
-            streets.gdf = streets.gdf[streets.gdf['possible_route']==1]
+            streets.gdf = streets.gdf[streets.gdf['Moegliche_Route']==1]
         except:
             pass
 
@@ -1399,7 +1402,7 @@ class HeatNetTool:
             disconnected_buildings = [centroid for centroid in building_centroids if centroid in disconnected_points]
             if disconnected_buildings:
                 # feedback
-                label_update.emit('Some Buildings are not connected to the street network! Please connect the nearest street to the street network by using the snapping tool or set the "possible_route"-attribute of their corresponding street to zero to connect them to another street.', '#ff5555')
+                label_update.emit(self.tr('Some Buildings are not connected to the street network! Please connect the nearest street to the street network by using the snapping tool or set the "Moegliche_Route/possoble_route"-attribute of their corresponding street to zero to connect them to another street.'), '#ff5555')
                 # save parameters as self attributes to plot in main thread
                 graph.start_point = start_point
                 graph.connected_points = connected_points
@@ -1538,7 +1541,7 @@ class HeatNetTool:
             self.project_dir = os.path.dirname(project_file_path)
         else:
             # feedback
-            label_update('This QGIS project has no valid directory!\nPlease save the project.', '#ff5555')
+            label_update(self.tr('This QGIS project has no valid directory!\nPlease save the project.'), '#ff5555')
             return
 
         # Load Profiles
@@ -1556,27 +1559,27 @@ class HeatNetTool:
         heat_attribute = self.dlg.net_comboBox_heat.currentText()
         power_attribute = self.dlg.net_comboBox_power.currentText()
 
-        # net path
-        net_path = self.dlg.net_lineEdit_net.text()
-        net_gdf = gpd.read_file(net_path)
-
         # check if attributes and paths are selected correctly
-        if heat_attribute == 'Select Attribute':
-            label_update.emit('Please select an Attribute as heat demand.','orange')
+        if heat_attribute == self.tr('Select Attribute'):
+            label_update.emit(self.tr('Please select an Attribute as heat demand.'),'orange')
             return
-        if power_attribute == 'Select Attribute':
-            label_update.emit('Please select an Attribute as thermal power.','orange')
+        if power_attribute == self.tr('Select Attribute'):
+            label_update.emit(self.tr('Please select an Attribute as thermal power.'),'orange')
             return
 
         if self.dlg.net_lineEdit_net.text().strip() == "":
-            label_update.emit('Specify a file path for the net shapefile output','orange')
+            label_update.emit(self.tr('Specify a file path for the net shapefile output'),'orange')
             return
         if self.dlg.net_lineEdit_result.text().strip() == "":
-            label_update.emit('Specify a file path for the result file','orange')
+            label_update.emit(self.tr('Specify a file path for the result file'),'orange')
             return
         
+        # net path
+        net_path = self.dlg.net_lineEdit_net.text()
+        net_gdf = gpd.read_file(net_path)
+        
         # feedback
-        label_update.emit('Calculating...', 'orange')
+        label_update.emit(self.tr('Calculating...'), 'white')
 
         # Instantiate classes
         buildings = Buildings(buildings_path, heat_attribute, buildings_layer)
@@ -1606,7 +1609,7 @@ class HeatNetTool:
 
         # Check if excel file is already open
         if result.is_excel_file_open():
-            label_update.emit('Excel result file is already open. Please close the result file to save new result.', 'orange')
+            label_update.emit(self.tr('Excel result file is already open. Please close the result file to save new result.'), 'orange')
             self.worker_running = False # Reset worker_running
             return
 
@@ -1732,7 +1735,7 @@ class HeatNetTool:
         '''
         # Chek if another process is already running
         if self.worker_running == True:
-            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            QMessageBox.warning(self.dlg, self.tr('Warning'), self.tr('A process is already running. Please wait for completion to start a new process.'))
             return
         
         gui_elements = {
@@ -1754,14 +1757,14 @@ class HeatNetTool:
                 self.parcels_gdf.to_file(parcels_path)
 
                 # Füge die Shapefiles zum QGIS Projekt hinzu
-                self.add_shapefile_to_project(parcels_path, style='parcels', group_name='Basic Data')
-                self.add_shapefile_to_project(buildings_path, style='buildings', group_name='Basic Data')
-                self.add_shapefile_to_project(streets_path, style='streets', group_name='Basic Data')
+                self.add_shapefile_to_project(parcels_path, style = 'parcels', group_name = self.tr('Basic Data'))
+                self.add_shapefile_to_project(buildings_path, style = 'buildings', group_name = self.tr('Basic Data'))
+                self.add_shapefile_to_project(streets_path, style = 'streets', group_name = self.tr('Basic Data'))
 
                 # GUI-Feedback aktualisieren
                 self.dlg.load_progressBar.setValue(100)
                 self.dlg.load_label_feedback.setStyleSheet("color: rgb(0, 255, 0)")
-                self.dlg.load_label_feedback.setText('Download complete!')
+                self.dlg.load_label_feedback.setText(self.tr('Download complete!'))
             # Reset worker_running
             self.worker_running = False
             
@@ -1772,7 +1775,7 @@ class HeatNetTool:
     def start_download_zensus(self):
         # check if another process is already running
         if self.worker_running == True:
-            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            QMessageBox.warning(self.dlg, self.tr('Warning'), self.tr('A process is already running. Please wait for completion to start a new process.'))
             return
         # define GUI elements
         gui_elements = {
@@ -1794,7 +1797,7 @@ class HeatNetTool:
                 # update progressBar
                 self.dlg.load_progressBar_zensus.setValue(100)
                 self.dlg.load_label_zensus.setStyleSheet("color: rgb(0, 255, 0)")
-                self.dlg.load_label_zensus.setText('Download complete!')
+                self.dlg.load_label_zensus.setText(self.tr('Download complete!'))
             # Reset worker_running
             self.worker_running = False
             
@@ -1804,7 +1807,7 @@ class HeatNetTool:
     def start_adjust_files(self):
         # check if another process is already running
         if self.worker_running == True:
-            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            QMessageBox.warning(self.dlg, self.tr('Warning'), self.tr('A process is already running. Please wait for completion to start a new process.'))
             return
         
         # import building_info ### Excel files have to be imported in main thread. Imports in background lead to a crasg because of windows acces violation
@@ -1835,18 +1838,18 @@ class HeatNetTool:
 
                 # check if files are overwritten or newly created
                 if self.dlg.adjust_radioButton_new.isChecked():
-                    self.add_shapefile_to_project(streets_path, style='streets_adj', group_name='Adjusted Files')
-                    self.add_shapefile_to_project(buildings_path, style='buildings_adj', group_name='Adjusted Files')
+                    self.add_shapefile_to_project(streets_path, style = 'streets_adj', group_name = self.tr('Adjusted Files'))
+                    self.add_shapefile_to_project(buildings_path, style = 'buildings_adj', group_name = self.tr('Adjusted Files'))
                 else:
                     QgsProject.instance().removeMapLayer(buildings_layer_obj)
                     QgsProject.instance().removeMapLayer(streets_layer_obj)
-                    self.add_shapefile_to_project(streets_path, style = 'streets', group_name='Adjusted Files')
-                    self.add_shapefile_to_project(buildings_path, style = 'buildings', group_name='Adjusted Files')
+                    self.add_shapefile_to_project(streets_path, style = 'streets', group_name = self.tr('Adjusted Files'))
+                    self.add_shapefile_to_project(buildings_path, style = 'buildings', group_name = self.tr('Adjusted Files'))
                 
                 self.dlg.adjust_progressBar.setValue(100) # update progressBar
 
                 self.dlg.adjust_label_feedback.setStyleSheet("color: rgb(0, 255, 0)")
-                self.dlg.adjust_label_feedback.setText('Completed!')
+                self.dlg.adjust_label_feedback.setText(self.tr('Completed!'))
                 self.dlg.adjust_label_feedback.repaint()
             # Reset worker_running
             self.worker_running = False
@@ -1856,7 +1859,7 @@ class HeatNetTool:
     def start_status_analysis(self):
         # check if another process is already running
         if self.worker_running == True:
-            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            QMessageBox.warning(self.dlg, self.tr('Warning'), self.tr('A process is already running. Please wait for completion to start a new process.'))
             return
         # define GUI elements
         gui_elements = {
@@ -1877,13 +1880,13 @@ class HeatNetTool:
                 self.polygons.to_file(polygon_path)
 
                 # add shapefiles to project
-                self.add_shapefile_to_project(streets_path, 'wld', 'Heat Density')
-                self.add_shapefile_to_project(polygon_path, 'polygons', 'Heat Density')
+                self.add_shapefile_to_project(streets_path, 'wld', self.tr('Heat Density'))
+                self.add_shapefile_to_project(polygon_path, 'polygons', self.tr('Heat Density'))
 
                 # update progressBar
                 self.dlg.status_progressBar.setValue(100)
                 self.dlg.status_label_response.setStyleSheet("color: rgb(0, 255, 0)")
-                self.dlg.status_label_response.setText('Complete!')
+                self.dlg.status_label_response.setText(self.tr('Completed!'))
 
             # Reset worker_running
             self.worker_running = False
@@ -1894,7 +1897,7 @@ class HeatNetTool:
     def start_network_analysis(self):
         # check if another process is already running
         if self.worker_running == True:
-            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            QMessageBox.warning(self.dlg, self.tr('Warning'), self.tr('A process is already running. Please wait for completion to start a new process.'))
             return
         
         # define GUI elements
@@ -1917,12 +1920,12 @@ class HeatNetTool:
                 self.net_gdf.to_file(net_path)
 
                 # load net as layer
-                self.add_shapefile_to_project(net_path, 'net', group_name='Net')
+                self.add_shapefile_to_project(net_path, 'net', group_name = self.tr('Net'))
 
                 # update progressBar
                 self.dlg.net_progressBar.setValue(100)
                 # feedback
-                self.dlg.net_label_response.setText('Completed')
+                self.dlg.net_label_response.setText(self.tr('Completed!'))
                 self.dlg.net_label_response.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.net_label_response.repaint()
             elif self.network_analysis_status == 'plot':
@@ -1936,7 +1939,7 @@ class HeatNetTool:
     def start_create_result(self):
         # check if another process is already running
         if self.worker_running == True:
-            QMessageBox.warning(self.dlg, 'Warning', 'A process is already running. Please wait for completion to start a new process.')
+            QMessageBox.warning(self.dlg, self.tr('Warning'), self.tr('A process is already running. Please wait for completion to start a new process.'))
             return
         
         # define GUI elements
@@ -1955,7 +1958,7 @@ class HeatNetTool:
 
             # chek if line edit is empty
             if temp_path.strip() == "":
-                self.dlg.net_label_response.setText('Specify a file path for your custom temperature or uncheck the box.')
+                self.dlg.net_label_response.setText(self.tr('Specify a file path for your custom temperature or uncheck the box.'))
                 self.dlg.net_label_response.setStyleSheet('color: orange')
                 self.dlg.net_label_response.repaint()
                 return
@@ -2002,7 +2005,7 @@ class HeatNetTool:
                 # update progressBar
                 self.dlg.net_progressBar.setValue(100)
                 # feedback
-                self.dlg.net_label_response.setText('Completed')
+                self.dlg.net_label_response.setText(self.tr('Completed!'))
                 self.dlg.net_label_response.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.net_label_response.repaint()
             # Reset worker_running
@@ -2042,8 +2045,8 @@ class HeatNetTool:
                 message_box = QMessageBox()
                 message_box.setIcon(QMessageBox.Warning)
                 message_box.setWindowTitle('Import Error')
-                message_box.setText(f'Failed to import a required module: {str(e)}')
-                message_box.setInformativeText('Please install all required Python packages by pressing "Install Packages" in the Introduction part of the F|Heat plugin.')
+                message_box.setText(self.tr('Failed to import a required module: {}').format(str(e)))
+                message_box.setInformativeText(self.tr('Please install all required Python packages by pressing "Install Packages" in the Introduction part of the F|Heat plugin.'))
                 message_box.exec_()
 
             # install python packages

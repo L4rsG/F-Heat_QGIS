@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>604</width>
-    <height>832</height>
+    <width>665</width>
+    <height>845</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -93,7 +93,7 @@ QTabWidget  &gt; QWidget &gt; QWidget  {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>565</width>
+        <width>626</width>
         <height>829</height>
        </rect>
       </property>
@@ -303,7 +303,7 @@ QRadioButton::indicator:checked {
              <property name="maximumSize">
               <size>
                <width>16777215</width>
-               <height>700</height>
+               <height>800</height>
               </size>
              </property>
              <property name="sizeAdjustPolicy">
@@ -1674,7 +1674,7 @@ p, li { white-space: pre-wrap; }
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>320</height>
+               <height>290</height>
               </size>
              </property>
              <property name="maximumSize">
