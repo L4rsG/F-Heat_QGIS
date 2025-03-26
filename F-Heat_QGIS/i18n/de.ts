@@ -405,7 +405,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="940"/>
         <source>Adjust Files</source>
-        <translation>Daten anpassen</translation>
+        <translation>Dateien anpassen</translation>
     </message>
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="956"/>
@@ -491,7 +491,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="1769"/>
         <source>Network Analysis</source>
-        <translation>Netz-Analyse</translation>
+        <translation>Netzberechnung</translation>
     </message>
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="2191"/>
@@ -501,7 +501,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="2088"/>
         <source>Result Output</source>
-        <translation>Ergebnis-Tabelle</translation>
+        <translation>Ergebnisabelle</translation>
     </message>
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="2194"/>
@@ -566,12 +566,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="2294"/>
         <source>Create Result File</source>
-        <translation>Ergebnis-Tabelle erstellen</translation>
+        <translation>Ergebnistabelle erstellen</translation>
     </message>
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="2613"/>
         <source>Start Network Analysis</source>
-        <translation>Netzwerkanalyse starten</translation>
+        <translation>Netzberechnung starten</translation>
     </message>
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="25"/>
@@ -846,7 +846,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Arial&apos;,&apos;sans-serif&apos;; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Wählen Sie Verzeichnisse für die Netz-Shapedatei und die Ergebnis-Tabelle&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Wählen Sie Verzeichnisse für die Wärmenetz-Shapedatei und die Ergebnistabelle&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="2706"/>
@@ -877,7 +877,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="2212"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Two files are generated during the network calculation: firstly, the heating network as a vector layer, where the routes are mapped via the road center line. The user can then, for example, visualize the pipe dimensions or adjust the routing. Secondly, an Excel table (&amp;quot;Result Output&amp;quot;) is generated, displaying the network parameters, statistics, and load profile.&lt;/p&gt;&lt;p&gt;Set a directory by pressing the (:::)-Button. &lt;/p&gt;&lt;p&gt;The filname must not contain square brackets &apos;[]&apos;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zwei Dateien werden während der Netzberechnung erzeugt: Erstens das Wärmenetz als Vektorebene, wo die Routen über die Straßenmittellinie abgebildet werden. Der Benutzer kann dann beispielsweise die Rohrdimensionen visualisieren oder die Routengestaltung anpassen. Zweitens wird eine Excel-Tabelle (&quot;Ergebnis-Tabelle&quot;) erstellt, die die Netzwerkparameter, Statistiken und das Lastprofil anzeigt.&lt;/p&gt;&lt;p&gt;Legen Sie ein Verzeichnis fest, indem Sie die (:::)-Schaltfläche drücken. &lt;/p&gt;&lt;p&gt;Der Dateiname darf keine eckigen Klammern &apos;[]&apos; enthalten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zwei Dateien werden während der Netzberechnung erzeugt: Erstens das Wärmenetz als Vektorebene, wo die Routen über die Straßenmittellinie abgebildet werden. Der Benutzer kann dann beispielsweise die Rohrdimensionen visualisieren oder die Routengestaltung anpassen. Zweitens wird eine Excel-Tabelle (&quot;Ergebnistabelle&quot;) erstellt, die die Netzwerkparameter, Statistiken und das Lastprofil anzeigt.&lt;/p&gt;&lt;p&gt;Legen Sie ein Verzeichnis fest, indem Sie die (:::)-Schaltfläche drücken. &lt;/p&gt;&lt;p&gt;Der Dateiname darf keine eckigen Klammern &apos;[]&apos; enthalten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="964"/>
