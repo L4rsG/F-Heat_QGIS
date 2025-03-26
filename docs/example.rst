@@ -115,7 +115,7 @@ The full procedure is shown here using a complete example.
         :align: center
 
 
-#. Set the file path for the heat density building blocks. The heat line attribute will be added to the adjusted streets.
+#. Set the file path for the heat density building blocks. The heat line density attribute will be added to the adjusted streets.
 
     .. figure:: images//example/6status3.png
         :alt: 6status3.png
