@@ -1011,9 +1011,12 @@ class Result:
             adjusted_width = (max_length+1)
             ws.column_dimensions[column].width = adjusted_width
         wb.save(self.path)
-    
+        
     def is_excel_file_open(self):
-        """Checks if the Excel file is currently open."""
+        """Checks if the Excel file can be written to."""
+        if not os.path.exists(self.path):
+            return False  # The file doesn't exist, thus not open
+        
         try:
             # Attempt to open the file in read/write mode
             with open(self.path, 'r+'):
