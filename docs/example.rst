@@ -313,7 +313,7 @@ The full procedure is shown here using a complete example.
           :width: 100 %
           :align: center
 
-      Toggle editing mode and change the value under `possible_route` from 1 to 0.
+      Toggle editing mode and change the value under `possible_route / Moegliche_Route` from 1 to 0.
 
       .. figure:: images//example/9netanalysis11.png
           :alt: 9netanalysis11.png
@@ -350,7 +350,7 @@ The full procedure is shown here using a complete example.
           :width: 100 %
           :align: center
 
-      Right-click to exit drawing mode. The `Feature Attributes` Window will appear. Scroll down and enter a 1 for the `possible_route` attribute. Press OK and toggle the editing mode again to save the layer.
+      Right-click to exit drawing mode. The `Feature Attributes` Window will appear. Scroll down and enter a 1 for the `possible_route / Moegliche_Route` attribute. Press OK and toggle the editing mode again to save the layer.
 
       .. figure:: images//example/9netanalysis16.png
           :alt: 9netanalysis16.png
@@ -411,14 +411,14 @@ The full procedure is shown here using a complete example.
         :width: 100 %
         :align: center
 
-#. Do not forget to enter 1 at `possible_route` in the feature attributes. 
+#. Do not forget to enter 1 at `possible_route / Moegliche_Route` in the feature attributes. 
 
     .. figure:: images//example/9netanalysis24.png
         :alt: 9netanalysis24.png
         :width: 100 %
         :align: center
 
-#. In addition, we can select the nearby streets that we do not want to include as routes and enter 0 for their `possible_route` attribute. Do not forget to toggle the editing mode once you are finished to save the layer.
+#. In addition, we can select the nearby streets that we do not want to include as routes and enter 0 for their `possible_route / Moegliche_Route` attribute. Do not forget to toggle the editing mode once you are finished to save the layer.
 
     .. figure:: images//example/9netanalysis25.png
         :alt: 9netanalysis25.png
