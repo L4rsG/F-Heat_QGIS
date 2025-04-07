@@ -9,4 +9,4 @@ F|Heat utilizes several open-source libraries, including:
 - **Pandas**: Operations on large datasets.
 - **NetworkX**: Creation of graphs for network design.
 
-Refer to the `requirements.txt` for the complete list of dependencies.
+Refer to the `requirements.txt` for the complete list of dependencies and versions.

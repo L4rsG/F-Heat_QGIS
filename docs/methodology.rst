@@ -40,3 +40,5 @@ References
 ----------
 
 .. [1] Nussbaumer, T., Thalmann S. (2016). Influence of system design on heat distribution costs in district heating. Energy, 230, 496–505. https://doi.org/10.1016/j.energy.2016.02.062.
+..
+    additional references here if needed like LANUV or KWW
