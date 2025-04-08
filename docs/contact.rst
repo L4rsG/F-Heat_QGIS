@@ -1,13 +1,6 @@
 Contact
 =======
 
-For organizational matters, please contact:
+If you have any other questions, suggestions, or feedback regarding the use of the F|HEAT software, please feel free to reach out to us.
 
-- **Hinnerk Willenbrink** - willenbrink@fh-muenster.de
-- **Prof. Elmar Brügging** - bruegging@fh-muenster.de
-- **Mark Scheffler** - mark.scheffler@fh-muenster.de 
-
-For technical documentation and development, please contact:
-
-- **Lars Goray** - lars.goray@fh-muenster.de
-- **Philipp Sommer** - philipp.sommer@fh-muenster.de
+📧 **Email:** `fheat@fh-muenster.de <mailto:fheat@fh-muenster.de>`_
