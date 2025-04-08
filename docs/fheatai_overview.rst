@@ -18,29 +18,28 @@ These components are provided together in a package, whereby each system compone
 F|Heat.map
 ----------
 
-**F|Heat.map** is responsible for the procurement, enrichment, aggregation, and visualization of building and road data in compliance with federal guidelines. It allows for:
+**F|Heat.map** is responsible for the procurement, enrichment, aggregation, and visualization of building and road data in compliance with federal guidelines.
+It allows for:
 
 - Automated process based on NRW's data structure.
-- Mapping potentials such as areas for solar thermal energy and geothermal energy.
-- Determining and visualizing the "socio-economically best solution" for the analyzed municipality.
+- Additional loading of the 2022 census data
+- Visualisation of heat density on building blocks and as heat line density
 
 F|Heat.net
 ----------
 
-**F|Heat.net** handles the conceptual design, layout, and visualization of heating networks. It includes:
+**F|Heat.net** handles the conceptual design, layout, and visualization of heating networks.
+It includes:
 
 - Design of radiant heating networks with specific flow temperatures.
-- Cost estimation for pipe construction.
-- Future improvements such as meshed grids, multiple feeders, and anergy networks.
 
 F|Heat.tec
 ----------
 
-**F|Heat.tec** aggregates and visualizes annual heat demand data and network areas. It provides tools for:
+**F|Heat.tec** aggregates and visualizes annual heat demand data and network areas.
+It provides tools for:
 
-- Automated storage calculation.
-- Suggestions for storage locations based on annual values.
-- Integration with other components for comprehensive planning.
+- Heating demand calculation as an hourly annual curve and an ordered load profile.
 
 .. _dev_roadmap:
 
@@ -83,7 +82,7 @@ Version 1.0.0
 +-----------------+----------------------------------------------------------------------------------+
 | F|Heat.net      | Improved network design (dimensioning and routing).                              |
 +-----------------+----------------------------------------------------------------------------------+
-| F|Heat.tec      | (automated) heat storage calculation.                                            |
+| F|Heat.tec      | (automated) heat storage calculation and improvements for load profiles VDI 4655 |
 +-----------------+----------------------------------------------------------------------------------+
 
 

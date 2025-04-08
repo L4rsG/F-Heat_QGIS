@@ -99,7 +99,7 @@ and refer to \autoref{eq:fourier} from text.
 # Conclusion and outlook
 
 <!-- Further instructions for "citations" and including "figures". Delete sections after editing-->
-# Citations
+<!-- # Citations -->
 
 <!-- Citations to entries in paper.bib should be in
 [rMarkdown](https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html) format.
