@@ -4,12 +4,12 @@
 <context>
     <name>HeatNetTool</name>
     <message>
-        <location filename="../heat_net_tool.py" line="664"/>
+        <location filename="../heat_net_tool.py" line="671"/>
         <source>Select Layer</source>
         <translation>Layer auswählen</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1566"/>
+        <location filename="../heat_net_tool.py" line="1573"/>
         <source>Select Attribute</source>
         <translation>Attribut auswählen</translation>
     </message>
@@ -24,82 +24,82 @@
         <translation>F|Heat</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="281"/>
+        <location filename="../heat_net_tool.py" line="288"/>
         <source>Starting Installation. Check cmd for progress.</source>
         <translation>Starte Installation. Siehe Eingabeaufforderung (CMD) für Fortschritt.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="314"/>
+        <location filename="../heat_net_tool.py" line="321"/>
         <source>Process finished or aborted.</source>
         <translation>Prozess abgeschlossen oder abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="348"/>
+        <location filename="../heat_net_tool.py" line="355"/>
         <source>Select output file </source>
         <translation>Ausgabedatei auswählen </translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="369"/>
+        <location filename="../heat_net_tool.py" line="376"/>
         <source>Select input file</source>
         <translation>Eingabedatei wählen</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1923"/>
+        <location filename="../heat_net_tool.py" line="1936"/>
         <source>Net</source>
         <translation>Netz</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1884"/>
+        <location filename="../heat_net_tool.py" line="1896"/>
         <source>Heat Density</source>
         <translation>Wärmedichte</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1847"/>
+        <location filename="../heat_net_tool.py" line="1858"/>
         <source>Adjusted Files</source>
         <translation>Angepasste Daten</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1762"/>
+        <location filename="../heat_net_tool.py" line="1771"/>
         <source>Basic Data</source>
         <translation>Rohdaten</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="573"/>
+        <location filename="../heat_net_tool.py" line="580"/>
         <source>aborted due to error</source>
         <translation>Abgebrochen wegen eines Fehlers</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1045"/>
+        <location filename="../heat_net_tool.py" line="1052"/>
         <source>Specify a file path for the buildings</source>
         <translation>Geben Sie einen Dateipfad für die Gebäude an</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="799"/>
+        <location filename="../heat_net_tool.py" line="806"/>
         <source>Specify a file path for the parcels</source>
         <translation>Geben Sie einen Dateipfad für die Flurstücke an</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="802"/>
+        <location filename="../heat_net_tool.py" line="809"/>
         <source>Starting...</source>
         <translation>Starte...</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="907"/>
+        <location filename="../heat_net_tool.py" line="914"/>
         <source>please choose city or district</source>
         <translation>bitte Stadt oder Bezirk wählen</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="832"/>
+        <location filename="../heat_net_tool.py" line="839"/>
         <source>Downloading...</source>
         <translation>Lade Daten...</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="841"/>
+        <location filename="../heat_net_tool.py" line="848"/>
         <source>Error, no data found. Data source was possibly renamed.</source>
         <translation>Fehler, keine Daten gefunden. Die Datenquelle wurde möglicherweise umbenannt.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="863"/>
+        <location filename="../heat_net_tool.py" line="870"/>
         <source>Too many parcels for key: {}!
 Max. 100,000 parcels can be downloaded at once
 parcels incomplete</source>
@@ -108,111 +108,121 @@ Max. 100.000 Pakete können auf einmal heruntergeladen werden
 Flurstücke unvollständig</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="896"/>
+        <location filename="../heat_net_tool.py" line="903"/>
         <source>Specify a file path for the Zensus data</source>
         <translation>Geben Sie einen Dateipfad für die Zensusdaten an</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="910"/>
+        <location filename="../heat_net_tool.py" line="917"/>
         <source>Loading...</source>
         <translation>Laden...</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1582"/>
+        <location filename="../heat_net_tool.py" line="1589"/>
         <source>Calculating...</source>
         <translation>Berechnen...</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1564"/>
+        <location filename="../heat_net_tool.py" line="1571"/>
         <source>Please select an Attribute as heat demand.</source>
         <translation>Bitte Attribut für Wärmebedarf wählen.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1048"/>
+        <location filename="../heat_net_tool.py" line="1055"/>
         <source>Specify a file path for the streets</source>
         <translation>Geben Sie einen Dateipfad für die Straßen an</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1068"/>
+        <location filename="../heat_net_tool.py" line="1075"/>
         <source>Buildings already adjusted!</source>
         <translation>Die Gebäude sind bereits angepasst!</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1567"/>
+        <location filename="../heat_net_tool.py" line="1574"/>
         <source>Please select an Attribute as thermal power.</source>
         <translation>Bitte Attribut für thermische Leistung wählen.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1174"/>
+        <location filename="../heat_net_tool.py" line="1181"/>
         <source>Specify a file path for the heat density output</source>
         <translation>Geben Sie einen Dateipfad für die Wärmedichte-Blöcke an</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1311"/>
+        <location filename="../heat_net_tool.py" line="1318"/>
         <source>The return temperature has to be smaller than the supply temperature!</source>
         <translation>Die Rücklauftemperatur muss geringer als die Vorlauftemperatur sein!</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1571"/>
+        <location filename="../heat_net_tool.py" line="1578"/>
         <source>Specify a file path for the net shapefile output</source>
         <translation>Geben Sie einen Dateipfad für die Wärmenetz-Shapefile an</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1574"/>
+        <location filename="../heat_net_tool.py" line="1581"/>
         <source>Specify a file path for the result file</source>
         <translation>Geben Sie einen Dateipfad für die Ergebnisdatei an</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1544"/>
+        <location filename="../heat_net_tool.py" line="1551"/>
         <source>This QGIS project has no valid directory!
 Please save the project.</source>
         <translation>Dieses QGIS-Projekt hat kein gültiges Verzeichnis!
 Bitte speichern Sie das Projekt.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1612"/>
+        <location filename="../heat_net_tool.py" line="1619"/>
         <source>Excel result file is already open. Please close the result file to save new result.</source>
         <translation>Die Ergebnistabelle ist in Excel geöffnet. Bitte schließen Sie die Tabelle, um ein neues Ergebnis zu speichern.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1942"/>
+        <location filename="../heat_net_tool.py" line="1956"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1942"/>
+        <location filename="../heat_net_tool.py" line="1956"/>
         <source>A process is already running. Please wait for completion to start a new process.</source>
         <translation>Es läuft bereits ein Prozess. Bitte warten Sie auf den Abschluss, um einen neuen Prozess zu starten.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1800"/>
+        <location filename="../heat_net_tool.py" line="1810"/>
         <source>Download complete!</source>
         <translation>Download abgeschlossen!</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="2008"/>
+        <location filename="../heat_net_tool.py" line="2023"/>
         <source>Completed!</source>
         <translation>Prozess fertiggestellt!</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1961"/>
+        <location filename="../heat_net_tool.py" line="1975"/>
         <source>Specify a file path for your custom temperature or uncheck the box.</source>
         <translation>Geben Sie einen Dateipfad für die Temperaturdaten an oder wählen Sie die Box ab.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="2048"/>
+        <location filename="../heat_net_tool.py" line="2063"/>
         <source>Failed to import a required module: {}</source>
         <translation>Ein erforderliches Modul konnte nicht importiert werden: {}</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="2049"/>
+        <location filename="../heat_net_tool.py" line="2064"/>
         <source>Please install all required Python packages by pressing &quot;Install Packages&quot; in the Introduction part of the F|Heat plugin.</source>
         <translation>Bitte installieren Sie alle benötigten Python-Pakete, indem Sie im Einleitungsteil des F|Heat-Plugins auf „Pakete installieren“ klicken.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool.py" line="1405"/>
+        <location filename="../heat_net_tool.py" line="1412"/>
         <source>Some Buildings are not connected to the street network! Please connect the nearest street to the street network by using the snapping tool or set the &quot;Moegliche_Route/possoble_route&quot;-attribute of their corresponding street to zero to connect them to another street.</source>
         <translation>Einige Gebäude sind nicht mit dem Straßennetz verbunden! Bitte verbinden Sie die nächstgelegene Straße mit dem Straßennetz, indem Sie das Einrastwerkzeug verwenden oder setzen Sie das „Moegliche_Route“-Attribut der entsprechenden Straße auf Null, um das Gebäude mit einer anderen Straße zu verbinden.</translation>
+    </message>
+    <message>
+        <location filename="../heat_net_tool.py" line="271"/>
+        <source>Your QGIS python version is {python_version}</source>
+        <translation type="obsolete">Ihre QGIS-Pythonversion ist {python_version}</translation>
+    </message>
+    <message>
+        <location filename="../heat_net_tool.py" line="271"/>
+        <source>Your QGIS python version is: </source>
+        <translation>Ihre QGIS-Pythonversion ist: </translation>
     </message>
 </context>
 <context>
@@ -288,42 +298,42 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:7.8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="377"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="393"/>
         <source>Install Packages</source>
-        <translation>Packete installieren</translation>
+        <translation>Pakete installieren</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="423"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="439"/>
         <source>Download Files</source>
         <translation>Dateien herunterladen</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="443"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="459"/>
         <source>Download Zensus Data</source>
         <translation>Zensusdaten herunterladen</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2526"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2542"/>
         <source>Streets</source>
         <translation>Straßen</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2672"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2688"/>
         <source>...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1265"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1281"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set a directory by pressing the (...)-Button. &lt;/p&gt;&lt;p&gt;The filname must not contain square brackets [ ].&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legen Sie ein Verzeichnis fest, indem Sie die (...)-Schaltfläche drücken. &lt;/p&gt;&lt;p&gt;Der Dateiname darf keine eckigen Klammern [ ] enthalten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2404"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2420"/>
         <source>Buildings</source>
         <translation>Gebäude</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1542"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1558"/>
         <source>Parcels</source>
         <translation>Flurstücke</translation>
     </message>
@@ -362,12 +372,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Flurstücke werden heruntergeladen von: &lt;br /&gt;https://www.wfs.nrw.de/geobasis/wfs_nw_inspire-flurstuecke_alkis&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="759"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="775"/>
         <source>City</source>
         <translation>Stadt</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="766"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="782"/>
         <source>District</source>
         <translation>Stadtteil</translation>
     </message>
@@ -398,12 +408,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Optionale Daten für die Planung:&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; Laden Sie Zensus2022-Daten zu Heizungsart und Energiequelle als Geopackage herunter.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="906"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="922"/>
         <source>Start Download</source>
         <translation>Download starten</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="940"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="956"/>
         <source>Adjust Files</source>
         <translation>Dateien anpassen</translation>
     </message>
@@ -449,127 +459,127 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;- Attribut &apos;mögliche Route&apos; wird hinzugefügt, um die Netzwerkstruktur zu beeinflussen&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1516"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1532"/>
         <source>Heat Demand</source>
         <translation>Wärmebedarf</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1236"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1252"/>
         <source>save new files:</source>
         <translation>Neue Dateien speichern:</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1246"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1262"/>
         <source>overwrite old shapes</source>
         <translation>Alte Dateien überschreiben</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1745"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1761"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1380"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1396"/>
         <source>Status Analysis</source>
         <translation>Bestandsanalyse</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2072"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2088"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set a directory by pressing the (...)-Button. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legen Sie ein Verzeichnis fest, indem Sie die (...)-Schaltfläche drücken. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1485"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1501"/>
         <source>Heat Density Output</source>
         <translation>Wärmedichte-Blöcke</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1619"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1635"/>
         <source>Power_th</source>
         <translation>Thermische Leistung</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1769"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1785"/>
         <source>Network Analysis</source>
         <translation>Netzberechnung</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2191"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2207"/>
         <source>Two files are generated during the network calculation: firstly, the heating network as a vector layer, where the routes are mapped via the road center line. The user can then, for example, visualize the pipe dimensions or adjust the routing. Secondly, an Excel table (&quot;Result Output&quot;) is generated, displaying the network parameters, statistics, and load profile.</source>
         <translation>Zwei Dateien werden während der Berechnung des Netzwerks erzeugt: Erstens das Wärmenetz als Vektorebene, bei der die Routen über die Straßenmittellinie abgebildet werden. Der Benutzer kann dann beispielsweise die Rohrdimensionen visualisieren oder die Routengestaltung anpassen. Zweitens wird eine Excel-Tabelle erstellt, die die Netzwerkparameter, Statistiken und das Lastprofil anzeigt.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2088"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2104"/>
         <source>Result Output</source>
         <translation>Ergebnisabelle</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2194"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2210"/>
         <source>Net Output</source>
         <translation>Wärmenetz</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2645"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2661"/>
         <source>Use own temperature data for load curve</source>
         <translation>Eigene Temperaturdaten für die Lastkurve wählen</translation>
     </message>
     <message>
         <location filename="../heat_net_tool_dialog_base.ui" line="1960"/>
         <source>The design is carried out for a district heating system within a specific temperature range. Anergy / LowEx networks and high-temperature / Steam networks are not designed, so for the flow temperature range only values between 60 and 90 degrees Celsius can be selected. The return temperature must then of course be selected in the corresponding range.</source>
-        <translation>Die Auslegung erfolgt für ein Wärmenetz innerhalb eines bestimmten Temperaturbereichs. Anergie-/LowEx-Netze und Hochtemperatur-/Dampf-Netze sind nicht ausgelegt, so dass für den Vorlauftemperaturbereich nur Werte zwischen 60 und 90 Grad Celsius gewählt werden können. Die Rücklauftemperatur muss dann natürlich in dem entsprechenden Bereich gewählt werden.</translation>
+        <translation type="obsolete">Die Auslegung erfolgt für ein Wärmenetz innerhalb eines bestimmten Temperaturbereichs. Anergie-/LowEx-Netze und Hochtemperatur-/Dampf-Netze sind nicht ausgelegt, so dass für den Vorlauftemperaturbereich nur Werte zwischen 60 und 90 Grad Celsius gewählt werden können. Die Rücklauftemperatur muss dann natürlich in dem entsprechenden Bereich gewählt werden.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1839"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1855"/>
         <source>Return Temperature:</source>
         <translation>Rücklauftemperatur:</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1886"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1902"/>
         <source>Supply Temperature:</source>
         <translation>Vorlauftemperatur:</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1963"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1979"/>
         <source>°C</source>
         <translation>°C</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2367"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2383"/>
         <source>    Heat Demand</source>
         <translation>Wärmebedarf</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2426"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2442"/>
         <source>Source</source>
         <translation>Quelle</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2454"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2470"/>
         <source>    Power_th</source>
         <translation>Therm. Leistung</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2241"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2257"/>
         <source>1.</source>
         <translation>1.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2789"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2805"/>
         <source>Area</source>
         <translation>Gebiet</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2010"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2026"/>
         <source>2.</source>
         <translation>2.</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2294"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2310"/>
         <source>Create Result File</source>
         <translation>Ergebnistabelle erstellen</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2613"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2629"/>
         <source>Start Network Analysis</source>
         <translation>Netzberechnung starten</translation>
     </message>
@@ -678,7 +688,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline;&quot;&gt;Network Analysis&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;The buildings are connected to a heat source specified by the user. The resulting network is saved as a shapefile and a summary of the net is also saved as en excel file.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Arial&apos;,&apos;sans-serif&apos;; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -713,7 +723,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="673"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="689"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -726,7 +736,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Wählen Sie ein Verzeichnis für die Shapefiles&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="699"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="715"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -747,7 +757,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Flurstücke werden heruntergeladen von: &lt;br /&gt;https://www.wfs.nrw.de/geobasis/wfs_nw_inspire-flurstuecke_alkis&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="795"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="811"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -760,7 +770,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Wählen Sie eine Stadt oder einen einzelnen Stadtteil&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="875"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="891"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -773,7 +783,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Optionale Daten für die Planung:&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; Laden Sie Zensus2022-Daten zu Heizungsart und Energiequelle als Geopackage herunter.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1474"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1490"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -786,7 +796,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:9pt;&quot;&gt;Wählen Sie ein Verzeichnis für die Wärmedichte-Blöcke&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1567"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1583"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -836,7 +846,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;Andernfalls werden die Fläche der Polygone und die Länge der Straßen möglicherweise nicht in Metern berechnet.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2215"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2231"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -849,7 +859,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Wählen Sie Verzeichnisse für die Wärmenetz-Shapedatei und die Ergebnistabelle&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2706"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2722"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -862,7 +872,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Ein Temperaturprofil wird benötigt, um das Lastprofil zu erstellen. Sie können Ihre eigenen Temperaturdaten wählen, indem Sie das Kästchen ankreuzen und eine Datei auswählen. Überprüfen Sie die F|Heat-Dokumentation für die korrekte Datenstruktur. Alternativ wird ein Standard-Temperaturprofil von der Wetterstation &apos;Münster/Osnabrück&apos; verwendet.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2747"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2763"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -875,12 +885,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Wählen Sie, ob alle Gebäude oder nur diejenigen in einem Gebiet berücksichtigt werden sollen, indem Sie das Kästchen umschalten und gegebenenfalls eine Polygondatei auswählen.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2212"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2228"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Two files are generated during the network calculation: firstly, the heating network as a vector layer, where the routes are mapped via the road center line. The user can then, for example, visualize the pipe dimensions or adjust the routing. Secondly, an Excel table (&amp;quot;Result Output&amp;quot;) is generated, displaying the network parameters, statistics, and load profile.&lt;/p&gt;&lt;p&gt;Set a directory by pressing the (:::)-Button. &lt;/p&gt;&lt;p&gt;The filname must not contain square brackets &apos;[]&apos;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zwei Dateien werden während der Netzberechnung erzeugt: Erstens das Wärmenetz als Vektorebene, wo die Routen über die Straßenmittellinie abgebildet werden. Der Benutzer kann dann beispielsweise die Rohrdimensionen visualisieren oder die Routengestaltung anpassen. Zweitens wird eine Excel-Tabelle (&quot;Ergebnistabelle&quot;) erstellt, die die Netzwerkparameter, Statistiken und das Lastprofil anzeigt.&lt;/p&gt;&lt;p&gt;Legen Sie ein Verzeichnis fest, indem Sie die (:::)-Schaltfläche drücken. &lt;/p&gt;&lt;p&gt;Der Dateiname darf keine eckigen Klammern &apos;[]&apos; enthalten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="964"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="980"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -958,7 +968,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;Andernfalls werden die Fläche der Polygone und die Länge der Straßen möglicherweise nicht in Metern berechnet.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="2313"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="2329"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -971,7 +981,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;Das Planungsgebiet für das Wärmenetz und die Heizzentrale muss vom Benutzer in QGIS erstellt werden. Die Quelle muss eine Punkt-Ebene und das Planungsgebiet eine Polygon-Ebene sein.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../heat_net_tool_dialog_base.ui" line="1687"/>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1703"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1006,6 +1016,87 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;Vergewissern Sie sich, dass Sie ein projiziertes Koordinatensystem wie UTM32N [EPSG:25832] verwenden.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;Andernfalls werden die Fläche der Polygone und die Länge der Straßen möglicherweise nicht in Metern berechnet.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../heat_net_tool_dialog_base.ui" line="313"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Arial&apos;,&apos;sans-serif&apos;; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;This plugin facilitates municipal heat planning by providing users with access to various Python libraries within QGIS, eliminating the need for programming expertise. It streamlines the heat planning process by automating tasks such as data download, file adjustment, and network analysis.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;To ensure that the required packages are installed, please click on &amp;quot;Install Packages&amp;quot; at the bottom of this page. You either need administrator rights or have the same python version installed as used by QGIS. This will automatically install the necessary Python libraries: &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;geopandas, OWSLib, pandas, fiona, numpy, networkx, matplotlib, openpyxl, demandlib, workalendar&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;Alternatively, you can follow the steps from this guide and install the libraries yourself:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://landscapearchaeology.org/2018/installing-python-packages-in-qgis-3-for-windows/&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline; color:#3978ff;&quot;&gt;https://landscapearchaeology.org/2018/installing-python-packages-in-qgis-3-for-windows/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;See the F|Heat documentation or our german website for further information:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://fheat.readthedocs.io/en/latest/index.html&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline; color:#3978ff;&quot;&gt;https://fheat.readthedocs.io/en/latest/index.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://fheat.readthedocs.io/en/latest/index.html&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline; color:#3978ff;&quot;&gt;https://www.fh-muenster.de/de/fheat/index&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline; color:#3978ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Since this plugin is tailored to NRW, Germany, all attributes of the generated shape files are translated into German. See the documentation for an explanation of the attributes.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;The plugin is divided into four tabs.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;- Download Files and Adjust Files are tailored for use in NRW, Germany.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;- Status Analysis, Network Analysis can also be used with other shape files, as long as they contain the necessary attributes.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline;&quot;&gt;Download Files&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;The plugin starts at the very beginning of the planning process by first downloading the shapefiles of the buildings, parcels and streets of the city or municipality to be analyzed.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline;&quot;&gt;Adjust Files&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;The shapefiles are adjusted for usage in further calculations. Various attributes are added.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline;&quot;&gt;Status Analysis&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Heat line density is added to the streets shapefile. Then the parcels of neighboring buildings are merged into a larger polygon and supplemented with attributes to help finding suitable areas for heating networks.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline;&quot;&gt;Network Analysis&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;The buildings are connected to a heat source specified by the user. The resulting network is saved as a shapefile and a summary of the net is also saved as en excel file.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Arial&apos;,&apos;sans-serif&apos;; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Dieses Plugin erleichtert die kommunale Wärmeplanung, indem es den Nutzern Zugang zu verschiedenen Python-Bibliotheken innerhalb von QGIS bietet, ohne dass Programmierkenntnisse erforderlich sind. Es optimiert den Wärmeplanungsprozess, indem es Aufgaben wie das Herunterladen von Daten, die Anpassung von Dateien und die Netzwerkanalyse automatisiert.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;Um sicherzustellen, dass die erforderlichen Pakete installiert sind, klicken Sie bitte auf &apos;Pakete installieren&apos; am Ende dieser Seite. Sie benötigen entweder Administratorrechte oder müssen dieselbe Python-Version installiert haben, die von QGIS verwendet wird. Dies installiert automatisch die notwendigen Python-Bibliotheken:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;geopandas, OWSLib, pandas, fiona, numpy, networkx, matplotlib, openpyxl, demandlib, workalendar&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;Alternativ können Sie die Schritte aus diesem Leitfaden befolgen und die Bibliotheken selbst installieren:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://landscapearchaeology.org/2018/installing-python-packages-in-qgis-3-for-windows/&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline; color:#3978ff;&quot;&gt;https://landscapearchaeology.org/2018/installing-python-packages-in-qgis-3-for-windows/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; font-weight:600;&quot;&gt;Siehe die F|Heat-Dokumentation oder unsere deutsche Webseite für weitere Informationen:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://fheat.readthedocs.io/en/latest/index.html&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline; color:#3978ff;&quot;&gt;https://fheat.readthedocs.io/en/latest/index.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;https://www.fh-muenster.de/de/fheat/index&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline; color:#3978ff;&quot;&gt;https://www.fh-muenster.de/de/fheat/index&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline; color:#3978ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Da dieses Plugin speziell auf NRW, Deutschland zugeschnitten ist, sind alle Attribute der generierten Shapefiles ins Deutsche übersetzt. Eine Erläuterung der Attribute finden Sie in der Dokumentation.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Das Plugin ist in vier Registerkarten unterteilt.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;- Dateien herunterladen und Dateien anpassen sind für den Einsatz in NRW, Deutschland angepasst.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;- Statusanalyse, Netzwerkanalyse können auch mit anderen Shapefiles verwendet werden, solange diese die erforderlichen Attribute enthalten.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline;&quot;&gt;Dateien herunterladen&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Das Plugin beginnt ganz am Anfang des Planungsprozesses, indem es zunächst die Shapefiles der Gebäude, Flurstücke und Straßen der zu analysierenden Stadt oder Gemeinde herunterlädt.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline;&quot;&gt;Dateien anpassen&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Die Shapefiles werden für die Nutzung in weiteren Berechnungen angepasst. Verschiedene Attribute werden hinzugefügt.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline;&quot;&gt;Statusanalyse&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Die Wärmedichte wird dem Straßenshapefile hinzugefügt. Dann werden die Flurstücke benachbarter Gebäude zu einem größeren Polygon zusammengeführt und mit Attributen ergänzt, um geeignete Bereiche für Wärmenetze zu finden.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; text-decoration: underline;&quot;&gt;Netzwerkanalyse&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;Die Gebäude werden mit einer vom Benutzer angegebenen Wärmequelle verbunden. Das resultierende Netzwerk wird als Shapefile gespeichert und eine Zusammenfassung des Netzes wird zudem als Excel-Datei gespeichert.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../heat_net_tool_dialog_base.ui" line="364"/>
+        <source>Check QGIS python version</source>
+        <translation>QGIS-Pythonversion überprüfen</translation>
+    </message>
+    <message>
+        <location filename="../heat_net_tool_dialog_base.ui" line="1976"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;The design is carried out for a district heating system within a specific temperature range. Anergy / LowEx networks and high-temperature / Steam networks are not supported. Therefore, for the flow temperature, only values between 60 °C and 90 °C  can be selected. The return temperature must be between 40 °C and 80 °C.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Die Auslegung erfolgt für ein Wärmenetz innerhalb eines bestimmten Temperaturbereichs. Anergie-/LowEx-Netze und Hochtemperatur-/Dampf-Netze werden nicht unterstützt. Daher können für die Vorlauftemperatur nur Werte zwischen 60 °C und 90 °C ausgewählt werden. Die Rücklauftemperatur muss zwischen 40 °C und 80 °C liegen.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 </TS>
