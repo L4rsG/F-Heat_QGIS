@@ -21,4 +21,4 @@ Target Groups
 
 1. Municipalities, municipal utilities, planners in municipalities that do not have the time, technical and/or financial resources to prepare or have prepared in-depth heat planning/feasibility studies. 
 2. Public and energy communities (ger. Energiegenossenschaften) that are committed to the local energy transition. 
-3. Scientists and students who want to actively work on the further development of the tool. For this purpose, a development tree is presented and continuously published, which describes the core components. The development team behind F|Heat at Münster University of Applied Sciences monitors and implements the developments, but also drives them forward itself through research projects.
+3. Scientists and students who want to actively work on the further development of the tool. For this purpose, a development roadmap is presented and continuously published, which describes the core components. The development team behind F|Heat at Münster University of Applied Sciences monitors and implements the developments, but also drives them forward itself through research projects.

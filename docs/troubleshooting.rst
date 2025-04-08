@@ -29,7 +29,7 @@ If you're still experiencing problems, please contact us.
 
 Contributing
 ------------
-We welcome contributions to help improve this documentation! If you notice errors, outdated information, or areas for improvement, feel free to open an issue or submit a pull request.
+We welcome contributions to help improve this software. If you notice errors, outdated information, or areas for improvement, feel free to open an issue or submit a pull request.
 
 To contribute:
 
@@ -37,6 +37,6 @@ To contribute:
 - Make your changes in a new branch.
 - Submit a pull request with a clear description of your updates.
 
-For major changes, please open an issue first to discuss what you would like to propose.
+For major changes or feature suggestions, please open an issue first to discuss what you would like to propose.
 
 Thank you for helping us make the documentation better!
