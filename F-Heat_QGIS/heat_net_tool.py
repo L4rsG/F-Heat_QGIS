@@ -264,14 +264,21 @@ class HeatNetTool:
                 action)
             self.iface.removeToolBarIcon(action)
 
+    def check_python_version(self):
+        '''Checks QGIS python version'''
+
+        python_version = sys.version
+        self.dlg.intro_label.setText(self.tr('Your QGIS python version is: ')+ python_version)
+        self.dlg.intro_label.setStyleSheet('color: white')
+        self.dlg.intro_label.repaint()
+
     def install_package(self):
         '''
         Installs Python packages using pip.
 
         Parameters
         ----------
-        package_list : list of str
-            List of package names to be installed.
+        None
 
         Returns
         -------
@@ -2056,6 +2063,9 @@ class HeatNetTool:
                 message_box.setText(self.tr('Failed to import a required module: {}').format(str(e)))
                 message_box.setInformativeText(self.tr('Please install all required Python packages by pressing "Install Packages" in the Introduction part of the F|Heat plugin.'))
                 message_box.exec_()
+
+            # check python version
+            self.dlg.intro_pushButton_python_version.clicked.connect(lambda: self.check_python_version())
 
             # install python packages
             self.dlg.intro_pushButton_load_packages.clicked.connect(lambda: self.install_package())
