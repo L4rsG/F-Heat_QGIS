@@ -107,7 +107,7 @@ Further Information
    
 .. note::
 
-	- The current repository is located here `here <https://github.com/L4rsG/F-Heat>`_.
+	- The current repository is located here `here <https://github.com/F-Heat>`_.
 
 Indices and tables
 ==================
