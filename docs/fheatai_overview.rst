@@ -56,7 +56,7 @@ Release version 0.1.0
 |                 | visualisation of building and street data in           |
 |                 | accordance with federal guidelines for heat planning.  |
 +-----------------+--------------------------------------------------------+
-| F|Heat.net      | Design (radial) heating network with flow temperatures|
+| F|Heat.net      | Design (radial) heating network with flow temperatures |
 |                 | of 80°C (max.) and 65°C (min.).                        |
 |                 | Specification of costs for pipe construction           |
 |                 | (without civil engineering costs).                     |                        
