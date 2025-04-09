@@ -1,5 +1,5 @@
-Related Projects
-================
+Related Projects and Links
+==========================
 
 .. note::
-    Adding projects and links that are related to the development.
+    Related projects and links will be added here for further information.

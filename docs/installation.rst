@@ -3,6 +3,9 @@ Installation
 .. note::
     The instructions are currently aimed specifically at Windows users. There may be deviations for the installation on other operating systems, but corresponding instructions for these systems will be added here in the future. The application is currently tested for Python versions > 3.9 and QGIS version > 3.3.
 
+Windows
+*******
+
 .. attention::
 
    QGIS comes with its own Python environment. To install libraries there, QGIS must be started with administrator rights.
@@ -98,3 +101,9 @@ Go to `python.org <https://www.python.org/downloads/>`_ and download the matchin
         :align: center
 
 After installing Python, you may need to restart QGIS so that the new path is found by QGIS. You can then use the function under the Introduction tab in F|Heat. As soon as the "Install Packages" button is clicked, a terminal window opens and the installation begins. You will be informed that the packages will be loaded into the “User Installation”, as there are no write permissions for the QGIS Python environment. If you receive an empty prompt and everything has been installed without error messages, you can close the window.
+
+MacOS
+*****
+
+Linux
+*****
