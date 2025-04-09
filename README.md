@@ -75,9 +75,10 @@ Alternatively you can install the packages yourself by following this guide on [
 
 ## Documentation
 
-All necessary steps are documented within the plugin. A detailed documentation about on installation, usage and methodology is available via the following link:
+All necessary steps are documented within the plugin. A detailed documentation about installation, usage and methodology is available via the following links:
 
 [F|Heat readthedocs](https://fheat.readthedocs.io/en/latest/)
+[Official german website](https://www.fh-muenster.de/de/fheat/index)
 
 ## Contributing
 
