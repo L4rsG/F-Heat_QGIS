@@ -58,4 +58,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # 'alabaster' as default option
 
 html_theme = 'sphinx_rtd_theme'
+html_logo = "_static/fheat_logo.png"
 html_static_path = ['_static']
+
+def setup(app):
+    app.add_css_file('custom_style.css')  # For Sphinx >= 1.8
