@@ -23,7 +23,7 @@ hasProcessingProvider=no
 # Tags are comma separated with spaces allowed
 tags=python, FHeat, F|Heat, F-Heat, district heating, municipal heat planning, network, map
 
-homepage=www.fheat.de
+homepage=https://www.fh-muenster.de/de/fheat/index
 category=Plugins
 icon=icon.png
 # experimental flag
