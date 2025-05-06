@@ -4,7 +4,6 @@ from zipfile import ZipFile
 from io import BytesIO
 import geopandas as gpd
 import pandas as pd
-import urllib.request
 import os
 import shutil
 from owslib.wfs import WebFeatureService
