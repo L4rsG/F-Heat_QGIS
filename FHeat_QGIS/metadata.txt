@@ -10,8 +10,8 @@ about=This plugin provides tools for municipal heat planning. It supports the en
 version=0.1
 author=Lars Goray
 email=FHeat@fh-muenster.de
-tracker=https://github.com/F-Heat/F-Heat_QGIS/issues
-repository=https://github.com/F-Heat/F-Heat_QGIS/tree/main/F-Heat_QGIS
+tracker=https://github.com/F-Heat/FHeat_QGIS/issues
+repository=https://github.com/F-Heat/F-Heat_QGIS/tree/main/FHeat_QGIS
 # End of mandatory metadata
 
 # Recommended items:
