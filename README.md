@@ -8,13 +8,12 @@ The Heat Planning Plugin for [QGIS](https://qgis.org/) enables functions like st
 ## Table of Contents
 1. [Features and Usage](#features-and-usage)
 2. [Quick-Start](#quick-start)
-3. [Installation](#installation)
-4. [Requirements](#requirements)
-5. [Documentation](#documentation)
-6. [Contact Information](#contact-information)
-7. [Contributing](#contributing)
-8. [License](#license)
-9. [Acknowledgements](#acknowledgments)
+3. [Requirements](#requirements)
+4. [Documentation](#documentation)
+5. [Contact Information](#contact-information)
+6. [Contributing](#contributing)
+7. [License](#license)
+8. [Acknowledgements](#acknowledgments)
 
 ## Features and Usage
 
