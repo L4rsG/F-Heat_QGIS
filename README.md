@@ -3,7 +3,7 @@
 <img src="docs/images/fheat_logo.png" alt="FHeat Logo" width="300">
 
 ## Description
-The Heat Planning Plugin for [QGIS](https://qgis.org/) enables functions like status analysis and heat network analysis for municipal heat planning. This plugin facilitates municipal heat planning by giving users access to various Python libraries within QGIS without the need for programming skills. Parts of the plugin are currently tailored to NRW, Germany.
+The Heat Planning Plugin for [QGIS](https://qgis.org/) enables functions like status analysis and heat network analysis for municipal heat planning. This plugin facilitates municipal heat planning by giving users access to various Python libraries within QGIS without the need for programming skills. The spatial resoultion of the plugin is currently tailored to North Rhine-Westphalia (NRW) located in Germany.
 
 ## Table of Contents
 1. [Features and Usage](#features-and-usage)
@@ -51,24 +51,6 @@ It is advisable to save the project before starting F|Heat, as the plugin utiliz
 F|Heat starts by clicking the icon in the toolbar. From there, the plugin guides you through the process. Check the documentation for a detailed example.
 <img src="docs/images/readme/qs6.png" alt="quick start6" width="800">
 
-## Installation
-To install F|Heat and use the functionalities without QGIS, ensure you have Python installed on your system. Follow the steps below:
-
-1. **Clone the repository**:
-    ```sh
-    git clone https://github.com/L4rsG/F-Heat.git
-    ```
-
-2. **Navigate to the project directory**:
-    ```sh
-    cd F-Heat
-    ```
-
-3. **Install the required packages**:
-    ```sh
-    pip install -r requirements.txt
-    ```
-
 ## Requirements
 For using the application as a plugin you need QGIS on your machine. The required Python packages are installed by using the plugin on your local machine.
 Alternatively you can install the packages yourself by following this guide on [Installing Python packages in QGIS 3.](https://landscapearchaeology.org/2018/installing-python-packages-in-qgis-3-for-windows/)
@@ -98,14 +80,7 @@ Please ensure that your contributions align with the coding standards and consid
 
 <img src="docs/images/readme/fh_logo.png" alt="FH Logo" width="350">
 
-For further information, questions or feedback, please contact one of the project maintainers:
-
-### Organizational Matters and Usage
-- Hinnerk Willenbrink - willenbrink@fh-muenster.de
-
-### Technical Documentation and Development
-- Lars Goray - lars.goray@fh-muenster.de
-- Philipp Sommer - philipp.sommer@fh-muenster.de
+For further information, questions or feedback, please contact our development team: fheat@fh-muenster.de
 
 ## License
 
