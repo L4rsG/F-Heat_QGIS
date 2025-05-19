@@ -47,6 +47,7 @@ Net Analysis
     :undoc-members:
     :show-inheritance:
 
+.. TODO: check if this is redundant since it is already in the net_analysis module
 .. QGIS Heat Net Tool
 .. ------------------
 
