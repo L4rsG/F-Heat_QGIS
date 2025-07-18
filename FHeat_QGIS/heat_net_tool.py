@@ -1752,7 +1752,9 @@ class HeatNetTool:
         
         def on_task_finished():
             '''function that is executed, once the background task is complete'''
-
+            # Reset worker_running
+            self.worker_running = False
+            
             # Check if background tasl is complete
             if self.download_status == 'complete':
                 # Get paths from line edits
@@ -1765,17 +1767,16 @@ class HeatNetTool:
                 self.streets_gdf.to_file(streets_path)
                 self.parcels_gdf.to_file(parcels_path)
 
-                # Füge die Shapefiles zum QGIS Projekt hinzu
+                # Add Shapefiles to QGIS
                 self.add_shapefile_to_project(parcels_path, style = 'parcels', group_name = self.tr('Basic Data'))
                 self.add_shapefile_to_project(buildings_path, style = 'buildings', group_name = self.tr('Basic Data'))
                 self.add_shapefile_to_project(streets_path, style = 'streets', group_name = self.tr('Basic Data'))
 
-                # GUI-Feedback aktualisieren
+                # Update GUI-Feedback 
                 self.dlg.load_progressBar.setValue(100)
                 self.dlg.load_label_feedback.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.load_label_feedback.setText(self.tr('Download complete!'))
-            # Reset worker_running
-            self.worker_running = False
+            
             
         # Start the background process
         self.worker_running = True
@@ -1793,6 +1794,9 @@ class HeatNetTool:
         }
         def on_task_finished():
             '''function that is executed, once the background task is complete'''
+            # Reset worker_running
+            self.worker_running = False
+
             # check if the backround task is complete
             if self.download_zensus_status == 'complete':
                 # get path from lineEdit
@@ -1807,9 +1811,7 @@ class HeatNetTool:
                 # update progressBar
                 self.dlg.load_progressBar_zensus.setValue(100)
                 self.dlg.load_label_zensus.setStyleSheet("color: rgb(0, 255, 0)")
-                self.dlg.load_label_zensus.setText(self.tr('Download complete!'))
-            # Reset worker_running
-            self.worker_running = False
+                self.dlg.load_label_zensus.setText(self.tr('Download complete!'))    
             
         self.worker_running = True
         self.run_long_task(self.download_zensus, gui_elements, on_task_finished)
@@ -1832,6 +1834,9 @@ class HeatNetTool:
         }
         def on_task_finished():
             '''function that is executed, once the background task is complete'''
+            # Reset worker_running
+            self.worker_running = False
+            
             # check if the backround task is complete
             if self.bool_files_already_adjusted == False:
                 # get paths from layers
@@ -1862,8 +1867,7 @@ class HeatNetTool:
                 self.dlg.adjust_label_feedback.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.adjust_label_feedback.setText(self.tr('Completed!'))
                 self.dlg.adjust_label_feedback.repaint()
-            # Reset worker_running
-            self.worker_running = False
+            
         self.worker_running = True
         self.run_long_task(self.adjust_files, gui_elements, on_task_finished)
 
@@ -1879,6 +1883,9 @@ class HeatNetTool:
         }
         def on_task_finished():
             '''function that is executed, once the background task is complete'''
+            # Reset worker_running
+            self.worker_running = False
+            
             # check if the backround task is complete
             if self.status_analysis_status == 'complete':
                 # layer from combo box
@@ -1900,9 +1907,6 @@ class HeatNetTool:
                 self.dlg.status_label_response.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.status_label_response.setText(self.tr('Completed!'))
 
-            # Reset worker_running
-            self.worker_running = False
-            
         self.worker_running = True
         self.run_long_task(self.status_analysis, gui_elements, on_task_finished)
     
@@ -1924,6 +1928,9 @@ class HeatNetTool:
 
         def on_task_finished():
             '''function that is executed, once the background task is complete'''
+            # Reset worker_running
+            self.worker_running = False
+            
             # check if the backround task is complete
             if self.network_analysis_status == 'complete':
                 # path to save net shape file
@@ -1943,8 +1950,6 @@ class HeatNetTool:
                 self.dlg.net_label_response.repaint()
             elif self.network_analysis_status == 'plot':
                 self.graph.plot_graph(self.graph.start_point, self.graph.connected_points, self.graph.disconnected_buildings)
-            # Reset worker_running
-            self.worker_running = False
             return
         self.worker_running = True
         self.run_long_task(self.network_analysis, gui_elements, on_task_finished)
@@ -1982,6 +1987,9 @@ class HeatNetTool:
 
         def on_task_finished():
             '''function that is executed, once the background task is complete'''
+            # Reset worker_running
+            self.worker_running = False
+
             if self.result_status == 'complete':
 
                 result = self.result
@@ -2023,8 +2031,6 @@ class HeatNetTool:
                 self.dlg.net_label_response.setText(self.tr('Completed!'))
                 self.dlg.net_label_response.setStyleSheet("color: rgb(0, 255, 0)")
                 self.dlg.net_label_response.repaint()
-            # Reset worker_running
-            self.worker_running = False
         
         self.worker_running = True
         self.run_long_task(self.create_result, gui_elements, on_task_finished)
