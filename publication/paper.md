@@ -75,9 +75,8 @@ F|Heat is composed of several core components that work together to facilitate e
 <!-- - `F|Heat.ai`: QGIS plugin for merging and making the system components usable with an explanatory user interface as an initial step. -->
 
 These components are provided together in a package, whereby each system component covers a sub-area of the planning and includes different development stages and will go through them in the future.
-<!-- The initial user interface is called F|Heat.ai and this also formulates the requirement for future development, namely that the individual components interact with and on top of each other with AI support and enable chatbot and AI-supported planning. -->
 
-`F|HEAT` comes with a [detailed documentation](https://fheat.readthedocs.io/en/latest/), including step-by-step instructions, explanations of all modeling methods, data usage and troubleshooting with known application errors.
+`F|HEAT` comes with a [detailed documentation](https://f-heat-qgis.readthedocs.io/en/latest/index.html), including step-by-step instructions, explanations of all modeling methods, data usage and troubleshooting with known application errors.
 
 <!-- 
 Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
@@ -127,6 +126,6 @@ and referenced from text using \autoref{fig:example}. -->
 <!-- Add acknowledgements and references should stay empty-->
 # Acknowledgements
 
-<!-- We acknowledge contributions from Victor Jagdt (RWT Jagdt GmbH) and Martin Sammler (Municipality Saerbeck) for accelerating and testing the application. -->
+<!-- We acknowledge contributions from -->
 
 # References
