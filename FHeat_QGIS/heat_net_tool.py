@@ -930,8 +930,8 @@ class HeatNetTool:
             progress_update.emit(5)
             
             ## load zensus data
-            url_zensus = 'https://www.zensus2022.de/static/Zensus_Veroeffentlichung/'
-
+            url_zensus = 'https://www.destatis.de/static/DE/zensus/gitterdaten/'
+            
             heizungsart_zip = 'Zensus2022_Heizungsart.zip'
             energietraeger_zip = 'Zensus2022_Energietraeger.zip'
 
@@ -1338,9 +1338,6 @@ class HeatNetTool:
 
         if self.dlg.net_lineEdit_net.text().strip() == "":
             label_update.emit(self.tr('Specify a file path for the net shapefile output'),'orange')
-            return
-        if self.dlg.net_lineEdit_net.text().strip() == "":
-            label_update.emit(self.tr('Specify a file path for the result file'),'orange')
             return
        
         progress_update.emit(2) # update progressBar
