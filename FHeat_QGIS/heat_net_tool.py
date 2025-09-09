@@ -1618,7 +1618,7 @@ class HeatNetTool:
             return
 
         result.create_data_dict(buildings.gdf, net_gdf, load_profiles, self.dn_list, heat_attribute, t_supply, t_return)
-        result.create_df_from_dataDict(net_name = os.path.splitext(os.path.basename(net_path))[0])
+        result.create_df_from_dataDict()
         
         progress_update.emit(15) # update progressBar
 
@@ -1647,7 +1647,7 @@ class HeatNetTool:
         temperature_data = self.temp_profile['TT_TU']
 
         # load_profile class
-        load_profile = LoadProfile(result.gdf, result_path, year, temperature_data, holidays)
+        load_profile = LoadProfile(result.df, result_path, year, temperature_data, holidays)
         
         # dataframe for collecting generated profiles
         demand = load_profile.set_up_df(year, resolution, freq)
@@ -1996,7 +1996,7 @@ class HeatNetTool:
                 result.copy_excel_file(costs_path)
 
                 # Save result
-                result.save_in_excel(result_table = result.gdf)
+                result.save_in_excel(result_table = result.df)
 
                 # Save Statistic
                 result.save_in_excel(result_table = result.statistic, sheet = 'Statistik')
