@@ -42,7 +42,7 @@ try:
     import pandas as pd
     import geopandas as gpd
     from shapely import Point
-    from .src.download_files import file_list_from_URL, search_filename, read_file_from_zip, filter_df, get_shape_from_wfs, clean_data, add_point, create_square, get_area_for_zensus
+    from .src.download_files import file_list_from_URL_QGIS, search_filename, read_file_from_zip_QGIS, filter_df, get_shape_from_wfs, clean_data, add_point, create_square, get_area_for_zensus
     from .src.adjust_files import Streets_adj, Buildings_adj, Parcels_adj, spatial_join
     from .src.status_analysis import WLD, Polygons
     from .src.net_analysis import Streets, Source, Buildings, Graph, Net, Result, get_closest_point, calculate_GLF, calculate_volumeflow, calculate_diameter_velocity_loss
@@ -326,7 +326,7 @@ class HeatNetTool:
         import pandas as pd
         import geopandas as gpd
         from shapely import Point
-        from .src.download_files import file_list_from_URL, search_filename, read_file_from_zip, filter_df, get_shape_from_wfs, clean_data, add_point, create_square, get_area_for_zensus
+        from .src.download_files import file_list_from_URL_QGIS, search_filename, read_file_from_zip_QGIS, filter_df, get_shape_from_wfs, clean_data, add_point, create_square, get_area_for_zensus
         from .src.adjust_files import Streets_adj, Buildings_adj, Parcels_adj, spatial_join
         from .src.status_analysis import WLD, Polygons
         from .src.net_analysis import Streets, Source, Buildings, Graph, Net, Result, get_closest_point, calculate_GLF, calculate_volumeflow, calculate_diameter_velocity_loss
@@ -839,7 +839,7 @@ class HeatNetTool:
             label_update.emit(self.tr('Downloading...'), 'white')
 
             # buildings shapes
-            all_buildings_files = file_list_from_URL(url_buildings+'index.json')
+            all_buildings_files = file_list_from_URL_QGIS(url_buildings+'index.json')
             progress_update.emit(10) # update progressBar
             buildings_zip = search_filename(all_buildings_files, municipality_key)
             
@@ -850,13 +850,13 @@ class HeatNetTool:
             
             progress_update.emit(15) # update progressBar
             buildings_file_pattern = f'WBM-NRW_{municipality_key}' # file pattern maybe has to be renamed, when changes on the website occur
-            buildings_gdf = read_file_from_zip(url_buildings, buildings_zip, buildings_file_pattern)
+            buildings_gdf = read_file_from_zip_QGIS(url_buildings, buildings_zip, buildings_file_pattern)
 
             progress_update.emit(35) # update progressBar
 
             # streets shapes
             streets_file_pattern = f'WBM-NRW-Waermelinien_{municipality_key}' # file pattern maybe has to be renamed, when changes on the website occur
-            streets_gdf = read_file_from_zip(url_buildings, buildings_zip, streets_file_pattern)
+            streets_gdf = read_file_from_zip_QGIS(url_buildings, buildings_zip, streets_file_pattern)
 
             progress_update.emit(55) # update progressBar
 
@@ -935,9 +935,9 @@ class HeatNetTool:
             heizungsart_zip = 'Zensus2022_Heizungsart.zip'
             energietraeger_zip = 'Zensus2022_Energietraeger.zip'
 
-            df_Heizungsart = read_file_from_zip(url_zensus, heizungsart_zip, 'Zensus2022_Heizungsart_100m-Gitter', '.csv', encoding='latin1')
+            df_Heizungsart = read_file_from_zip_QGIS(url_zensus, heizungsart_zip, 'Zensus2022_Heizungsart_100m-Gitter', '.csv', encoding='latin1')
             progress_update.emit(20)
-            df_Energietraeger = read_file_from_zip(url_zensus, energietraeger_zip, 'Zensus2022_Energietraeger_100m-Gitter', '.csv', encoding='latin1')
+            df_Energietraeger = read_file_from_zip_QGIS(url_zensus, energietraeger_zip, 'Zensus2022_Energietraeger_100m-Gitter', '.csv', encoding='latin1')
 
             # only data within bbox
             df_Heizungsart = df_Heizungsart[(df_Heizungsart['x_mp_100m'] > xmin) & (df_Heizungsart['x_mp_100m'] < xmax) & (df_Heizungsart['y_mp_100m'] > ymin) & (df_Heizungsart['y_mp_100m'] < ymax)]
@@ -2051,7 +2051,7 @@ class HeatNetTool:
                 import pandas as pd
                 import geopandas as gpd
                 from shapely import Point
-                from .src.download_files import file_list_from_URL, search_filename, read_file_from_zip, filter_df, get_shape_from_wfs, clean_data, add_point, create_square, get_area_for_zensus
+                from .src.download_files import file_list_from_URL_QGIS, search_filename, read_file_from_zip_QGIS, filter_df, get_shape_from_wfs, clean_data, add_point, create_square, get_area_for_zensus
                 from .src.adjust_files import Streets_adj, Buildings_adj, Parcels_adj, spatial_join
                 from .src.status_analysis import WLD, Polygons
                 from .src.net_analysis import Streets, Source, Buildings, Graph, Net, Result, get_closest_point, calculate_GLF, calculate_volumeflow, calculate_diameter_velocity_loss
